@@ -28,7 +28,7 @@ if( APPLE )
 	set( LIBRARIES "-framework Cocoa -framework PCSC -fobjc-arc" )
 else()
 	include_directories( ${CMAKE_SOURCE_DIR} )
-	add_subdirectory( ../qtsingleapplication ${CMAKE_BINARY_DIR}/qtsingleapplication )
+	add_subdirectory( qtsingleapplication )
 	list( APPEND LIBRARIES qtsingleapplication )
 endif()
 
