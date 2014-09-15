@@ -23,7 +23,7 @@ endif()
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm MacMenuBar.cpp )
 	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
-	set_source_files_properties( SslCertificate.cpp QPKCS11.cpp sslConnect.cpp
+	set_source_files_properties( SslCertificate.cpp sslConnect.cpp
 		PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	set( LIBRARIES "-framework Cocoa -framework PCSC -fobjc-arc" )
 else()
@@ -88,7 +88,7 @@ if( BREAKPAD )
 		set( C_FLAGS "-D_FILE_OFFSET_BITS=64 -fno-exceptions -Wno-unused-parameter -Wno-missing-field-initializers" )
 		set( CXX_FLAGS "-fno-rtti -fno-threadsafe-statics" )
 		string( REGEX REPLACE "-std=c\\+\\+0x|-std=c\\+\\+11" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} )
-		set( SOURCES_FLAGS "-std=c++11" )
+		set( SOURCES_FLAGS "-std=c++11 -Wno-deprecated-declarations" )
 		if( APPLE )
 			list( APPEND CCSOURCES
 				${BREAKPAD_PATH}/client/mac/handler/exception_handler.cc
@@ -174,7 +174,7 @@ if( BREAKPAD )
 	)
 	set_source_files_properties( ${CSOURCES} PROPERTIES COMPILE_FLAGS "${C_FLAGS}" )
 	set_source_files_properties( ${CCSOURCES} PROPERTIES COMPILE_FLAGS "${C_FLAGS} ${CXX_FLAGS}" )
-	set_source_files_properties( ${SOURCES} PROPERTIES COMPILE_FLAGS "${SOURCES_FLAGS} -DBREAKPAD=\"${BREAKPAD}\"" )
+	set_source_files_properties( ${SOURCES} PROPERTIES COMPILE_FLAGS "${SOURCES_FLAGS}" )
 endif()
 
 if( NOT Qt5Widgets_FOUND )
