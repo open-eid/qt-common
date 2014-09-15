@@ -411,33 +411,6 @@ Additional licenses and components</source>
     </message>
 </context>
 <context>
-    <name>SSLConnect</name>
-    <message>
-        <source>Failed to connect to host. Are you connected to the internet?</source>
-        <translation>Отсутствует подключение к интернету!</translation>
-    </message>
-    <message>
-        <source>Loading Email info</source>
-        <translation>Загрузка электронной почты информации</translation>
-    </message>
-    <message>
-        <source>Loading Mobile info</source>
-        <translation>Загрузка Мобильная справка</translation>
-    </message>
-    <message>
-        <source>Downloading picture</source>
-        <translation>Загрузка картинки</translation>
-    </message>
-    <message>
-        <source>SSL context is missing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Certificate is empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SslCertificate</name>
     <message>
         <source>All application policies</source>
@@ -510,6 +483,10 @@ Additional licenses and components</source>
     <message>
         <source>Time Stamping</source>
         <translation>Штамп времени</translation>
+    </message>
+    <message>
+        <source>Ensures the identity of a remote computer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
