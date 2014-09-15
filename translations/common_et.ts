@@ -201,10 +201,6 @@ Täiendavad litsentsid ja komponendid</translation>
 <context>
     <name>Diagnostics</name>
     <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardi lugejat pole ühendatud</translation>
-    </message>
-    <message>
         <source>Locale (time-, number format / codepage):</source>
         <translation>Keeleseaded (aja-, numbriformaat / kooditabel):</translation>
     </message>
@@ -298,13 +294,6 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
 </context>
 <context>
-    <name>FileDialog</name>
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
-    </message>
-</context>
-<context>
     <name>MacMenuBar</name>
     <message>
         <source>&amp;File</source>
@@ -367,30 +356,58 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
 </context>
 <context>
-    <name>QPKCS11</name>
+    <name>QBreakPadDialog</name>
     <message>
-        <source>PIN Canceled</source>
-        <translation type="unfinished"></translation>
+        <source>%1 has stopped working</source>
+        <translation>%1 on lõpetanud töötamise</translation>
     </message>
     <message>
-        <source>PIN locked</source>
-        <translation>PIN on lukus</translation>
+        <source>Send report</source>
+        <translation>Saada vearaport</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>Vale PIN</translation>
+        <source>Close the program</source>
+        <translation>Sulge programm</translation>
     </message>
     <message>
-        <source>PKCS11 general error</source>
-        <translation type="unfinished"></translation>
+        <source>Please send us this error report to help fix the problem and improve this software.</source>
+        <translation>Selleks, et saaksime tarkvara töökindlust parandada palun edasta meile see vearaport.</translation>
     </message>
     <message>
-        <source>PKCS11 device error</source>
-        <translation type="unfinished"></translation>
+        <source>Provide additional info about the problem (recommended)</source>
+        <translation>Võimalusel lisa täiendavat infot veaolukorra tekkimise kohta (soovitatav)</translation>
     </message>
     <message>
-        <source>PKCS11 unknown error</source>
-        <translation type="unfinished"></translation>
+        <source>Error Report</source>
+        <translation>Vearaport</translation>
+    </message>
+    <message>
+        <source>ID software error reporting principles</source>
+        <translation>ID-tarkvara vearaporti põhimõtted</translation>
+    </message>
+    <message>
+        <source>https://installer.id.ee/Privacy_Policy_ENG.html</source>
+        <translation>https://installer.id.ee/Privacy_Policy_EST.html</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Detailid</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Sulge</translation>
+    </message>
+    <message>
+        <source>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</source>
+        <translation>Tuvastasime, et eelmine kord lõpetas programm ootamatult töö. Kas soovite saata meile info probleemi analüüsimiseks ja parandamiseks?</translation>
+    </message>
+    <message>
+        <source>qdigidocclient</source>
+        <translation>DigiDoc3 klient</translation>
+    </message>
+    <message>
+        <source>qesteidutil</source>
+        <translation>ID-kaardi haldusvahend</translation>
     </message>
 </context>
 <context>

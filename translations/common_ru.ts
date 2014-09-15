@@ -201,10 +201,6 @@ Additional licenses and components</source>
 <context>
     <name>Diagnostics</name>
     <message>
-        <source>No readers found</source>
-        <translation>Считывающее устройство не обнаружено</translation>
-    </message>
-    <message>
         <source>Locale (time-, number format / codepage):</source>
         <translation>Языковые настройки:</translation>
     </message>
@@ -298,13 +294,6 @@ Additional licenses and components</source>
     </message>
 </context>
 <context>
-    <name>FileDialog</name>
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
-    </message>
-</context>
-<context>
     <name>MacMenuBar</name>
     <message>
         <source>&amp;File</source>
@@ -367,30 +356,58 @@ Additional licenses and components</source>
     </message>
 </context>
 <context>
-    <name>QPKCS11</name>
+    <name>QBreakPadDialog</name>
     <message>
-        <source>PIN Canceled</source>
-        <translation type="unfinished"></translation>
+        <source>%1 has stopped working</source>
+        <translation>%1 прекратило работать</translation>
     </message>
     <message>
-        <source>PIN locked</source>
-        <translation>PIN заблокирован</translation>
+        <source>Send report</source>
+        <translation>Отправить отчет</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>Неверный PIN</translation>
+        <source>Close the program</source>
+        <translation>Закрыть программу</translation>
     </message>
     <message>
-        <source>PKCS11 general error</source>
-        <translation type="unfinished"></translation>
+        <source>Error Report</source>
+        <translation>Отчет об ошибке</translation>
     </message>
     <message>
-        <source>PKCS11 device error</source>
-        <translation type="unfinished"></translation>
+        <source>Please send us this error report to help fix the problem and improve this software.</source>
+        <translation>Пожалуйста, отправьте нам этот отчет, чтобы помочь исправить ошибку и улучшить программу.</translation>
     </message>
     <message>
-        <source>PKCS11 unknown error</source>
-        <translation type="unfinished"></translation>
+        <source>Provide additional info about the problem (recommended)</source>
+        <translation>Предоставить дополнительные сведения (рекомендуется)</translation>
+    </message>
+    <message>
+        <source>ID software error reporting principles</source>
+        <translation>Принципы рапорта об ошибке программного обеспечения ID-карты.</translation>
+    </message>
+    <message>
+        <source>https://installer.id.ee/Privacy_Policy_ENG.html</source>
+        <translation>https://installer.id.ee/Privacy_Policy_RUS.html</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Детали</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</source>
+        <translation>Во время прошлого запуска программа неожиданно завершила работу. Желаете отправить нам информацию для анализа и решения проблемы?</translation>
+    </message>
+    <message>
+        <source>qdigidocclient</source>
+        <translation>DigiDoc3 клиент</translation>
+    </message>
+    <message>
+        <source>qesteidutil</source>
+        <translation>Программа управления ID-картой</translation>
     </message>
 </context>
 <context>

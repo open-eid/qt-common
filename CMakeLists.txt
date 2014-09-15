@@ -63,14 +63,6 @@ if( BREAKPAD )
 		find_package( Threads )
 	endif()
 
-	list( APPEND TS_FILES
-		translations/breakpad_en.ts
-		translations/breakpad_et.ts
-		translations/breakpad_ru.ts
-	)
-	configure_file( translations/breakpad.qrc breakpad.qrc COPYONLY )
-	list( APPEND RC_FILES ${CMAKE_CURRENT_BINARY_DIR}/breakpad.qrc )
-
 	list( APPEND CCSOURCES QBreakPad.cpp )
 	set( BREAKPAD_PATH google-breakpad/src )
 	# http://google-breakpad.googlecode.com/svn/trunk@r1279

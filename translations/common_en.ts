@@ -201,10 +201,6 @@ Additional licenses and components</translation>
 <context>
     <name>Diagnostics</name>
     <message>
-        <source>No readers found</source>
-        <translation>No readers found</translation>
-    </message>
-    <message>
         <source>Locale (time-, number format / codepage):</source>
         <translation>Locale (time-, number format / codepage):</translation>
     </message>
@@ -298,13 +294,6 @@ Additional licenses and components</translation>
     </message>
 </context>
 <context>
-    <name>FileDialog</name>
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
-    </message>
-</context>
-<context>
     <name>MacMenuBar</name>
     <message>
         <source>&amp;File</source>
@@ -367,30 +356,58 @@ Additional licenses and components</translation>
     </message>
 </context>
 <context>
-    <name>QPKCS11</name>
+    <name>QBreakPadDialog</name>
     <message>
-        <source>PIN Canceled</source>
-        <translation>PIN Canceled</translation>
+        <source>%1 has stopped working</source>
+        <translation>%1 has stopped working</translation>
     </message>
     <message>
-        <source>PIN locked</source>
-        <translation>PIN locked</translation>
+        <source>Send report</source>
+        <translation>Send report</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>PIN Incorrect</translation>
+        <source>Close the program</source>
+        <translation>Close the program</translation>
     </message>
     <message>
-        <source>PKCS11 general error</source>
-        <translation>PKCS11 general error</translation>
+        <source>Error Report</source>
+        <translation>Error Report</translation>
     </message>
     <message>
-        <source>PKCS11 device error</source>
-        <translation>PKCS11 device error</translation>
+        <source>Please send us this error report to help fix the problem and improve this software.</source>
+        <translation>Please send us this error report to help fix the problem and improve this software.</translation>
     </message>
     <message>
-        <source>PKCS11 unknown error</source>
-        <translation>PKCS11 unknown error</translation>
+        <source>Provide additional info about the problem (recommended)</source>
+        <translation>Provide additional info about the problem (recommended)</translation>
+    </message>
+    <message>
+        <source>ID software error reporting principles</source>
+        <translation>ID software error reporting principles</translation>
+    </message>
+    <message>
+        <source>https://installer.id.ee/Privacy_Policy_ENG.html</source>
+        <translation>https://installer.id.ee/Privacy_Policy_ENG.html</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Details</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</source>
+        <translation>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</translation>
+    </message>
+    <message>
+        <source>qdigidocclient</source>
+        <translation>DigiDoc3 client</translation>
+    </message>
+    <message>
+        <source>qesteidutil</source>
+        <translation>ID-card utility</translation>
     </message>
 </context>
 <context>

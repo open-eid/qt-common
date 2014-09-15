@@ -103,7 +103,7 @@ static bool QBreakPadDump( const MinidumpDescriptor &descriptor, void *, bool su
 QBreakPad::QBreakPad()
 	: d( 0 )
 {
-	Q_INIT_RESOURCE(breakpad);
+	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
 	QString tmp = QDir::tempPath();
 	d = new ExceptionHandler( LPCWSTR(tmp.utf16()), 0, QBreakPadDump, 0,
