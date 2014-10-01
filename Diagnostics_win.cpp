@@ -114,6 +114,12 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
+	s << "<b>" << tr("URLs:") << "</b>";
+	const QHash<QString,QString> urls = qApp->urls();
+	for(auto i = urls.constBegin(); i != urls.constEnd(); ++i)
+		s << "<br />" << i.key() << ": " << i.value();
+	s << "<br /><br />";
+
 	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(" ") << "<br />";
 	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
 
