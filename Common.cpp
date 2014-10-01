@@ -548,6 +548,18 @@ void Common::showPlugins()
 #endif
 }
 
+QHash<QString,QString> Common::urls() const
+{
+	QHash<QString,QString> u;
+#ifdef BREAKPAD
+	u["BREAKPAD"] = BREAKPAD;
+#endif
+#ifdef KILLSWITCH
+	u["KILLSWITCH"] = KILLSWITCH;
+#endif
+	return u;
+}
+
 void Common::validate()
 {
 #ifdef KILLSWITCH

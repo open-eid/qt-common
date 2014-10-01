@@ -62,19 +62,24 @@ void Diagnostics::run()
 	{
 		QRegExp rx( "model name.*\\: (.*)\n" );
 		rx.setMinimal( true );
-		int pos = rx.indexIn( QString::fromLocal8Bit( f.readAll() ) );
-		if( pos != -1 )
+		if( rx.indexIn( QString::fromLocal8Bit( f.readAll() ) ) != -1 )
 			s << rx.cap( 1 );
 	}
-#endif
 	s << "<br />";
+#endif
 	struct utsname unameData;
 	uname(&unameData);
 	s << "<b>" << tr("Kernel:") << "</b> "
-	  << unameData.sysname << " " << unameData.release << " "
-	  << unameData.version << " " << unameData.machine << "<br /><br />";
+		<< unameData.sysname << " " << unameData.release << " "
+		<< unameData.version << " " << unameData.machine << "<br /><br />";
 	emit update( info );
 	info.clear();
+
+	s << "<b>" << tr("URLs:") << "</b>";
+	const QHash<QString,QString> urls = qApp->urls();
+	for(auto i = urls.constBegin(); i != urls.constEnd(); ++i)
+		s << "<br />" << i.key() << ": " << i.value();
+	s << "<br /><br />";
 
 	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(" ") << "<br />";
 	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";

@@ -35,6 +35,12 @@ typedef QtSingleApplication BaseApplication;
 
 #include <QtCore/QEvent>
 
+
+#if defined(qApp)
+#undef qApp
+#endif
+#define qApp (static_cast<Common*>(QCoreApplication::instance()))
+
 class QLabel;
 class QSslCertificate;
 class QUrl;
@@ -47,6 +53,7 @@ public:
 	virtual ~Common();
 
 	void detectPlugins();
+	virtual QHash<QString,QString> urls() const;
 
 	static void addRecent( const QString &file );
 	static QString applicationOs();
