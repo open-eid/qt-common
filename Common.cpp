@@ -419,9 +419,7 @@ QStringList Common::packages( const QStringList &names, bool withName )
 				continue;
 			}
 
-			QString name;
-			QString version;
-			QString type;
+			QString name, version, type, location;
 			for( DWORD k = 0; k < numKeys; ++k )
 			{
 				DWORD dataType = 0;
@@ -449,8 +447,22 @@ QStringList Common::packages( const QStringList &names, bool withName )
 				if( key == "DisplayName" ) name = value;
 				if( key == "DisplayVersion" ) version = value;
 				if( key == "ReleaseType" ) type = value;
+				if( key == "InstallLocation" ) location = value;
 			}
 			RegCloseKey( subkey );
+
+			if( name.contains("Chrome") )
+			{
+				QFile f(location + "\\chrome.exe");
+				if( f.open(QFile::ReadOnly) )
+				{
+					QByteArray data = f.read(1024);
+					IMAGE_DOS_HEADER *dos = (IMAGE_DOS_HEADER*)data.constData();
+					IMAGE_NT_HEADERS *nt = (IMAGE_NT_HEADERS*)(dos->e_lfanew + data.constData());
+					if( nt->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64 )
+						name += " (64-bit)";
+				}
+			}
 
 			if( !type.contains( "Update", Qt::CaseInsensitive ) &&
 				name.contains( QRegExp( names.join( "|" ), Qt::CaseInsensitive ) ) )
