@@ -107,9 +107,9 @@ QString SslCertificate::friendlyName() const
 {
 	QString cn = subjectInfo( QSslCertificate::CommonName );
 	QString o = subjectInfo( QSslCertificate::Organization );
+	QRegExp rx("ESTEID \\((.*)\\)");
+	if( rx.indexIn(o) != -1 ) return QString( "%1,%2" ).arg( cn, rx.cap(1) );
 	if( o == "ESTEID" ) return QString( "%1,%2" ).arg( cn, tr("ID-CARD") );
-	if( o == "ESTEID (DIGI-ID)" ) return QString( "%1,%2" ).arg( cn, tr("DIGI-ID") );
-	if( o == "ESTEID (MOBIIL-ID)" ) return QString( "%1,%2" ).arg( cn, tr("MOBIIL-ID") );
 	return cn;
 }
 
