@@ -134,7 +134,7 @@ QStringList QPCSC::readers() const
 		QString reader( i );
 		if( !reader.isEmpty() )
 			readers << reader;
-		i += reader.size() + 1;
+		i += reader.size();
 	}
 
 	return readers;
