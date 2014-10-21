@@ -248,12 +248,9 @@ void Common::detectPlugins()
 QUrl Common::helpUrl()
 {
 	QString lang = Settings::language();
-	QUrl u( "http://support.sk.ee" );
-	if( lang == "en" ) u = "http://support.sk.ee/eng/";
-	if( lang == "ru" ) u = "http://support.sk.ee/ru/";
-	u.addQueryItem( "app", applicationName() );
-	u.addQueryItem( "appver", applicationVersion() );
-	u.addQueryItem( "os", applicationOs() );
+	QUrl u( "http://www.id.ee/index.php?id=10583" );
+	if( lang == "en" ) u = "http://www.id.ee/index.php?id=30466";
+	if( lang == "ru" ) u = "http://www.id.ee/index.php?id=30515";
 	return u;
 }
 
