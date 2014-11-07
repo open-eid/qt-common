@@ -37,6 +37,14 @@ public:
 	: QSettings( "Estonian ID Card", application, parent ) {}
 #endif
 
+	void setValueEx( const QString &key, const QVariant &value, const QVariant &def )
+	{
+		if( value == def )
+			remove( key );
+		else
+			setValue( key, value );
+	}
+
 	static QString language()
 	{
 		QString deflang;
