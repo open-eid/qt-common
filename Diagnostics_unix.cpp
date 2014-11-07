@@ -75,7 +75,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	s << "<b>" << tr("URLs:") << "</b>";
+	s << "<b>" << "URLs:" << "</b>";
 	const QHash<QString,QString> urls = qApp->urls();
 	for(auto i = urls.constBegin(); i != urls.constEnd(); ++i)
 		s << "<br />" << i.key() << ": " << i.value();
