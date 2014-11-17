@@ -5,7 +5,7 @@
     <name>CloseButton</name>
     <message>
         <source>Close Tab</source>
-        <translation>Закрыть вкладку</translation>
+        <translation>Sulge sakk</translation>
     </message>
 </context>
 <context>
