@@ -173,10 +173,12 @@ if( NOT Qt5Widgets_FOUND )
 	qt4_add_translation( SOURCES ${TS_FILES} )
 	qt4_add_resources( SOURCES ${RC_FILES} )
 	qt4_wrap_ui( SOURCES ${UI_FILES} )
+	list( APPEND LIBRARIES ${QT_LIBRARIES} )
 else()
 	qt5_add_translation( SOURCES ${TS_FILES} )
 	qt5_add_resources( SOURCES ${RC_FILES} )
 	qt5_wrap_ui( SOURCES ${UI_FILES} )
+	list( APPEND LIBRARIES Qt5::Widgets )
 endif()
 
 add_library( qdigidoccommon STATIC
@@ -185,7 +187,4 @@ add_library( qdigidoccommon STATIC
 	${CCSOURCES}
 )
 
-if( Qt5Widgets_FOUND )
-	qt5_use_modules( qdigidoccommon Widgets )
-endif()
 target_link_libraries( qdigidoccommon ${OPENSSL_LIBRARIES} ${LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
