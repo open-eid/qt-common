@@ -178,7 +178,7 @@ QBreakPadDialog::QBreakPadDialog( const QString &name, const QString &path )
 	QTranslator *qt = new QTranslator( this );
 	QTranslator *bp = new QTranslator( this );
 	qt->load( ":/translations/qt_" + Settings::language() );
-	bp->load( ":/translations/breakpad_" + Settings::language() );
+	bp->load( ":/translations/common_" + Settings::language() );
 	qApp->installTranslator( qt );
 	qApp->installTranslator( bp );
 
