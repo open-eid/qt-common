@@ -65,9 +65,6 @@ if( BREAKPAD )
 
 	list( APPEND CCSOURCES QBreakPad.cpp )
 	set( BREAKPAD_PATH google-breakpad/src )
-	# http://google-breakpad.googlecode.com/svn/trunk@r1279
-	# svn merge -r 960:1177 http://google-breakpad.googlecode.com/svn/trunk/ .
-	# svn merge -r 1177:1279 http://google-breakpad.googlecode.com/svn/trunk/ .
 	include_directories( ${BREAKPAD_PATH} ${CMAKE_SOURCE_DIR} )
 
 	if( UNIX )
