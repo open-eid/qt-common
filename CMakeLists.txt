@@ -99,6 +99,10 @@ if( BREAKPAD )
 				${BREAKPAD_PATH}/client/linux/handler/minidump_descriptor.cc
 				${BREAKPAD_PATH}/client/linux/log/log.cc
 				${BREAKPAD_PATH}/client/linux/crash_generation/crash_generation_client.cc
+				${BREAKPAD_PATH}/client/linux/dump_writer_common/seccomp_unwinder.cc
+				${BREAKPAD_PATH}/client/linux/dump_writer_common/thread_info.cc
+				${BREAKPAD_PATH}/client/linux/dump_writer_common/ucontext_reader.cc
+				${BREAKPAD_PATH}/client/linux/microdump_writer/microdump_writer.cc
 				${BREAKPAD_PATH}/client/linux/minidump_writer/minidump_writer.cc
 				${BREAKPAD_PATH}/client/linux/minidump_writer/linux_ptrace_dumper.cc
 				${BREAKPAD_PATH}/client/linux/minidump_writer/linux_dumper.cc
@@ -125,6 +129,8 @@ if( BREAKPAD )
 		${BREAKPAD_PATH}/processor/call_stack.cc
 		${BREAKPAD_PATH}/processor/cfi_frame_info.cc
 		${BREAKPAD_PATH}/processor/disassembler_x86.cc
+		${BREAKPAD_PATH}/processor/dump_context.cc
+		${BREAKPAD_PATH}/processor/dump_object.cc
 		${BREAKPAD_PATH}/processor/exploitability.cc
 		${BREAKPAD_PATH}/processor/exploitability_linux.cc
 		${BREAKPAD_PATH}/processor/exploitability_win.cc
