@@ -21,7 +21,7 @@
 #include "QPCSC_p.h"
 
 #include <QtCore/QDateTime>
-#include <QtCore/QDebug>
+#include <QtCore/QLoggingCategory>
 #include <QtCore/QStringList>
 
 #include <cstring>
@@ -30,6 +30,21 @@
 #include <Regstr.h>
 #include <Setupapi.h>
 #endif
+
+Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
+Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
+
+template < typename Func, typename... Args>
+LONG SCCall( const char *file, int line, const char *function, Func func, Args... args)
+{
+	LONG err = func(args...);
+	if(SCard().isDebugEnabled())
+		QMessageLogger(file, line, function, SCard().categoryName()).debug()
+			<< function << hex << (unsigned long)err;
+	return err;
+}
+#define SC(API, ...) SCCall(__FILE__, __LINE__, "SCard"#API, SCard##API, __VA_ARGS__)
+
 
 QPCSCReaderPrivate::QPCSCReaderPrivate( QPCSCPrivate *_d )
 	: d( _d )
@@ -42,11 +57,11 @@ QPCSCReaderPrivate::QPCSCReaderPrivate( QPCSCPrivate *_d )
 QByteArray QPCSCReaderPrivate::attrib( DWORD id ) const
 {
 	DWORD size = 0;
-	LONG err = SCardGetAttrib( card, id, 0, &size );
+	LONG err = SC(GetAttrib, card, id, nullptr, &size);
 	if( err != SCARD_S_SUCCESS || !size )
 		return QByteArray();
 	QByteArray data( size, 0 );
-	err = SCardGetAttrib( card, id, LPBYTE(data.data()), &size );
+	err = SC(GetAttrib, card, id, LPBYTE(data.data()), &size);
 	if( err != SCARD_S_SUCCESS || !size )
 		return QByteArray();
 	return data;
@@ -54,11 +69,13 @@ QByteArray QPCSCReaderPrivate::attrib( DWORD id ) const
 
 
 
-QPCSC::QPCSC( QObject *parent )
+QPCSC::QPCSC( Logging log, QObject *parent )
 	: QObject( parent )
 	, d( new QPCSCPrivate )
 {
-	DWORD err = SCardEstablishContext( SCARD_SCOPE_USER, 0, 0, &d->context );
+	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, log & PCSCLog);
+	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, log & APDULog);
+	DWORD err = SC(EstablishContext, SCARD_SCOPE_USER, nullptr, nullptr, &d->context);
 	d->running = err != SCARD_E_NO_SERVICE;
 }
 
@@ -66,7 +83,7 @@ QPCSC::~QPCSC()
 {
 	qDeleteAll( findChildren<QPCSCReader*>() );
 	if( d->context )
-		SCardReleaseContext( d->context );
+		SC(ReleaseContext, d->context);
 	delete d;
 }
 
@@ -118,12 +135,12 @@ QStringList QPCSC::readers() const
 		return QStringList();
 
 	DWORD size = 0;
-	LONG err = SCardListReaders( d->context, 0, 0, &size );
+	LONG err = SC(ListReaders, d->context, nullptr, nullptr, &size);
 	if( err != SCARD_S_SUCCESS || !size )
 		return QStringList();
 
 	QByteArray data( size, 0 );
-	err = SCardListReaders( d->context, 0, data.data(), &size );
+	err = SC(ListReaders, d->context, nullptr, data.data(), &size);
 	if( err != SCARD_S_SUCCESS )
 		return QStringList();
 
@@ -169,14 +186,14 @@ QByteArray QPCSCReader::atr() const
 
 bool QPCSCReader::beginTransaction()
 {
-	return SCardBeginTransaction( d->card ) == SCARD_S_SUCCESS;
+	return SC(BeginTransaction, d->card) == SCARD_S_SUCCESS;
 }
 
 bool QPCSCReader::connect( Connect connect, Mode mode )
 {
 	if( !d->d->context )
 		return false;
-	LONG err = SCardConnect( d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto );
+	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto);
 	updateState();
 	d->friendlyName = d->attrib( SCARD_ATTR_DEVICE_FRIENDLY_NAME_A );
 #if 0
@@ -191,7 +208,7 @@ bool QPCSCReader::connect( Connect connect, Mode mode )
 
 	DWORD size = 0;
 	BYTE feature[256];
-	LONG rv = SCardControl( d->card, CM_IOCTL_GET_FEATURE_REQUEST, 0, 0, feature, sizeof(feature), &size );
+	LONG rv = SC(Control, d->card, CM_IOCTL_GET_FEATURE_REQUEST, nullptr, 0, feature, sizeof(feature), &size);
 	if( rv == SCARD_S_SUCCESS && (size % sizeof(PCSC_TLV_STRUCTURE)) == 0 )
 	{
 		size /= sizeof(PCSC_TLV_STRUCTURE);
@@ -206,7 +223,7 @@ bool QPCSCReader::connect( Connect connect, Mode mode )
 void QPCSCReader::disconnect( Reset reset )
 {
 	if( d->card )
-		SCardDisconnect( d->card, reset );
+		SC(Disconnect, d->card, reset);
 	d->proto = 0;
 	d->card = 0;
 	d->ioctl.clear();
@@ -215,7 +232,7 @@ void QPCSCReader::disconnect( Reset reset )
 
 bool QPCSCReader::endTransaction( Reset reset )
 {
-	return SCardEndTransaction( d->card, reset ) == SCARD_S_SUCCESS;
+	return SC(EndTransaction, d->card, reset) == SCARD_S_SUCCESS;
 }
 
 QString QPCSCReader::friendlyName() const
@@ -262,7 +279,7 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 	{
 		DWORD size = 0;
 		BYTE recv[256];
-		DWORD rv = SCardControl( d->card, ioctl, 0, 0, recv, sizeof(recv), &size );
+		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, sizeof(recv), &size);
 		Q_UNUSED(rv);
 		unsigned char *p = recv;
 		while( DWORD(p-recv) < size )
@@ -291,7 +308,7 @@ bool QPCSCReader::reconnect( Reset reset, Mode mode )
 {
 	if( !d->card )
 		return false;
-	LONG err = SCardReconnect( d->card, SCARD_SHARE_SHARED, mode, reset, &d->proto );
+	LONG err = SC(Reconnect, d->card, SCARD_SHARE_SHARED, mode, reset, &d->proto);
 	updateState();
 	return err == SCARD_S_SUCCESS;
 }
@@ -318,26 +335,26 @@ QPCSCReader::Result QPCSCReader::transfer( const char *cmd, int size ) const
 	return transfer( QByteArray( cmd, size ) );
 }
 
-QPCSCReader::Result QPCSCReader::transfer( const QByteArray &cmd ) const
+QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 {
 	static const SCARD_IO_REQUEST T0 = { 1, 8 };
 	static const SCARD_IO_REQUEST T1 = { 2, 8 };
 	QByteArray data( 255 + 3, 0 );
 	DWORD size = data.size();
 
-	qDebug().nospace() << ">(T=" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1) << "): " << cmd.toHex();
-	DWORD ret = SCardTransmit( d->card, d->proto == SCARD_PROTOCOL_T0 ? &T0 : &T1,
-		LPCBYTE(cmd.constData()), cmd.size(), 0, LPBYTE(data.data()), &size );
+	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
+		<< "> " << apdu.toHex().constData();
+	DWORD ret = SC(Transmit, d->card, d->proto == SCARD_PROTOCOL_T0 ? &T0 : &T1,
+		LPCBYTE(apdu.constData()), apdu.size(), nullptr, LPBYTE(data.data()), &size);
 	if( ret != SCARD_S_SUCCESS )
-	{
-		qDebug() << "Err:" << ret;
 		return Result();
-	}
 
 	Result result = { data.mid( size-2, 2 ), data.left( size - 2 ) };
-	qDebug().nospace() << "<(T=" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1) << "): " << result.status.toHex() << result.data.toHex();
+	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
+		<< "< " << result.SW.toHex().constData();
+	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(size).toHex().constData();
 
-	if( result.status.at( 0 ) == 0x61 )
+	if( result.SW.at( 0 ) == 0x61 )
 	{
 		QByteArray cmd( "\x00\xC0\x00\x00\x00", 5 );
 		cmd[4] = data.at( size-1 );
@@ -351,7 +368,7 @@ bool QPCSCReader::updateState( quint32 msec )
 	if(!d->d->context)
 		return false;
 	d->state.dwCurrentState = d->state.dwEventState; //(currentReaderCount << 16)
-	DWORD err = SCardGetStatusChange( d->d->context, msec, &d->state, 1); //INFINITE
+	DWORD err = SC(GetStatusChange, d->d->context, msec, &d->state, 1); //INFINITE
 	switch(err) {
 	case SCARD_S_SUCCESS: return true;
 	case SCARD_E_TIMEOUT: return msec == 0;

@@ -29,7 +29,12 @@ class QPCSC: public QObject
 {
 	Q_OBJECT
 public:
-	explicit QPCSC( QObject *parent = 0 );
+	enum Logging {
+		DisableLog = 0,
+		APDULog = 1,
+		PCSCLog = 2,
+	};
+	explicit QPCSC( Logging log = DisableLog, QObject *parent = 0 );
 	~QPCSC();
 
 	QStringList drivers() const;
@@ -48,12 +53,12 @@ class QPCSCReader: public QObject
 	Q_OBJECT
 public:
 	struct Result {
-		QByteArray status;
+		QByteArray SW;
 		QByteArray data;
 		inline bool resultOk() const
 		{
 			static const QByteArray OK("\x90\x00", 2);
-			return status == OK;
+			return SW == OK;
 		}
 	};
 
