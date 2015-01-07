@@ -117,7 +117,8 @@ public:
 	bool beginTransaction();
 	bool endTransaction( Reset reset = LeaveCard );
 	Result transfer( const char *cmd, int size ) const;
-	Result transfer( const QByteArray &cmd ) const;
+	Result transfer( const QByteArray &apdu ) const;
+	Result transferCTL( const QByteArray &apdu, bool verify, quint8 lang = 0 ) const;
 
 private:
 	QPCSCReaderPrivate *d;

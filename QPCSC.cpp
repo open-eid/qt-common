@@ -363,6 +363,83 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	return result;
 }
 
+QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verify, quint8 lang ) const
+{
+	bool display = false;
+	if( DWORD ioctl = d->ioctl.value(FEATURE_IFD_PIN_PROPERTIES) )
+	{
+		DWORD size = 0;
+		BYTE recv[256];
+		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, sizeof(recv), &size);
+		if( rv == SCARD_S_SUCCESS )
+		{
+			PIN_PROPERTIES_STRUCTURE *caps = (PIN_PROPERTIES_STRUCTURE *)recv;
+			display = caps->wLcdLayout > 0;
+		}
+	}
+
+	#define SET() \
+		data->bTimerOut = 30; \
+		data->bTimerOut2 = 30; \
+		data->bmFormatString = 0x02; \
+		data->bmPINBlockString = 0x00; \
+		data->bmPINLengthFormat = 0x00; \
+		data->wPINMaxExtraDigit = (4 << 8) + 12; \
+		data->bEntryValidationCondition = 0x02; \
+		data->bNumberMessage = display ? 0xFF: 0x00; \
+		data->wLangId = lang; \
+		data->bTeoPrologue[0] = 0x00; \
+		data->bTeoPrologue[1] = 0x00; \
+		data->bTeoPrologue[2] = 0x00
+
+	QByteArray cmd( 255, 0 );
+	if( verify )
+	{
+		PIN_VERIFY_STRUCTURE *data = (PIN_VERIFY_STRUCTURE*)cmd.data();
+		SET();
+		data->bMsgIndex = 0x00;
+		data->ulDataLength = apdu.size();
+		cmd.resize( sizeof(PIN_VERIFY_STRUCTURE) - 1 );
+	}
+	else
+	{
+		PIN_MODIFY_STRUCTURE *data = (PIN_MODIFY_STRUCTURE*)cmd.data();
+		SET();
+		data->bInsertionOffsetOld = 0x00;
+		data->bInsertionOffsetNew = 0x00;
+		data->bConfirmPIN = 0x03;
+		data->bMsgIndex1 = 0x00;
+		data->bMsgIndex2 = 0x01;
+		data->bMsgIndex3 = 0x02;
+		data->ulDataLength = apdu.size();
+		cmd.resize( sizeof(PIN_MODIFY_STRUCTURE) - 1 );
+	}
+	cmd += apdu;
+
+	DWORD ioctl = d->ioctl.value( verify ? FEATURE_VERIFY_PIN_START : FEATURE_MODIFY_PIN_START );
+	if( !ioctl )
+		ioctl = d->ioctl.value( verify ? FEATURE_VERIFY_PIN_DIRECT : FEATURE_MODIFY_PIN_DIRECT );
+
+	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
+		<< "> " << apdu.toHex().constData();
+	qCDebug(APDU).nospace() << "CTL" << "> " << cmd.toHex().constData();
+	QByteArray data( 255 + 3, 0 );
+	DWORD size = data.size();
+	DWORD err = SC(Control, d->card, ioctl, cmd.constData(), cmd.size(), LPVOID(data.data()), data.size(), &size);
+
+	if( DWORD finish = d->ioctl.value( verify ? FEATURE_VERIFY_PIN_FINISH : FEATURE_MODIFY_PIN_FINISH ) )
+	{
+		size = data.size();
+		err = SC(Control, d->card, finish, nullptr, 0, LPVOID(data.data()), data.size(), &size);
+	}
+
+	Result result = { data.mid( size-2, 2 ), data.left( size - 2 ), err };
+	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
+		<< "< " << result.SW.toHex().constData();
+	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(size).toHex().constData();
+	return result;
+}
+
 bool QPCSCReader::updateState( quint32 msec )
 {
 	if(!d->d->context)
