@@ -160,6 +160,7 @@ QString Common::applicationOs()
 		case 0x0601: os = workstation ? "7" : "Server 2008 R2"; break;
 		case 0x0602: os = workstation ? "8" : "Server 2012"; break;
 		case 0x0603: os = workstation ? "8.1" : "Server 2012 R2"; break;
+		case 0x0A00: os = workstation ? "10" : "Server 10"; break;
 		default: break;
 		}
 		QString extversion( (const QChar*)osvi.szCSDVersion );
