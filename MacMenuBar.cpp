@@ -84,8 +84,8 @@ bool MacMenuBar::eventFilter( QObject *o, QEvent *e )
 					delete a;
 			if( windowGroup->actions().isEmpty() && dockSeparator )
 			{
-				dockSeparator->deleteLater();
-				dockSeparator = 0;
+				delete dockSeparator;
+				dockSeparator = nullptr;
 			}
 			break;
 		case QEvent::WindowActivate:
