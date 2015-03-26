@@ -126,9 +126,10 @@ void Diagnostics::run()
 	s << "<b>" << tr("Libraries") << ":</b><br />" << "QT (" << qVersion() << ")<br />";
 	Q_FOREACH( const QString &lib, QStringList()
 			<< "digidoc" << "digidocpp" << "qdigidocclient.exe" << "qesteidutil.exe" << "id-updater.exe"
-			<< "esteidcsp" << "esteidcm" << "EsteidShellExtension" << "esteid-plugin-ie"
-			<< "npesteid-firefox-plugin" << "opensc-pkcs11" << "esteid-pkcs11"
-			<< "libeay32" << "ssleay32" << "advapi32" << "crypt32" << "winscard" )
+			<< "esteidcsp" << "esteidcm" << "opensc-pkcs11" << "esteid-pkcs11" << "EsteidShellExtension"
+			<< "esteid-plugin-ie" << "npesteid-firefox-plugin" << "chrome-token-signing.exe"
+			<< "zlib1" << "libeay32" << "ssleay32" << "xerces-c_3_1" << "xsec_1_7" << "libxml2"
+			<< "advapi32" << "crypt32" << "winscard" )
 	{
 		DWORD infoHandle = 0;
 		LONG sz = GetFileVersionInfoSize( LPCWSTR(lib.utf16()), &infoHandle );
