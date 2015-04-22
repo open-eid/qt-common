@@ -66,6 +66,19 @@ static QString packageName( const QString &name, const QString &ver, bool withNa
 { return withName ? name + " (" + ver + ")" : ver; }
 #endif
 
+Common::Common( int &argc, char **argv, const QString &app, const QString &icon )
+	: Common( argc, argv )
+{
+	setApplicationName( app );
+	setApplicationVersion( QString( "%1.%2.%3.%4" )
+		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
+	setOrganizationDomain( "ria.ee" );
+	setOrganizationName( ORG );
+	setWindowIcon( QIcon( icon ) );
+	if( QFile::exists( QString("%1/%2.log").arg( QDir::tempPath(), app ) ) )
+		qInstallMessageHandler(msgHandler);
+}
+
 Common::Common( int &argc, char **argv )
 	: BaseApplication( argc, argv )
 {
@@ -368,6 +381,31 @@ void Common::mailTo( const QUrl &url )
 	QDesktopServices::openUrl( url );
 }
 #endif
+
+void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
+{
+	QFile f( QString("%1/%2.log").arg( QDir::tempPath(), applicationName() ) );
+	if(!f.open( QFile::Append ))
+		return;
+	f.write(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ").toUtf8());
+	switch(type)
+	{
+	case QtDebugMsg: f.write("D"); break;
+	case QtWarningMsg: f.write("W"); break;
+	case QtCriticalMsg: f.write("C"); break;
+	case QtFatalMsg: f.write("F"); break;
+	}
+	f.write(QString(" %1 ").arg(ctx.category).toUtf8());
+	if(ctx.line > 0)
+	{
+		f.write(QString("%1:%2 \"%3\" ")
+			.arg(QFileInfo(ctx.file).fileName())
+			.arg(ctx.line)
+			.arg(ctx.function).toUtf8());
+	}
+	f.write(msg.toUtf8());
+	f.write("\n");
+}
 
 #ifndef Q_OS_MAC
 QStringList Common::packages( const QStringList &names, bool withName )

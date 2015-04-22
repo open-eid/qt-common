@@ -50,6 +50,7 @@ class Common: public BaseApplication
 	Q_OBJECT
 public:
 	Common( int &argc, char **argv );
+	Common( int &argc, char **argv, const QString &app, const QString &icon );
 	virtual ~Common();
 
 	void detectPlugins();
@@ -74,6 +75,7 @@ protected:
 
 private:
 	static quint8 cardsOrderScore( QChar c );
+	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 
 #if defined(Q_OS_MAC)
 	void initMacEvents();
