@@ -286,12 +286,15 @@ void Common::mailTo( const QUrl &url )
 	QLibrary lib("mapi32");
 	if( LPMAPISENDMAILW mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")) )
 	{
+		QString filePath = QDir::toNativeSeparators( file );
+		QString fileName = QFileInfo( file ).fileName();
+		QString subject = url.queryItemValue( "subject" );
 		MapiFileDescW doc = { 0, 0, 0, 0, 0, 0 };
 		doc.nPosition = -1;
-		doc.lpszPathName = (PWSTR)QDir::toNativeSeparators( file ).unicode();
-		doc.lpszFileName = (PWSTR)QFileInfo( file ).fileName().unicode();
+		doc.lpszPathName = (PWSTR)filePath.utf16();
+		doc.lpszFileName = (PWSTR)fileName.utf16();
 		MapiMessageW message = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		message.lpszSubject =  (PWSTR)url.queryItemValue( "subject" ).unicode();
+		message.lpszSubject =  (PWSTR)subject.utf16();
 		message.lpszNoteText = L"";
 		message.nFileCount = 1;
 		message.lpFiles = lpMapiFileDescW(&doc);
