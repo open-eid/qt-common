@@ -282,19 +282,20 @@ bool Common::event( QEvent *e )
 void Common::mailTo( const QUrl &url )
 {
 #if defined(Q_OS_WIN)
-	QString file = url.queryItemValue( "attachment" );
+	QUrlQuery q(url);
+	QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
 	QLibrary lib("mapi32");
 	if( LPMAPISENDMAILW mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")) )
 	{
 		QString filePath = QDir::toNativeSeparators( file );
 		QString fileName = QFileInfo( file ).fileName();
-		QString subject = url.queryItemValue( "subject" );
+		QString subject = q.queryItemValue( "subject", QUrl::FullyDecoded );
 		MapiFileDescW doc = { 0, 0, 0, 0, 0, 0 };
 		doc.nPosition = -1;
-		doc.lpszPathName = (PWSTR)filePath.utf16();
-		doc.lpszFileName = (PWSTR)fileName.utf16();
+		doc.lpszPathName = PWSTR(filePath.utf16());
+		doc.lpszFileName = PWSTR(fileName.utf16());
 		MapiMessageW message = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		message.lpszSubject =  (PWSTR)subject.utf16();
+		message.lpszSubject = PWSTR(subject.utf16());
 		message.lpszNoteText = L"";
 		message.nFileCount = 1;
 		message.lpFiles = lpMapiFileDescW(&doc);
@@ -311,13 +312,13 @@ void Common::mailTo( const QUrl &url )
 	{
 		QByteArray filePath = QDir::toNativeSeparators( file ).toLocal8Bit();
 		QByteArray fileName = QFileInfo( file ).fileName().toLocal8Bit();
-		QByteArray subject = url.queryItemValue( "subject" ).toLocal8Bit();
+		QByteArray subject = q.queryItemValue( "subject", QUrl::FullyDecoded ).toLocal8Bit();
 		MapiFileDesc doc = { 0, 0, 0, 0, 0, 0 };
 		doc.nPosition = -1;
-		doc.lpszPathName = const_cast<char*>(filePath.constData());
-		doc.lpszFileName = const_cast<char*>(fileName.constData());
+		doc.lpszPathName = LPSTR(filePath.constData());
+		doc.lpszFileName = LPSTR(fileName.constData());
 		MapiMessage message = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		message.lpszSubject = const_cast<char*>(subject.constData());
+		message.lpszSubject = LPSTR(subject.constData());
 		message.lpszNoteText = "";
 		message.nFileCount = 1;
 		message.lpFiles = lpMapiFileDesc(&doc);
