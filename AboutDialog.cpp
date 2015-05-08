@@ -22,17 +22,16 @@
 
 #include "Common.h"
 #include "Diagnostics.h"
+#ifdef CONFIG_URL
+#include "Configuration.h"
+#endif
 
 #include <QtCore/QFile>
 #include <QtCore/QThreadPool>
-#include <QtGui/QDesktopServices>
-#if QT_VERSION >= 0x050000
+#include <QtCore/QStandardPaths>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
-#else
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#endif
+#include <QtWidgets/QPushButton>
 
 AboutDialog::AboutDialog(QWidget *parent) :
 	QDialog(parent),
@@ -50,6 +49,24 @@ AboutDialog::AboutDialog(QWidget *parent) :
 #endif
 	ui->version->setText( tr("%1 version %2, released %3%4")
 		.arg( qApp->applicationName(), qApp->applicationVersion(), BUILD_DATE, package ) );
+
+	QPushButton *update = ui->buttonBox->addButton(tr("Check for updates"), QDialogButtonBox::ActionRole);
+	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
+		QApplication::restoreOverrideCursor();
+		if(error.isEmpty())
+			return;
+		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
+			tr("Checking updates has failed.") + tr("<br />Please try again.<br />"
+			"In case the error repeats, contact <a href=\"mailto:abi@id.ee\">abi@id.ee</a>."),
+			QMessageBox::Ok, this);
+		b.setTextFormat(Qt::RichText);
+		b.setDetailedText(error);
+		b.exec();
+	});
+	connect(update, &QPushButton::clicked, []{
+		QApplication::setOverrideCursor( Qt::WaitCursor );
+		Configuration::instance().update(true);
+	});
 
 	ui->diagnosticsTab->setEnabled( false );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
@@ -79,7 +96,7 @@ void AboutDialog::restoreCursor()
 void AboutDialog::saveDiagnostics()
 {
 	QString filename = QFileDialog::getSaveFileName( this, tr("Save as"), QString( "%1/%2_diagnostics.txt")
-		.arg( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ), qApp->applicationName() ),
+		.arg( QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), qApp->applicationName() ),
 		tr("Text files (*.txt)") );
 	if( filename.isEmpty() )
 		return;

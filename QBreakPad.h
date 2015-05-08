@@ -35,10 +35,8 @@ class QBreakPad: public QObject
 {
 	Q_OBJECT
 public:
-	explicit QBreakPad();
+	explicit QBreakPad(QObject *parent = 0);
 	~QBreakPad();
-
-	static bool isCrashReport(int argc, char *argv[] );
 
 private slots:
 	void sendReports();

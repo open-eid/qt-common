@@ -49,9 +49,11 @@ class Common: public BaseApplication
 {
 	Q_OBJECT
 public:
-	Common( int &argc, char **argv );
+#ifndef COMMON_STATIC
 	Common( int &argc, char **argv, const QString &app, const QString &icon );
+#endif
 
+	bool isCrashReport();
 	void detectPlugins();
 	virtual QHash<QString,QString> urls() const;
 

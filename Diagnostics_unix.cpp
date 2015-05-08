@@ -75,14 +75,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	s << "<b>" << "URLs:" << "</b>";
-	const QHash<QString,QString> urls = qApp->urls();
-	for(auto i = urls.constBegin(); i != urls.constEnd(); ++i)
-		s << "<br />" << i.key() << ": " << i.value();
-	s << "<br /><br />";
-
-	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(" ") << "<br />";
-	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
+	generalInfo(s);
 	s << "<b>" << tr("Libraries") << ":</b><br />";
 #ifdef Q_OS_MAC
 	s << Common::packages( { "libdigidoc", "digidocpp" } ).join( "<br />" ) << "<br />";
@@ -95,7 +88,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	getReaderInfo( s );
+	readerInfo( s );
 	emit update( info );
 	info.clear();
 

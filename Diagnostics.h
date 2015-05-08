@@ -34,5 +34,6 @@ signals:
 	void update( const QString &data );
 
 private:
-	void getReaderInfo( QTextStream &s ) const;
+	void generalInfo(QTextStream &s) const;
+	void readerInfo(QTextStream &s) const;
 };

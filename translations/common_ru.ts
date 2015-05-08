@@ -43,6 +43,18 @@ Additional licenses and components</source>
         <source>%1 version %2, released %3%4</source>
         <translation>%1, версия %2, выпуск %3%4</translation>
     </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Проверить на обновления</translation>
+    </message>
+    <message>
+        <source>Checking updates has failed.</source>
+        <translation>Проверка обновлений не удалась.</translation>
+    </message>
+    <message>
+        <source>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</source>
+        <translation>&lt;br /&gt;Попробуйте снова.&lt;br /&gt;При повторении ошибки обратитесь на электронную почту &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -185,17 +197,40 @@ Additional licenses and components</source>
         <source>Install</source>
         <translation>Установить</translation>
     </message>
+</context>
+<context>
+    <name>Configuration</name>
     <message>
-        <source>The software support period verification failed. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>Не удалось проверить действительность периода поддержки программного обеспечения. Проверьте интернет-соединение компьютера. &lt;a href=&quot;http://www.id.ee/index.php?id=36739&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
+        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Вам необходимо обновить программное обеспечение ID-карты. Чтобы скачать последнюю версию программы, перейдите на сайт &lt;a href=&quot;http://installer.id.ee/?lang=rus&quot;&gt;id.ee&lt;/a&gt;. Пользователи Mac OS X могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Don&apos;t show this message again.</source>
-        <translation>Больше не показывать это сообщение.</translation>
+        <source>New version available</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The software support period verification failed. You&apos;re not allowed to use this program. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>Не удалось проверить действительность периода поддержки программного обеспечения. Использование программного обеспечения невозможно. Проверьте интернет-соединение компьютера. &lt;a href=&quot;http://www.id.ee/index.php?id=36739&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
+        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Выпущено обновление для программного обеспечения ID-карты. Чтобы скачать обновление, перейдите на сайт &lt;a href=&quot;http://installer.id.ee/?lang=rus&quot;&gt;id.ee&lt;/a&gt;. Пользователи Mac OS X могут скачать обновление в магазине &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Request timed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No new version available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The configuration file located on the server cannot be validated.</source>
+        <translation>Находящийся на сервере конфигурационный файл не валидируется.</translation>
+    </message>
+    <message>
+        <source>Your computer&apos;s configuration file is later than the server has.</source>
+        <translation>Находящийся на Вашем компьютере конфигурационный файл новее файла на сервере.</translation>
+    </message>
+    <message>
+        <source>You are using the latest software version. Software and configuration updates are not available.</source>
+        <translation>Вы используете последнюю версию программного обеспечения. Обновления программного обеспечения или конфигурации не доступны.</translation>
     </message>
 </context>
 <context>
@@ -291,6 +326,10 @@ Additional licenses and components</source>
     <message>
         <source>Certificate Propagation service status: </source>
         <translation>Статус Certificate Propagation сервиса: </translation>
+    </message>
+    <message>
+        <source>Central Configuration</source>
+        <translation>Центральная конфигурация</translation>
     </message>
 </context>
 <context>
@@ -466,14 +505,6 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>ID-CARD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DIGI-ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MOBIIL-ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

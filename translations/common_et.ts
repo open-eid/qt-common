@@ -43,6 +43,18 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 versioon %2, avaldatud %3%4</translation>
     </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Kontrolli uuendusi</translation>
+    </message>
+    <message>
+        <source>Checking updates has failed.</source>
+        <translation>Uuenduste kontroll ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</source>
+        <translation>&lt;br /&gt;Palun proovi uuesti.&lt;br /&gt;Kui probleem kordub, pöördu &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -185,17 +197,40 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Install</source>
         <translation>Paigaldama</translation>
     </message>
+</context>
+<context>
+    <name>Configuration</name>
     <message>
-        <source>The software support period verification failed. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>Tarkvara toeperioodi kehtivuse kontroll ebaõnnestus. Kontrolli arvuti internetiühendust. &lt;a href=&quot;http://www.id.ee/index.php?id=36737&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
+        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Sinu kasutatav ID-tarkvara on aegunud. Tarkvara viimase versiooni saad alla laadida veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uusima tarkvara &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
     </message>
     <message>
-        <source>Don&apos;t show this message again.</source>
-        <translation>Ära seda teadet enam näita.</translation>
+        <source>New version available</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The software support period verification failed. You&apos;re not allowed to use this program. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>Tarkvara toeperioodi kehtivuse kontroll ebaõnnestus. Tarkvara kasutamine ei ole lubatud. Kontrolli arvuti internetiühendust. &lt;a href=&quot;http://www.id.ee/index.php?id=36737&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
+        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Saadaval on ID-tarkvara uuendus, mille saad paigaldada veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uuenduse alla laadida &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
+    </message>
+    <message>
+        <source>Request timed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No new version available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The configuration file located on the server cannot be validated.</source>
+        <translation>Serveris olev konfiguratsioonifail ei valideeru.</translation>
+    </message>
+    <message>
+        <source>Your computer&apos;s configuration file is later than the server has.</source>
+        <translation>Sinu arvutis on uuem konfiguratsioonifail kui serveris.</translation>
+    </message>
+    <message>
+        <source>You are using the latest software version. Software and configuration updates are not available.</source>
+        <translation>Kasutad kõige uuemat tarkvara. Tarkvara- ega konfiguratsiooniuuendusi ei ole saadaval.</translation>
     </message>
 </context>
 <context>
@@ -291,6 +326,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Certificate Propagation service status: </source>
         <translation>Certificate Propagation teenuse staatus: </translation>
+    </message>
+    <message>
+        <source>Central Configuration</source>
+        <translation>Konfiguratsiooni andmed</translation>
     </message>
 </context>
 <context>
@@ -470,11 +509,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>DIGI-ID</source>
-        <translation>DIGI-ID</translation>
+        <translation type="vanished">DIGI-ID</translation>
     </message>
     <message>
         <source>MOBIIL-ID</source>
-        <translation>MOBIIL-ID</translation>
+        <translation type="vanished">MOBIIL-ID</translation>
     </message>
     <message>
         <source>Unknown</source>

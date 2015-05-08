@@ -20,11 +20,43 @@
 
 #include "QPCSC.h"
 #include "SslCertificate.h"
+#include "Common.h"
+
+#ifdef CONFIG_URL
+#include "Configuration.h"
+#include <QtCore/QJsonObject>
+#endif
 
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
-void Diagnostics::getReaderInfo( QTextStream &s ) const
+void Diagnostics::generalInfo(QTextStream &s) const
+{
+	s << "<b>" << "URLs:" << "</b>";
+	const QHash<QString,QString> urls = qApp->urls();
+	for(auto i = urls.constBegin(); i != urls.constEnd(); ++i)
+		s << "<br />" << i.key() << ": " << i.value();
+	s << "<br /><br />";
+
+#ifdef CONFIG_URL
+	s << "<b>" << tr("Central Configuration") << ":</b>";
+	QJsonObject metainf = Configuration::instance().object().value("META-INF").toObject();
+	for(QJsonObject::const_iterator i = metainf.constBegin(), end = metainf.constEnd(); i != end; ++i)
+	{
+		switch(i.value().type())
+		{
+		case QJsonValue::Double: s << "<br />" << i.key() << ": " << i.value().toInt(); break;
+		default: s << "<br />" << i.key() << ": " << i.value().toString(); break;
+		}
+	}
+	s << "<br /><br />";
+#endif
+
+	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(" ") << "<br />";
+	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
+}
+
+void Diagnostics::readerInfo(QTextStream &s) const
 {
 	QPCSC manager;
 	s << "<b>" << tr("Smart Card service status: ") << "</b>" << " "

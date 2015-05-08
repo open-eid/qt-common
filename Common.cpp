@@ -22,6 +22,9 @@
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "Settings.h"
+#ifdef BREAKPAD
+#include "QBreakPad.h"
+#endif
 
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
@@ -29,24 +32,14 @@
 #include <QtCore/QProcess>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
+#include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QPalette>
 #include <QtGui/QTextDocument>
-#include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkProxyFactory>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QSslCertificate>
-#include <QtNetwork/QSslConfiguration>
-#include <QtNetwork/QSslError>
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QPushButton>
-#else
-#include <QtGui/QLabel>
-#include <QtGui/QMessageBox>
-#endif
 
 #include <stdlib.h>
 
@@ -64,8 +57,9 @@ static QString packageName( const QString &name, const QString &ver, bool withNa
 { return withName ? name + " (" + ver + ")" : ver; }
 #endif
 
+#ifndef COMMON_STATIC
 Common::Common( int &argc, char **argv, const QString &app, const QString &icon )
-	: Common( argc, argv )
+	: BaseApplication( argc, argv )
 {
 	setApplicationName( app );
 	setApplicationVersion( QString( "%1.%2.%3.%4" )
@@ -75,11 +69,18 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	setWindowIcon( QIcon( icon ) );
 	if( QFile::exists( QString("%1/%2.log").arg( QDir::tempPath(), app ) ) )
 		qInstallMessageHandler(msgHandler);
-}
 
-Common::Common( int &argc, char **argv )
-	: BaseApplication( argc, argv )
-{
+#ifdef BREAKPAD
+	new QBreakPad(this);
+#ifdef TESTING
+	if( arguments().contains( "-crash" ) )
+	{
+		QBreakPad *crash;
+		delete crash;
+	}
+#endif
+#endif
+
 	Q_INIT_RESOURCE(common_images);
 	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
@@ -94,7 +95,6 @@ Common::Common( int &argc, char **argv )
 	p.setBrush( QPalette::LinkVisited, QBrush( "#509B00" ) );
 	setPalette( p );
 
-	qRegisterMetaType<QSslCertificate>("QSslCertificate");
 	qRegisterMetaType<TokenData>("TokenData");
 
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
@@ -103,6 +103,7 @@ Common::Common( int &argc, char **argv )
 	AllowSetForegroundWindow( ASFW_ANY );
 #endif
 }
+#endif
 
 QString Common::applicationOs()
 {
@@ -174,6 +175,7 @@ QString Common::applicationOs()
 		case QSysInfo::WV_WINDOWS7: return "Windows 7";
 		case QSysInfo::WV_WINDOWS8: return "Windows 8";
 		case QSysInfo::WV_WINDOWS8_1: return "Windows 8.1";
+		case QSysInfo::WV_WINDOWS10: return "Windows 10";
 		default: break;
 		}
 	}
@@ -197,6 +199,21 @@ QUrl Common::helpUrl()
 	if( lang == "en" ) u = "http://www.id.ee/index.php?id=30466";
 	if( lang == "ru" ) u = "http://www.id.ee/index.php?id=30515";
 	return u;
+}
+
+bool Common::isCrashReport()
+{
+#ifdef BREAKPAD
+	if(arguments().contains("-crashreport", Qt::CaseInsensitive))
+	{
+		QBreakPadDialog d(applicationName());
+		d.setProperty("User-Agent", QString( "%1/%2 (%3)")
+			.arg(applicationName(), applicationVersion(), applicationOs()).toUtf8());
+		d.show();
+		return true;
+	}
+#endif
+	return false;
 }
 
 void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
@@ -391,19 +408,21 @@ void Common::showHelp( const QString &msg, int code )
 	if( code > 0 )
 	{
 		u.setUrl( "http://www.sk.ee/digidoc/support/errorinfo/" );
-		u.addQueryItem( "app", applicationName() );
-		u.addQueryItem( "appver", applicationVersion() );
-		u.addQueryItem( "l", Settings::language() );
-		u.addQueryItem( "code", QString::number( code ) );
-		u.addQueryItem( "os", applicationOs() );
+		QUrlQuery q(u);
+		q.addQueryItem( "app", applicationName() );
+		q.addQueryItem( "appver", applicationVersion() );
+		q.addQueryItem( "l", Settings::language() );
+		q.addQueryItem( "code", QString::number( code ) );
+		q.addQueryItem( "os", applicationOs() );
 	}
 	else
 	{
 		u = helpUrl();
-		u.addQueryItem( "searchquery", msg );
-		u.addQueryItem( "searchtype", "all" );
-		u.addQueryItem( "_m", "core" );
-		u.addQueryItem( "_a", "searchclient" );
+		QUrlQuery q(u);
+		q.addQueryItem( "searchquery", msg );
+		q.addQueryItem( "searchtype", "all" );
+		q.addQueryItem( "_m", "core" );
+		q.addQueryItem( "_a", "searchclient" );
 	}
 	QDesktopServices::openUrl( u );
 }
@@ -433,82 +452,8 @@ QHash<QString,QString> Common::urls() const
 #ifdef BREAKPAD
 	u["BREAKPAD"] = BREAKPAD;
 #endif
-#ifdef KILLSWITCH
-	u["KILLSWITCH"] = KILLSWITCH;
+#ifdef CONFIG_URL
+	u["CONFIG_URL"] = CONFIG_URL;
 #endif
 	return u;
-}
-
-void Common::validate()
-{
-#ifdef KILLSWITCH
-	Settings s(qApp->applicationName());
-	if(s.value("LastCheck").isNull())
-		s.setValue("LastCheck", QDate::currentDate().toString("yyyyMMdd"));
-	QDate lastCheck = QDate::fromString(s.value("LastCheck").toString(), "yyyyMMdd");
-	if(lastCheck > QDate::currentDate().addDays(-7))
-		return;
-	QNetworkRequest req(QUrl(KILLSWITCH));
-	req.setRawHeader("Accept-Language", Settings().language().toUtf8());
-	req.setRawHeader("User-Agent", QString("%1/%2 (%3)")
-		.arg(applicationName(), applicationVersion(), applicationOs()).toUtf8());
-	QNetworkReply *reply = (new QNetworkAccessManager())->get(req);
-	connect(reply, &QNetworkReply::sslErrors, [=](const QList<QSslError> &errors){
-		QList<QSslError> ignore;
-		for(const QSslError &e: errors)
-		{
-			switch(e.error()){
-			case QSslError::SelfSignedCertificateInChain:
-			case QSslError::HostNameMismatch:
-				ignore << e;
-				break;
-			default: qWarning() << e << e.certificate().subjectInfo("CN");
-			}
-		}
-		reply->ignoreSslErrors(ignore);
-	});
-	connect(reply, &QNetworkReply::finished, [=](){
-		Settings s(qApp->applicationName());
-		switch(reply->error())
-		{
-		case QNetworkReply::NoError:
-		{
-			if(reply->sslConfiguration().peerCertificate().subjectInfo("CN").value(0) == "installer.id.ee" &&
-				reply->header( QNetworkRequest::ContentTypeHeader ) == "application/x-killswitch")
-			{
-				QString message = QString::fromUtf8(reply->readAll());
-				if(!message.isEmpty())
-				{
-					QMessageBox::critical(activeWindow(), QString(), message);
-					qApp->quit();
-				}
-				else
-					s.setValue("LastCheck", QDate::currentDate().toString("yyyyMMdd"));
-				break;
-			}
-		}
-		default:
-			if(lastCheck < QDate::currentDate().addMonths(-12))
-			{
-				QMessageBox::critical(activeWindow(), QString(), tr(
-					"The software support period verification failed. You're not allowed to use this program. Please check your internet connection. "
-					"<a href=\"http://www.id.ee/index.php?id=36738\">Additional info</a>."));
-				qApp->quit();
-			}
-			else
-			{
-				if(s.value("LastCheckWarning", false).toBool())
-					break;
-				QMessageBox box(QMessageBox::Warning, QString(), tr(
-					"The software support period verification failed. Please check your internet connection. "
-					"<a href=\"http://www.id.ee/index.php?id=36738\">Additional info</a>."), 0, activeWindow());
-				QPushButton *button = box.addButton(tr("Don't show this message again."), QMessageBox::AcceptRole);
-				box.addButton(QMessageBox::Ok);
-				box.exec();
-				s.setValue("LastCheckWarning", box.clickedButton() == button);
-			}
-		}
-		reply->manager()->deleteLater();
-	});
-#endif
 }

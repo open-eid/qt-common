@@ -43,6 +43,18 @@ Additional licenses and components</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 version %2, released %3%4</translation>
     </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Check for updates</translation>
+    </message>
+    <message>
+        <source>Checking updates has failed.</source>
+        <translation>Checking updates has failed.</translation>
+    </message>
+    <message>
+        <source>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</source>
+        <translation>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -185,17 +197,40 @@ Additional licenses and components</translation>
         <source>Install</source>
         <translation>Install</translation>
     </message>
+</context>
+<context>
+    <name>Configuration</name>
     <message>
-        <source>The software support period verification failed. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>The software support period verification failed. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</translation>
+        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Don&apos;t show this message again.</source>
-        <translation>Don&apos;t show this message again.</translation>
+        <source>New version available</source>
+        <translation>New version available</translation>
     </message>
     <message>
-        <source>The software support period verification failed. You&apos;re not allowed to use this program. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>The software support period verification failed. You&apos;re not allowed to use this program. Please check your internet connection. &lt;a href=&quot;http://www.id.ee/index.php?id=36738&quot;&gt;Additional info&lt;/a&gt;.</translation>
+        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Request timed out</source>
+        <translation>Request timed out</translation>
+    </message>
+    <message>
+        <source>No new version available</source>
+        <translation>No new version available</translation>
+    </message>
+    <message>
+        <source>The configuration file located on the server cannot be validated.</source>
+        <translation>The configuration file located on the server cannot be validated.</translation>
+    </message>
+    <message>
+        <source>Your computer&apos;s configuration file is later than the server has.</source>
+        <translation>Your computer&apos;s configuration file is later than the server has.</translation>
+    </message>
+    <message>
+        <source>You are using the latest software version. Software and configuration updates are not available.</source>
+        <translation>You are using the latest software version. Software and configuration updates are not available.</translation>
     </message>
 </context>
 <context>
@@ -291,6 +326,10 @@ Additional licenses and components</translation>
     <message>
         <source>Certificate Propagation service status: </source>
         <translation>Certificate Propagation service status: </translation>
+    </message>
+    <message>
+        <source>Central Configuration</source>
+        <translation>Central Configuration</translation>
     </message>
 </context>
 <context>
@@ -470,11 +509,11 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>DIGI-ID</source>
-        <translation>DIGI-ID</translation>
+        <translation type="vanished">DIGI-ID</translation>
     </message>
     <message>
         <source>MOBIIL-ID</source>
-        <translation>MOBILE-ID</translation>
+        <translation type="vanished">MOBILE-ID</translation>
     </message>
     <message>
         <source>Unknown</source>

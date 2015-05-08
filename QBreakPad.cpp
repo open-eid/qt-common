@@ -100,8 +100,9 @@ static bool QBreakPadDump( const MinidumpDescriptor &descriptor, void *, bool su
 }
 #endif
 
-QBreakPad::QBreakPad()
-	: d( 0 )
+QBreakPad::QBreakPad(QObject *parent)
+	: QObject(parent)
+	, d(0)
 {
 	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
@@ -125,15 +126,6 @@ QBreakPad::QBreakPad()
 QBreakPad::~QBreakPad()
 {
 	delete d;
-}
-
-bool QBreakPad::isCrashReport( int argc, char *argv[] )
-{
-	QString crash( "-crashreport" );
-	for( int i = 0; i < argc; ++i )
-		if( crash == argv[i] )
-			return true;
-	return false;
 }
 
 QString QBreakPad::path() const
