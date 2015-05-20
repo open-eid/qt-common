@@ -96,7 +96,8 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList base = Common::packages( QStringList() << "Eesti ID-kaardi tarkvara", false );
+	QStringList base = Common::packages( QStringList()
+		<< "Eesti ID-kaardi tarkvara" << "Estonian ID-card software", false );
 	if( !base.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << base.join( "<br />" ) << "<br />";
 	s << "<b>" << tr("Application version:") << "</b> "<< QCoreApplication::applicationVersion()
