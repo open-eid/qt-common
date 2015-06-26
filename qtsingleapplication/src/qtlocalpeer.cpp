@@ -42,6 +42,9 @@
 #include "qtlocalpeer.h"
 #include <QCoreApplication>
 #include <QTime>
+#if QT_VERSION >= 0x050500
+#include <QDataStream>
+#endif
 
 #if defined(Q_OS_WIN)
 #include <QLibrary>
