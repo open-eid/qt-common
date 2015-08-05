@@ -30,7 +30,7 @@ void Diagnostics::getReaderInfo( QTextStream &s ) const
 	s << "<b>" << tr("Smart Card service status: ") << "</b>" << " "
 		<< (manager.serviceRunning() ? tr("Running") : tr("Not running"));
 
-	s << "<br /><b>" << tr("Card readers") << ":</b><br />";
+	s << "<br /><b>" << tr("Smart Card readers") << ":</b><br />";
 	foreach( const QString &readername, manager.readers() )
 	{
 		s << readername;
@@ -47,11 +47,9 @@ void Diagnostics::getReaderInfo( QTextStream &s ) const
 		QHash<QPCSCReader::Properties,int> prop = reader.properties();
 		if(prop.contains(QPCSCReader::dwMaxAPDUDataSize))
 			s << " max APDU size " << prop.value(QPCSCReader::dwMaxAPDUDataSize);
+		s << "<br />" << "Reader state: " << reader.state().join(", ") << "<br />";
 		if( !reader.isPresent() )
-		{
-			s << "<br />";
 			continue;
-		}
 
 		reader.connect();
 		reader.reconnect( QPCSCReader::UnpowerCard );
@@ -59,8 +57,7 @@ void Diagnostics::getReaderInfo( QTextStream &s ) const
 		reader.reconnect( QPCSCReader::ResetCard );
 		QString warm = reader.atr();
 
-		s << "Reader state: " << reader.state().join(", ") << "<br />"
-		  << "ATR cold - " << cold << "<br />"
+		s << "ATR cold - " << cold << "<br />"
 		  << "ATR warm - " << warm << "<br />";
 #ifndef INTERNATIONAL
 		reader.beginTransaction();
@@ -90,6 +87,6 @@ void Diagnostics::getReaderInfo( QTextStream &s ) const
 	}
 
 #ifdef Q_OS_WIN
-	s << "<b>" << tr("Card drivers") << ":</b><br />" << manager.drivers().join( "<br />" );
+	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << manager.drivers().join( "<br />" );
 #endif
 }

@@ -245,7 +245,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Ei tööta</translation>
     </message>
     <message>
-        <source>Card readers</source>
+        <source>Smart Card readers</source>
         <translation>Kaardilugejad</translation>
     </message>
     <message>
@@ -285,7 +285,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Ei leitud</translation>
     </message>
     <message>
-        <source>Card drivers</source>
+        <source>Smart Card reader drivers</source>
         <translation>Lugeja draiverid</translation>
     </message>
     <message>

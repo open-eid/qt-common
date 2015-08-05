@@ -245,7 +245,7 @@ Additional licenses and components</source>
         <translation>Не работает</translation>
     </message>
     <message>
-        <source>Card readers</source>
+        <source>Smart Card readers</source>
         <translation>Считыватели карт</translation>
     </message>
     <message>
@@ -285,7 +285,7 @@ Additional licenses and components</source>
         <translation>Не найдено</translation>
     </message>
     <message>
-        <source>Card drivers</source>
+        <source>Smart Card reader drivers</source>
         <translation>Драйвера считывателей</translation>
     </message>
     <message>

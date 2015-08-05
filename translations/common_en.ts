@@ -245,8 +245,8 @@ Additional licenses and components</translation>
         <translation>Not running</translation>
     </message>
     <message>
-        <source>Card readers</source>
-        <translation>Card readers</translation>
+        <source>Smart Card readers</source>
+        <translation>Smart Card readers</translation>
     </message>
     <message>
         <source>Browsers:</source>
@@ -285,8 +285,8 @@ Additional licenses and components</translation>
         <translation>Not found</translation>
     </message>
     <message>
-        <source>Card drivers</source>
-        <translation>Card drivers</translation>
+        <source>Smart Card reader drivers</source>
+        <translation>Smart Card reader drivers</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
