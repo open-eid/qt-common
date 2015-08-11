@@ -182,42 +182,6 @@ QString Common::applicationOs()
 	return tr("Unknown OS");
 }
 
-quint8 Common::cardsOrderScore( QChar c )
-{
-	switch( c.toLatin1() )
-	{
-	case 'N': return 6;
-	case 'A': return 5;
-	case 'P': return 4;
-	case 'E': return 3;
-	case 'F': return 2;
-	case 'B': return 1;
-	default: return 0;
-	}
-}
-
-bool Common::cardsOrder( const QString &s1, const QString &s2 )
-{
-	QRegExp r("(\\w{1,2})(\\d{7})");
-	if( r.indexIn( s1 ) == -1 )
-		return false;
-	QStringList cap1 = r.capturedTexts();
-	if( r.indexIn( s2 ) == -1 )
-		return false;
-	QStringList cap2 = r.capturedTexts();
-	// new cards to front
-	if( cap1[1].size() != cap2[1].size() )
-		return cap1[1].size() > cap2[1].size();
-	// card type order
-	if( cap1[1][0] != cap2[1][0] )
-		return cardsOrderScore( cap1[1][0] ) > cardsOrderScore( cap2[1][0] );
-	// card version order
-	if( cap1[1].size() > 1 && cap2[1].size() > 1 && cap1[1][1] != cap2[1][1] )
-		return cap1[1][1] > cap2[1][1];
-	// serial number order
-	return cap1[2].toUInt() > cap2[2].toUInt();
-}
-
 void Common::detectPlugins()
 {
 #if defined(Q_OS_MAC) && !defined(INTERNATIONAL)
@@ -247,6 +211,7 @@ void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QSt
 	case QtWarningMsg: f.write("W"); break;
 	case QtCriticalMsg: f.write("C"); break;
 	case QtFatalMsg: f.write("F"); break;
+	default: f.write("I"); break;
 	}
 	f.write(QString(" %1 ").arg(ctx.category).toUtf8());
 	if(ctx.line > 0)

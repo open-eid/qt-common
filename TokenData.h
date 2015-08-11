@@ -65,6 +65,8 @@ public:
 	bool operator !=( const TokenData &other ) const;
 	bool operator ==( const TokenData &other ) const;
 
+	static bool cardsOrder( const QString &s1, const QString &s2 );
+
 private:
 	QSharedDataPointer<TokenDataPrivate> d;
 };

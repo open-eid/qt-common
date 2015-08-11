@@ -56,7 +56,6 @@ public:
 	virtual QHash<QString,QString> urls() const;
 
 	static QString applicationOs();
-	static bool cardsOrder( const QString &s1, const QString &s2 );
 	static QUrl helpUrl();
 	static QStringList packages( const QStringList &names, bool withName = true );
 	static void setAccessibleName( QLabel *widget );
@@ -69,6 +68,5 @@ protected:
 	void validate();
 
 private:
-	static quint8 cardsOrderScore( QChar c );
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 };
