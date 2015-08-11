@@ -51,12 +51,10 @@ class Common: public BaseApplication
 public:
 	Common( int &argc, char **argv );
 	Common( int &argc, char **argv, const QString &app, const QString &icon );
-	virtual ~Common();
 
 	void detectPlugins();
 	virtual QHash<QString,QString> urls() const;
 
-	static void addRecent( const QString &file );
 	static QString applicationOs();
 	static bool cardsOrder( const QString &s1, const QString &s2 );
 	static QUrl helpUrl();
@@ -65,28 +63,12 @@ public:
 	static void showHelp( const QString &msg, int code = -1 );
 
 public Q_SLOTS:
-	void browse( const QUrl &url );
-	void mailTo( const QUrl &url );
 	void showPlugins();
 
 protected:
-	virtual bool event( QEvent *e );
 	void validate();
 
 private:
 	static quint8 cardsOrderScore( QChar c );
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
-
-#if defined(Q_OS_MAC)
-	void initMacEvents();
-	void deinitMacEvents();
-	bool macEvents;
-#endif
-};
-
-class REOpenEvent: public QEvent
-{
-public:
-	enum { Type = QEvent::User + 1 };
-	REOpenEvent(): QEvent( QEvent::Type(Type) ) {}
 };

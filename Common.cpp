@@ -52,13 +52,11 @@
 
 #if defined(Q_OS_WIN)
 #include <QtCore/QLibrary>
-
 #include <qt_windows.h>
-#include <mapi.h>
-#include <Shellapi.h>
 #elif defined(Q_OS_MAC)
 #include <QtCore/QXmlStreamReader>
 #include <sys/utsname.h>
+#include <CoreFoundation/CFBundle.h>
 #endif
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
@@ -99,28 +97,12 @@ Common::Common( int &argc, char **argv )
 	qRegisterMetaType<QSslCertificate>("QSslCertificate");
 	qRegisterMetaType<TokenData>("TokenData");
 
-	QDesktopServices::setUrlHandler( "browse", this, "browse" );
-	QDesktopServices::setUrlHandler( "mailto", this, "mailTo" );
-
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
-#elif defined(Q_OS_MAC)
-	macEvents = false;
 #endif
 }
-
-Common::~Common()
-{
-#if defined(Q_OS_MAC)
-	deinitMacEvents();
-#endif
-}
-
-#ifndef Q_OS_MAC
-void Common::addRecent( const QString & ) {}
-#endif
 
 QString Common::applicationOs()
 {
@@ -236,21 +218,6 @@ bool Common::cardsOrder( const QString &s1, const QString &s2 )
 	return cap1[2].toUInt() > cap2[2].toUInt();
 }
 
-void Common::browse( const QUrl &url )
-{
-	QUrl u = url;
-	u.setScheme( "file" );
-#if defined(Q_OS_WIN)
-	if( QProcess::startDetached( "explorer", QStringList() << "/select," <<
-		QDir::toNativeSeparators( u.toLocalFile() ) ) )
-		return;
-#elif defined(Q_OS_MAC)
-	if( QProcess::startDetached( "open", QStringList() << "-R" << u.toLocalFile() ) )
-		return;
-#endif
-	QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( u.toLocalFile() ).absolutePath() ) );
-}
-
 void Common::detectPlugins()
 {
 #if defined(Q_OS_MAC) && !defined(INTERNATIONAL)
@@ -267,124 +234,6 @@ QUrl Common::helpUrl()
 	if( lang == "ru" ) u = "http://www.id.ee/index.php?id=30515";
 	return u;
 }
-
-bool Common::event( QEvent *e )
-{
-#ifdef Q_OS_MAC
-	// Load here because cocoa NSApplication overides events
-	if( e->type() == QEvent::ApplicationActivate )
-		initMacEvents();
-#endif
-	return BaseApplication::event( e );
-}
-
-#ifndef Q_OS_MAC
-void Common::mailTo( const QUrl &url )
-{
-#if defined(Q_OS_WIN)
-	QUrlQuery q(url);
-	QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
-	QLibrary lib("mapi32");
-	if( LPMAPISENDMAILW mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")) )
-	{
-		QString filePath = QDir::toNativeSeparators( file );
-		QString fileName = QFileInfo( file ).fileName();
-		QString subject = q.queryItemValue( "subject", QUrl::FullyDecoded );
-		MapiFileDescW doc = { 0, 0, 0, 0, 0, 0 };
-		doc.nPosition = -1;
-		doc.lpszPathName = PWSTR(filePath.utf16());
-		doc.lpszFileName = PWSTR(fileName.utf16());
-		MapiMessageW message = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		message.lpszSubject = PWSTR(subject.utf16());
-		message.lpszNoteText = L"";
-		message.nFileCount = 1;
-		message.lpFiles = lpMapiFileDescW(&doc);
-		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
-		{
-		case SUCCESS_SUCCESS:
-		case MAPI_E_USER_ABORT:
-		case MAPI_E_LOGIN_FAILURE:
-			return;
-		default: break;
-		}
-	}
-	else if( LPMAPISENDMAIL mapi = LPMAPISENDMAIL(lib.resolve("MAPISendMail")) )
-	{
-		QByteArray filePath = QDir::toNativeSeparators( file ).toLocal8Bit();
-		QByteArray fileName = QFileInfo( file ).fileName().toLocal8Bit();
-		QByteArray subject = q.queryItemValue( "subject", QUrl::FullyDecoded ).toLocal8Bit();
-		MapiFileDesc doc = { 0, 0, 0, 0, 0, 0 };
-		doc.nPosition = -1;
-		doc.lpszPathName = LPSTR(filePath.constData());
-		doc.lpszFileName = LPSTR(fileName.constData());
-		MapiMessage message = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		message.lpszSubject = LPSTR(subject.constData());
-		message.lpszNoteText = "";
-		message.nFileCount = 1;
-		message.lpFiles = lpMapiFileDesc(&doc);
-		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
-		{
-		case SUCCESS_SUCCESS:
-		case MAPI_E_USER_ABORT:
-		case MAPI_E_LOGIN_FAILURE:
-			return;
-		default: break;
-		}
-	}
-#elif defined(Q_OS_LINUX)
-	QByteArray thunderbird;
-	QProcess p;
-	QStringList env = QProcess::systemEnvironment();
-	if( env.indexOf( QRegExp("KDE_FULL_SESSION.*") ) != -1 )
-	{
-		p.start( "kreadconfig", QStringList()
-			<< "--file" << "emaildefaults"
-			<< "--group" << "PROFILE_Default"
-			<< "--key" << "EmailClient" );
-		p.waitForFinished();
-		QByteArray data = p.readAllStandardOutput().trimmed();
-		if( data.contains("thunderbird") )
-			thunderbird = data;
-	}
-	else if( env.indexOf( QRegExp("GNOME_DESKTOP_SESSION_ID.*") ) != -1 )
-	{
-		if(QSettings(QDir::homePath() + "/.local/share/applications/mimeapps.list", QSettings::IniFormat)
-				.value("Default Applications/x-scheme-handler/mailto").toString().contains("thunderbird"))
-			thunderbird = "/usr/bin/thunderbird";
-		else
-		{
-			for(const QString &path: QProcessEnvironment::systemEnvironment().value("XDG_DATA_DIRS").split(":"))
-			{
-				if(QSettings(path + "/applications/defaults.list", QSettings::IniFormat)
-						.value("Default Applications/x-scheme-handler/mailto").toString().contains("thunderbird"))
-				{
-					thunderbird = "/usr/bin/thunderbird";
-					break;
-				}
-			}
-		}
-	}
-
-	bool status = false;
-	if( !thunderbird.isEmpty() )
-	{
-		status = p.startDetached( thunderbird, QStringList() << "-compose"
-			<< QString( "subject='%1',attachment='%2'" )
-				.arg( url.queryItemValue( "subject" ) )
-				.arg( QUrl::fromLocalFile( url.queryItemValue( "attachment" ) ).toString() ) );
-	}
-	else
-	{
-		status = p.startDetached( "xdg-email", QStringList()
-			<< "--subject" << url.queryItemValue( "subject" )
-			<< "--attach" << url.queryItemValue( "attachment" ) );
-	}
-	if( status )
-		return;
-#endif
-	QDesktopServices::openUrl( url );
-}
-#endif
 
 void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
 {
@@ -411,7 +260,6 @@ void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QSt
 	f.write("\n");
 }
 
-#ifndef Q_OS_MAC
 QStringList Common::packages( const QStringList &names, bool withName )
 {
 	QStringList packages;
@@ -526,6 +374,21 @@ QStringList Common::packages( const QStringList &names, bool withName )
 		}
 	}
 #endif
+#elif defined(Q_OS_MAC)
+	Q_UNUSED(withName);
+	for (const QString &name: names) {
+		CFStringRef id = QString("ee.ria." + name).toCFString();
+		CFBundleRef bundle = CFBundleGetBundleWithIdentifier(id);
+		CFRelease(id);
+		if (!bundle)
+			continue;
+		CFStringRef ver = (CFStringRef)CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleShortVersionString"));
+		CFStringRef build = (CFStringRef)CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleVersion"));
+		packages << QString("%1 (%2.%3)").arg(name)
+			.arg(QString::fromCFString(ver))
+			.arg(QString::fromCFString(build));
+		CFRelease(bundle);
+	}
 #elif defined(Q_OS_LINUX)
 	QProcess p;
 
@@ -548,7 +411,6 @@ QStringList Common::packages( const QStringList &names, bool withName )
 #endif
 	return packages;
 }
-#endif
 
 void Common::setAccessibleName( QLabel *widget )
 {

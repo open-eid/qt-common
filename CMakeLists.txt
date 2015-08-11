@@ -21,7 +21,7 @@ else()
 endif()
 
 if( APPLE )
-	list( APPEND SOURCES Application_mac.mm MacMenuBar.cpp )
+	list( APPEND SOURCES MacMenuBar.cpp )
 	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( SslCertificate.cpp sslConnect.cpp
 		PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
