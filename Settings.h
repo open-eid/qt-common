@@ -50,10 +50,10 @@ public:
 		QString deflang;
 		switch( QLocale().language() )
 		{
-		case QLocale::English: deflang = "en"; break;
 		case QLocale::Russian: deflang = "ru"; break;
-		case QLocale::Estonian:
-		default: deflang = "et"; break;
+		case QLocale::Estonian: deflang = "et"; break;
+		case QLocale::English:
+		default: deflang = "en"; break;
 		}
 		return Settings().value( "Main/Language", deflang ).toString();
 	}
