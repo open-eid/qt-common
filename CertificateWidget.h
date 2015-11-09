@@ -33,11 +33,8 @@ class CertificateDialog: public QDialog
 {
 	Q_OBJECT
 public:
-	CertificateDialog( QWidget *parent = 0 );
-	CertificateDialog( const QSslCertificate &cert, QWidget *parent = 0 );
+	CertificateDialog(const QSslCertificate &cert, QWidget *parent = 0 , bool removePath = true);
 	~CertificateDialog();
-
-	void setCertificate( const QSslCertificate &cert );
 
 private Q_SLOTS:
 	void on_parameters_itemSelectionChanged();

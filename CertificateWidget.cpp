@@ -26,81 +26,34 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
-#else
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#endif
 
 class CertificateDialogPrivate: public Ui::CertificateDialog
 {
 public:
-	void addItem( const QString &variable, const QString &value, const QVariant &valueext = QVariant() );
+	void addItem( const QString &variable, const QString &value, const QVariant &valueext = QVariant() )
+	{
+		QTreeWidgetItem *t = new QTreeWidgetItem( parameters );
+		t->setText( 0, variable );
+		t->setText( 1, value );
+		t->setData( 1, Qt::UserRole, valueext );
+		parameters->addTopLevelItem( t );
+	}
 
 	SslCertificate cert;
 };
 
-void CertificateDialogPrivate::addItem( const QString &variable, const QString &value, const QVariant &valueext )
-{
-	QTreeWidgetItem *t = new QTreeWidgetItem( parameters );
-	t->setText( 0, variable );
-	t->setText( 1, value );
-	t->setData( 1, Qt::UserRole, valueext );
-	parameters->addTopLevelItem( t );
-}
 
 
-
-CertificateDialog::CertificateDialog( QWidget *parent )
+CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *parent, bool removePath)
 :	QDialog( parent )
 ,	d( new CertificateDialogPrivate )
 {
 	d->setupUi( this );
-	d->tabWidget->removeTab( 2 );
-}
+	if(removePath)
+		d->tabWidget->removeTab( 2 );
 
-CertificateDialog::CertificateDialog( const QSslCertificate &cert, QWidget *parent )
-:	QDialog( parent )
-,	d( new CertificateDialogPrivate )
-{
-	d->setupUi( this );
-	setCertificate( cert );
-	d->tabWidget->removeTab( 2 );
-}
-
-CertificateDialog::~CertificateDialog() { delete d; }
-
-void CertificateDialog::on_parameters_itemSelectionChanged()
-{
-	const QList<QTreeWidgetItem*> &list = d->parameters->selectedItems();
-	if( !list.isEmpty() )
-		d->parameterContent->setPlainText( list[0]->data( 1,
-			list[0]->data( 1, Qt::UserRole ).isNull() ? Qt::DisplayRole : Qt::UserRole ).toString() );
-}
-
-void CertificateDialog::save()
-{
-	QString file = QFileDialog::getSaveFileName( this,
-		tr("Save certificate"),
-		QString( "%1%2%3.cer" )
-			.arg( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ) )
-			.arg( QDir::separator() )
-			.arg( d->cert.subjectInfo( "serialNumber" ) ),
-		tr("Certificates (*.cer *.crt *.pem)") );
-	if( file.isEmpty() )
-		return;
-
-	QFile f( file );
-	if( f.open( QIODevice::WriteOnly ) )
-		f.write( d->cert.toPem() );
-	else
-		QMessageBox::warning( this, tr("Save certificate"), tr("Failed to save file") );
-}
-
-void CertificateDialog::setCertificate( const QSslCertificate &cert )
-{
 	d->cert = cert;
 	SslCertificate c = cert;
 	QString i;
@@ -132,13 +85,13 @@ void CertificateDialog::setCertificate( const QSslCertificate &cert )
 	d->addItem( tr("Signature algorithm"), c.signatureAlgorithm() );
 
 	QStringList text, textExt;
-	Q_FOREACH( const QByteArray &subject, QList<QByteArray>() << "CN" << "OU" << "O" << "C" )
+	Q_FOREACH( const QByteArray &obj, c.issuerInfoAttributes() )
 	{
-		const QString &data = c.issuerInfo( subject );
+		const QString &data = c.issuerInfo( obj );
 		if( data.isEmpty() )
 			continue;
 		text << data;
-		textExt << QString( "%1 = %2" ).arg( subject.constData() ).arg( data );
+		textExt << QString( "%1 = %2" ).arg( obj.constData() ).arg( data );
 	}
 	d->addItem( tr("Issuer"), text.join( ", " ), textExt.join( "\n" ) );
 	d->addItem( tr("Valid from"), DateTime( c.effectiveDate().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
@@ -146,14 +99,13 @@ void CertificateDialog::setCertificate( const QSslCertificate &cert )
 
 	text.clear();
 	textExt.clear();
-	Q_FOREACH( const QByteArray &subject,
-		QList<QByteArray>() << "serialNumber" << "GN" << "SN" << "CN" << "OU" << "O" << "C" )
+	Q_FOREACH( const QByteArray &obj, c.subjectInfoAttributes() )
 	{
-		const QString &data = c.subjectInfo( subject );
+		const QString &data = c.subjectInfo( obj );
 		if( data.isEmpty() )
 			continue;
 		text << data;
-		textExt << QString( "%1 = %2" ).arg( subject.constData() ).arg( data );
+		textExt << QString( "%1 = %2" ).arg( obj.constData() ).arg( data );
 	}
 	d->addItem( tr("Subject"), text.join( ", " ), textExt.join( "\n" ) );
 	d->addItem( tr("Public key"), c.keyName(), c.publicKeyHex() );
@@ -171,4 +123,33 @@ void CertificateDialog::setCertificate( const QSslCertificate &cert )
 		d->addItem( tr("Key usage"), keyUsage.join( ", " ), keyUsage.join( "\n" ) );
 
 	d->parameters->header()->setResizeMode( 0, QHeaderView::ResizeToContents );
+}
+
+CertificateDialog::~CertificateDialog() { delete d; }
+
+void CertificateDialog::on_parameters_itemSelectionChanged()
+{
+	const QList<QTreeWidgetItem*> &list = d->parameters->selectedItems();
+	if( !list.isEmpty() )
+		d->parameterContent->setPlainText( list[0]->data( 1,
+			list[0]->data( 1, Qt::UserRole ).isNull() ? Qt::DisplayRole : Qt::UserRole ).toString() );
+}
+
+void CertificateDialog::save()
+{
+	QString file = QFileDialog::getSaveFileName( this,
+		tr("Save certificate"),
+		QString( "%1%2%3.cer" )
+			.arg( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ) )
+			.arg( QDir::separator() )
+			.arg( d->cert.subjectInfo( "serialNumber" ) ),
+		tr("Certificates (*.cer *.crt *.pem)") );
+	if( file.isEmpty() )
+		return;
+
+	QFile f( file );
+	if( f.open( QIODevice::WriteOnly ) )
+		f.write( d->cert.toPem() );
+	else
+		QMessageBox::warning( this, tr("Save certificate"), tr("Failed to save file") );
 }

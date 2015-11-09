@@ -73,35 +73,19 @@
       </attribute>
       <layout class="QVBoxLayout" name="pathLayout">
        <item>
-        <widget class="QGroupBox" name="pathGroup">
-         <property name="title">
-          <string>Certification Path</string>
-         </property>
-         <layout class="QVBoxLayout" name="pathGroupLayout">
-          <item>
-           <widget class="QTreeWidget" name="pathTree">
-            <attribute name="headerVisible">
-             <bool>false</bool>
-            </attribute>
-            <column>
-             <property name="text">
-              <string notr="true">1</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-         </layout>
+        <widget class="QTreeWidget" name="pathTree">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="statusLabel">
-         <property name="text">
-          <string>Certificate status:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPlainTextEdit" name="status"/>
+        <widget class="QLabel" name="pathMsg"/>
        </item>
       </layout>
      </widget>
