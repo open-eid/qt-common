@@ -185,8 +185,7 @@ QString TokenData::toHtml() const
 		s << "<br /><font color=\"red\">" << tr("PIN is locked") << "</font>";
 
 	s << "</td><td align=\"center\" width=\"75\">";
-	if( ((!c.isValid() || willExpire) && c.canUpdate()) ||
-		(d->flags & TokenData::PinLocked && (c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType)))
+	if(d->flags & TokenData::PinLocked && (c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType))
 	{
 		s << "<a href=\"openUtility\"><img src=\":/images/warning.png\"><br />"
 			"<font color=\"red\">" << tr("Open utility") << "</font></a>";

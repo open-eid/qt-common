@@ -65,12 +65,6 @@ QByteArray SslCertificate::authorityKeyIdentifier() const
 	return out;
 }
 
-bool SslCertificate::canUpdate() const
-{
-	return type() & EstEidType && publicKey().length() <= 1024 &&
-		std::max<int>( 0, QDateTime::currentDateTime().daysTo( expiryDate().toLocalTime() ) ) <= 105;
-}
-
 QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage() const
 {
 	QHash<EnhancedKeyUsage,QString> list;

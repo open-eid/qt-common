@@ -82,7 +82,6 @@ public:
 #endif
 
 	QByteArray	authorityKeyIdentifier() const;
-	bool		canUpdate() const;
 	QHash<EnhancedKeyUsage,QString> enhancedKeyUsage() const;
 	QString		friendlyName() const;
 	bool		isCA() const;
