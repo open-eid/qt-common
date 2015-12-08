@@ -32,10 +32,16 @@
 
 void Diagnostics::generalInfo(QTextStream &s) const
 {
+	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(" ") << "<br />";
+	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
 	s << "<b>" << "URLs:" << "</b>";
-	const QHash<QString,QString> urls = qApp->urls();
-	for(auto i = urls.constBegin(); i != urls.constEnd(); ++i)
-		s << "<br />" << i.key() << ": " << i.value();
+#ifdef BREAKPAD
+	s << "<br />BREAKPAD: " << BREAKPAD;
+#endif
+#ifdef CONFIG_URL
+	s << "<br />CONFIG_URL: " << CONFIG_URL;
+#endif
+	qApp->diagnostics(s);
 	s << "<br /><br />";
 
 #ifdef CONFIG_URL
@@ -52,12 +58,6 @@ void Diagnostics::generalInfo(QTextStream &s) const
 	s << "<br /><br />";
 #endif
 
-	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(" ") << "<br />";
-	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
-}
-
-void Diagnostics::readerInfo(QTextStream &s) const
-{
 	QPCSC manager;
 	s << "<b>" << tr("Smart Card service status: ") << "</b>" << " "
 		<< (manager.serviceRunning() ? tr("Running") : tr("Not running"));

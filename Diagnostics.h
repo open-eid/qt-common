@@ -35,5 +35,4 @@ signals:
 
 private:
 	void generalInfo(QTextStream &s) const;
-	void readerInfo(QTextStream &s) const;
 };

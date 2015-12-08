@@ -192,6 +192,9 @@ void Common::detectPlugins()
 #endif
 }
 
+void Common::diagnostics(QTextStream &)
+{}
+
 QUrl Common::helpUrl()
 {
 	QString lang = Settings::language();
@@ -444,16 +447,4 @@ void Common::showPlugins()
 	else if( b->clickedButton() == ignore )
 		QSettings().setValue( "plugins", "ignore" );
 #endif
-}
-
-QHash<QString,QString> Common::urls() const
-{
-	QHash<QString,QString> u;
-#ifdef BREAKPAD
-	u["BREAKPAD"] = BREAKPAD;
-#endif
-#ifdef CONFIG_URL
-	u["CONFIG_URL"] = CONFIG_URL;
-#endif
-	return u;
 }

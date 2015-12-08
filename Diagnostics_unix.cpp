@@ -75,7 +75,6 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	generalInfo(s);
 	s << "<b>" << tr("Libraries") << ":</b><br />";
 #ifdef Q_OS_MAC
 	s << Common::packages( { "libdigidoc", "digidocpp" } ).join( "<br />" ) << "<br />";
@@ -88,7 +87,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	readerInfo( s );
+	generalInfo(s);
 	emit update( info );
 	info.clear();
 

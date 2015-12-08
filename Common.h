@@ -22,11 +22,7 @@
 #include <QtCore/QtGlobal>
 
 #ifdef Q_OS_MAC
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QApplication>
-#else
-#include <QtGui/QApplication>
-#endif
 typedef QApplication BaseApplication;
 #else
 #include "qtsingleapplication/src/QtSingleApplication"
@@ -42,7 +38,6 @@ typedef QtSingleApplication BaseApplication;
 #define qApp (static_cast<Common*>(QCoreApplication::instance()))
 
 class QLabel;
-class QSslCertificate;
 class QUrl;
 
 class Common: public BaseApplication
@@ -55,7 +50,7 @@ public:
 
 	bool isCrashReport();
 	void detectPlugins();
-	virtual QHash<QString,QString> urls() const;
+	virtual void diagnostics(QTextStream &s);
 
 	static QString applicationOs();
 	static QUrl helpUrl();

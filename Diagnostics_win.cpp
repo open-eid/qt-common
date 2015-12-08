@@ -115,7 +115,6 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	generalInfo(s);
 	s << "<b>" << tr("Libraries") << ":</b><br />" << "QT (" << qVersion() << ")<br />";
 	Q_FOREACH( const QString &lib, QStringList()
 			<< "digidoc" << "digidocpp" << "qdigidocclient.exe" << "qesteidutil.exe" << "id-updater.exe"
@@ -184,7 +183,7 @@ void Diagnostics::run()
 	}
 	s << "<br />";
 
-	readerInfo( s );
+	generalInfo( s );
 	emit update( info );
 	info.clear();
 
