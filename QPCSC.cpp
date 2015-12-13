@@ -339,7 +339,7 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 {
 	static const SCARD_IO_REQUEST T0 = { 1, 8 };
 	static const SCARD_IO_REQUEST T1 = { 2, 8 };
-	QByteArray data( 255 + 3, 0 );
+	QByteArray data( 1024, 0 );
 	DWORD size = data.size();
 
 	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
