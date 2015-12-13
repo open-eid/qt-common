@@ -347,9 +347,9 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	DWORD ret = SC(Transmit, d->card, d->proto == SCARD_PROTOCOL_T0 ? &T0 : &T1,
 		LPCBYTE(apdu.constData()), apdu.size(), nullptr, LPBYTE(data.data()), &size);
 	if( ret != SCARD_S_SUCCESS )
-		return Result();
+		return Result({ QByteArray(), QByteArray(), ret });
 
-	Result result = { data.mid( size-2, 2 ), data.left( size - 2 ) };
+	Result result = { data.mid( size-2, 2 ), data.left( size - 2 ), ret };
 	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
 		<< "< " << result.SW.toHex().constData();
 	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(size).toHex().constData();
