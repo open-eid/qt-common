@@ -97,6 +97,7 @@ public:
 	static QByteArray	toHex( const QByteArray &in, QChar separator = ' ' );
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
+	bool		validateEncoding() const;
 
 	static QString formatName( const QString &name );
 	static QSslCertificate fromX509( Qt::HANDLE x509 );

@@ -72,6 +72,7 @@ list( APPEND SOURCES
 	Settings.h
 	SslCertificate.cpp
 	TokenData.cpp
+	qasn1element.cpp
 )
 
 if( BREAKPAD )
