@@ -49,7 +49,6 @@ public:
 #endif
 
 	bool isCrashReport();
-	void detectPlugins();
 	virtual void diagnostics(QTextStream &s);
 
 	static QString applicationOs();
@@ -57,12 +56,6 @@ public:
 	static QStringList packages( const QStringList &names, bool withName = true );
 	static void setAccessibleName( QLabel *widget );
 	static void showHelp( const QString &msg, int code = -1 );
-
-public Q_SLOTS:
-	void showPlugins();
-
-protected:
-	void validate();
 
 private:
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);

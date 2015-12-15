@@ -101,6 +101,33 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
+#elif defined(Q_OS_MAC)
+#ifdef BREAKPAD
+	if(arguments().contains("-crashreport", Qt::CaseInsensitive))
+		return;
+#endif
+	if(!QSettings().value("plugins").isNull())
+		return;
+
+	QTimer *timer = new QTimer(this);
+	timer->setSingleShot(true);
+	connect(timer, &QTimer::timeout, this, [=]{
+		timer->deleteLater();
+		QMessageBox *b = new QMessageBox(QMessageBox::Information, tr("Browser plugins"),
+			tr("If you are using e-services for authentication and signing documents in addition to "
+				"Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.<br />"
+				"<a href='http://installer.id.ee'>http://installer.id.ee</a>"),
+			0, activeWindow());
+		QAbstractButton *install = b->addButton(tr("Install"), QMessageBox::AcceptRole);
+		b->addButton(tr("Remind later"), QMessageBox::AcceptRole);
+		QAbstractButton *ignore = b->addButton(tr("Ignore forever"), QMessageBox::AcceptRole);
+		b->exec();
+		if(b->clickedButton() == install)
+			QDesktopServices::openUrl(QUrl("http://installer.id.ee"));
+		else if(b->clickedButton() == ignore)
+			QSettings().setValue("plugins", "ignore");
+	});
+	timer->start(1000);
 #endif
 }
 #endif
@@ -182,14 +209,6 @@ QString Common::applicationOs()
 #endif
 
 	return tr("Unknown OS");
-}
-
-void Common::detectPlugins()
-{
-#if defined(Q_OS_MAC) && !defined(INTERNATIONAL)
-	if( QSettings().value("plugins").isNull() )
-		QTimer::singleShot( 1000, this, SLOT(showPlugins()) );
-#endif
 }
 
 void Common::diagnostics(QTextStream &)
@@ -428,23 +447,4 @@ void Common::showHelp( const QString &msg, int code )
 		q.addQueryItem( "_a", "searchclient" );
 	}
 	QDesktopServices::openUrl( u );
-}
-
-void Common::showPlugins()
-{
-#ifdef Q_OS_MAC
-	QMessageBox *b = new QMessageBox( QMessageBox::Information, tr("Browser plugins"),
-		tr("If you are using e-services for authentication and signing documents in addition to "
-			"Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.<br />"
-			"<a href='http://installer.id.ee'>http://installer.id.ee</a>" ),
-		0, activeWindow() );
-	QAbstractButton *install = b->addButton( tr("Install"), QMessageBox::AcceptRole );
-	b->addButton( tr("Remind later"), QMessageBox::AcceptRole );
-	QAbstractButton *ignore = b->addButton( tr("Ignore forever"), QMessageBox::AcceptRole );
-	b->exec();
-	if( b->clickedButton() == install )
-		QDesktopServices::openUrl( QUrl("http://installer.id.ee") );
-	else if( b->clickedButton() == ignore )
-		QSettings().setValue( "plugins", "ignore" );
-#endif
 }
