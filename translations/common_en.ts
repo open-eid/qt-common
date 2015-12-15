@@ -52,8 +52,8 @@ Additional licenses and components</translation>
         <translation>Checking updates has failed.</translation>
     </message>
     <message>
-        <source>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</source>
-        <translation>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</translation>
+        <source>Please try again.</source>
+        <translation>Please try again.</translation>
     </message>
 </context>
 <context>
@@ -166,10 +166,6 @@ Additional licenses and components</translation>
         <source>Subject key identifier</source>
         <translation>Subject key identifier</translation>
     </message>
-    <message>
-        <source>Certificate status:</source>
-        <translation>Certificate status:</translation>
-    </message>
 </context>
 <context>
     <name>Common</name>
@@ -205,20 +201,12 @@ Additional licenses and components</translation>
         <translation>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>New version available</source>
-        <translation>New version available</translation>
-    </message>
-    <message>
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Request timed out</source>
         <translation>Request timed out</translation>
-    </message>
-    <message>
-        <source>No new version available</source>
-        <translation>No new version available</translation>
     </message>
     <message>
         <source>The configuration file located on the server cannot be validated.</source>
@@ -231,6 +219,14 @@ Additional licenses and components</translation>
     <message>
         <source>You are using the latest software version. Software and configuration updates are not available.</source>
         <translation>You are using the latest software version. Software and configuration updates are not available.</translation>
+    </message>
+    <message>
+        <source>Update is available</source>
+        <translation>Update is available</translation>
+    </message>
+    <message>
+        <source>No updates are available</source>
+        <translation>No updates are available</translation>
     </message>
 </context>
 <context>
@@ -506,14 +502,6 @@ Additional licenses and components</translation>
     <message>
         <source>ID-CARD</source>
         <translation>ID-CARD</translation>
-    </message>
-    <message>
-        <source>DIGI-ID</source>
-        <translation type="vanished">DIGI-ID</translation>
-    </message>
-    <message>
-        <source>MOBIIL-ID</source>
-        <translation type="vanished">MOBILE-ID</translation>
     </message>
     <message>
         <source>Unknown</source>

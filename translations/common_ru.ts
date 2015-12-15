@@ -52,8 +52,8 @@ Additional licenses and components</source>
         <translation>Проверка обновлений не удалась.</translation>
     </message>
     <message>
-        <source>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</source>
-        <translation>&lt;br /&gt;Попробуйте снова.&lt;br /&gt;При повторении ошибки обратитесь на электронную почту &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</translation>
+        <source>Please try again.</source>
+        <translation>Попробуйте снова.</translation>
     </message>
 </context>
 <context>
@@ -166,10 +166,6 @@ Additional licenses and components</source>
         <source>Subject key identifier</source>
         <translation>Идентификатор ключа заглавия</translation>
     </message>
-    <message>
-        <source>Certificate status:</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Common</name>
@@ -205,19 +201,11 @@ Additional licenses and components</source>
         <translation>Вам необходимо обновить программное обеспечение ID-карты. Чтобы скачать последнюю версию программы, перейдите на сайт &lt;a href=&quot;http://installer.id.ee/?lang=rus&quot;&gt;id.ee&lt;/a&gt;. Пользователи Mac OS X могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>New version available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Выпущено обновление для программного обеспечения ID-карты. Чтобы скачать обновление, перейдите на сайт &lt;a href=&quot;http://installer.id.ee/?lang=rus&quot;&gt;id.ee&lt;/a&gt;. Пользователи Mac OS X могут скачать обновление в магазине &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Request timed out</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No new version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -231,6 +219,14 @@ Additional licenses and components</source>
     <message>
         <source>You are using the latest software version. Software and configuration updates are not available.</source>
         <translation>Вы используете последнюю версию программного обеспечения. Обновления программного обеспечения или конфигурации не доступны.</translation>
+    </message>
+    <message>
+        <source>Update is available</source>
+        <translation>Доступна обновлённая версия</translation>
+    </message>
+    <message>
+        <source>No updates are available</source>
+        <translation>На вашем компьютере установлена последняя версия программного обеспечения для ИД-карты</translation>
     </message>
 </context>
 <context>

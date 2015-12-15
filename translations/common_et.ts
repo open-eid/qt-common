@@ -52,8 +52,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Uuenduste kontroll ebaõnnestus.</translation>
     </message>
     <message>
-        <source>&lt;br /&gt;Please try again.&lt;br /&gt;In case the error repeats, contact &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</source>
-        <translation>&lt;br /&gt;Palun proovi uuesti.&lt;br /&gt;Kui probleem kordub, pöördu &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt;.</translation>
+        <source>Please try again.</source>
+        <translation>Palun proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -166,10 +166,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Subject key identifier</source>
         <translation>Subjekti võtmelühend</translation>
     </message>
-    <message>
-        <source>Certificate status:</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Common</name>
@@ -205,19 +201,11 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sinu kasutatav ID-tarkvara on aegunud. Tarkvara viimase versiooni saad alla laadida veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uusima tarkvara &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
     </message>
     <message>
-        <source>New version available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Saadaval on ID-tarkvara uuendus, mille saad paigaldada veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uuenduse alla laadida &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
     </message>
     <message>
         <source>Request timed out</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No new version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -231,6 +219,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>You are using the latest software version. Software and configuration updates are not available.</source>
         <translation>Kasutad kõige uuemat tarkvara. Tarkvara- ega konfiguratsiooniuuendusi ei ole saadaval.</translation>
+    </message>
+    <message>
+        <source>Update is available</source>
+        <translation>ID-kaardi baastarkvarast on saadaval uus versioon</translation>
+    </message>
+    <message>
+        <source>No updates are available</source>
+        <translation>ID-tarkvara uuendusi ei ole saadaval</translation>
     </message>
 </context>
 <context>
@@ -506,14 +502,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>ID-CARD</source>
         <translation>ID-KAART</translation>
-    </message>
-    <message>
-        <source>DIGI-ID</source>
-        <translation type="vanished">DIGI-ID</translation>
-    </message>
-    <message>
-        <source>MOBIIL-ID</source>
-        <translation type="vanished">MOBIIL-ID</translation>
     </message>
     <message>
         <source>Unknown</source>

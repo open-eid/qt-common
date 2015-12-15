@@ -52,19 +52,16 @@ AboutDialog::AboutDialog(QWidget *parent) :
 
 	QPushButton *update = ui->buttonBox->addButton(tr("Check for updates"), QDialogButtonBox::ActionRole);
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
-		QApplication::restoreOverrideCursor();
 		if(error.isEmpty())
 			return;
 		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
-			tr("Checking updates has failed.") + tr("<br />Please try again.<br />"
-			"In case the error repeats, contact <a href=\"mailto:abi@id.ee\">abi@id.ee</a>."),
+			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
 			QMessageBox::Ok, this);
 		b.setTextFormat(Qt::RichText);
 		b.setDetailedText(error);
 		b.exec();
 	});
 	connect(update, &QPushButton::clicked, []{
-		QApplication::setOverrideCursor( Qt::WaitCursor );
 		Configuration::instance().update(true);
 	});
 

@@ -355,7 +355,7 @@ Configuration::~Configuration()
 void Configuration::checkVersion(const QString &name)
 {
 	if(ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-SUPPORTED"].toString()))
-		QMessageBox::warning(qApp->activeWindow(), tr("New version available"),
+		QMessageBox::warning(qApp->activeWindow(), tr("Update is available"),
 			tr("Your ID-software has expired. To download the latest software version, go to the "
 				"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
 				"Mac OS X users can download the latest ID-software version from the "
@@ -363,13 +363,13 @@ void Configuration::checkVersion(const QString &name)
 
 	connect(this, &Configuration::finished, [=](bool changed, const QString &error){
 		if(changed && ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
-			QMessageBox::information(qApp->activeWindow(), tr("New version available"),
+			QMessageBox::information(qApp->activeWindow(), tr("Update is available"),
 				tr("An ID-software update has been found. To download the update, go to the "
 					"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
 					"Mac OS X users can download the update from the "
 					"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
 		else if(d->forceUpdate && error.isEmpty())
-			QMessageBox::information(qApp->activeWindow(), tr("No new version available"),
+			QMessageBox::information(qApp->activeWindow(), tr("No updates are available"),
 				tr("You are using the latest software version. Software and configuration updates are not available."));
 	});
 }
