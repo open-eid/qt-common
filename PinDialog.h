@@ -48,6 +48,7 @@ public:
 	};
 	PinDialog( PinFlags flags, const TokenData &t, QWidget *parent = 0 );
 	PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
+	PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
 
 	QString text() const;
 

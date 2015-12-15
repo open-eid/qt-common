@@ -54,6 +54,12 @@ PinDialog::PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::To
 	init( flags, c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), token );
 }
 
+PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent )
+	: QDialog(parent)
+{
+	init( flags, title, token );
+}
+
 void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlags token )
 {
 	setMinimumWidth( 350 );
