@@ -46,11 +46,7 @@ void Diagnostics::run()
 	if( !package.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << package.first() << "<br />";
 #endif
-	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion()
-#ifdef INTERNATIONAL
-		<< " INTERNATIONAL"
-#endif
-		<< "<br />";
+	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion() << "<br />";
 	emit update( info );
 	info.clear();
 
@@ -79,7 +75,7 @@ void Diagnostics::run()
 #ifdef Q_OS_MAC
 	s << Common::packages( { "libdigidoc", "digidocpp" } ).join( "<br />" ) << "<br />";
 #else
-	s << Common::packages( { "libdigidoc2", "libdigidocpp0", "qdigidoc", "qesteidutil",
+	s << Common::packages( { "libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil",
 		"esteidpkcs11loader", "esteidfirefoxplugin", "chrome-token-signing", "openssl",
 		"libpcsclite1", "pcsc-lite", "opensc", "esteid-pkcs11" } ).join( "<br />" ) << "<br />";
 #endif

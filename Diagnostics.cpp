@@ -91,7 +91,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 
 		s << "ATR cold - " << cold << "<br />"
 		  << "ATR warm - " << warm << "<br />";
-#ifndef INTERNATIONAL
+
 		reader.beginTransaction();
 		reader.transfer( "\x00\xA4\x00\x0C\x00", 5 ); // MASTER FILE
 		reader.transfer( "\x00\xA4\x01\x0C\x02\xEE\xEE", 7 ); // ESTEID DATAFILE
@@ -115,7 +115,6 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		}
 		reader.endTransaction();
 		s << "ID - " << id << "<br />";
-#endif
 	}
 
 #ifdef Q_OS_WIN

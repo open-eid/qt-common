@@ -100,11 +100,7 @@ void Diagnostics::run()
 		<< "Eesti ID-kaardi tarkvara" << "Estonian ID-card software", false );
 	if( !base.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << base.join( "<br />" ) << "<br />";
-	s << "<b>" << tr("Application version:") << "</b> "<< QCoreApplication::applicationVersion()
-#ifdef INTERNATIONAL
-		<< " INTERNATIONAL"
-#endif
-		<< "<br />";
+	s << "<b>" << tr("Application version:") << "</b> "<< QCoreApplication::applicationVersion() << "<br />";
 	emit update( info );
 	info.clear();
 
@@ -116,10 +112,14 @@ void Diagnostics::run()
 	info.clear();
 
 	s << "<b>" << tr("Libraries") << ":</b><br />" << "QT (" << qVersion() << ")<br />";
+#ifdef Q_OS_WIN64
+	QByteArray path = qgetenv("PATH");
+	qputenv("PATH", path + ";C:\\Program Files (x86)\\Open-EID");
+#endif
 	Q_FOREACH( const QString &lib, QStringList()
 			<< "digidoc" << "digidocpp" << "qdigidocclient.exe" << "qesteidutil.exe" << "id-updater.exe"
-			<< "esteidcsp" << "esteidcm" << "opensc-pkcs11" << "esteid-pkcs11" << "EsteidShellExtension"
-			<< "esteid-plugin-ie" << "npesteid-firefox-plugin" << "chrome-token-signing.exe"
+			<< "esteidcm" << "esteidcm64" << "onepin-opensc-pkcs11" << "esteid-pkcs11" << "EsteidShellExtension"
+			<< "esteid-plugin-ie" << "esteid-plugin-ie64" << "npesteid-firefox-plugin" << "chrome-token-signing.exe"
 			<< "zlib1" << "libeay32" << "ssleay32" << "xerces-c_3_1" << "xsec_1_7" << "libxml2"
 			<< "advapi32" << "crypt32" << "winscard" )
 	{
@@ -140,6 +140,9 @@ void Diagnostics::run()
 			.arg( HIWORD(info->dwFileVersionLS) )
 			.arg( LOWORD(info->dwFileVersionLS) ) << "<br />";
 	}
+#ifdef Q_OS_WIN64
+	qputenv("PATH", path);
+#endif
 	s << "<br />";
 	emit update( info );
 	info.clear();
@@ -187,7 +190,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList browsers = Common::packages( QStringList() << "Firefox" << "Google Chrome" );
+	QStringList browsers = Common::packages( QStringList() << "Mozilla Firefox" << "Google Chrome" );
 	QSettings reg( "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Internet Explorer", QSettings::NativeFormat );
 	browsers << QString( "Internet Explorer (%1)" ).arg(
 		reg.value("svcVersion", reg.value( "Version" ) ).toString() );
