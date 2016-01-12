@@ -1,4 +1,4 @@
-set_ex( CONFIG_URL "$ENV{CONFIG_URL}" "https://installer.id.ee/media/updater/config.json" CACHE STRING "Set Config URL" )
+set_ex( CONFIG_URL "$ENV{CONFIG_URL}" "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
 set_ex( BREAKPAD "$ENV{BREAKPAD}" "https://cr.eesti.ee/" CACHE STRING "URL for breakpad crash reporting, empty for disabled" )
 set_ex( ENABLE_CRASH "$ENV{ENABLE_CRASH}" NO CACHE BOOL "Enable -crash parameter" )
 
