@@ -240,6 +240,11 @@ QString QPCSCReader::friendlyName() const
 	return QString::fromLocal8Bit( d->friendlyName );
 }
 
+bool QPCSCReader::isConnected() const
+{
+	return d->card;
+}
+
 bool QPCSCReader::isPinPad()
 {
 	if( d->card )

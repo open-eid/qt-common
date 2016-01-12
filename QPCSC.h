@@ -103,6 +103,7 @@ public:
 
 	QByteArray atr() const;
 	QString friendlyName() const;
+	bool isConnected() const;
 	bool isPinPad();
 	bool isPresent() const;
 	QString name() const;
