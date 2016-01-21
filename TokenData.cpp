@@ -19,22 +19,22 @@
 
 #include "TokenData.h"
 
+#include "Configuration.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QHash>
+#include <QtCore/QJsonObject>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
 class TokenDataPrivate: public QSharedData
 {
 public:
-	TokenDataPrivate(): flags(0) {}
-
 	QString card;
 	QStringList cards, readers;
 	QSslCertificate cert;
-	TokenData::TokenFlags flags;
+	TokenData::TokenFlags flags = 0;
 };
 
 
@@ -175,7 +175,9 @@ QString TokenData::toHtml() const
 	if( c.isValid() )
 	{
 		s << "<font color=\"green\">" << tr("valid") << "</font>";
-		if((c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) && !c.validateEncoding())
+		if(Configuration::instance().object().contains("EIDUPDATER-URL") &&
+			(c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) &&
+			!c.validateEncoding())
 		{
 			s << ",<br /><font color=\"red\">" << tr("but contains encoding issues! ")
 				<< "<a href=\"openUtility\">" << tr("Update here") << "</a></font>";
