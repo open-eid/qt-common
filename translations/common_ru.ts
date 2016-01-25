@@ -540,15 +540,15 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Sign certificate is</source>
-        <translation>Сертификаты подписи</translation>
+        <translation>Сертификат подписи</translation>
     </message>
     <message>
         <source>Auth certificate is</source>
-        <translation>Сертификаты подписи</translation>
+        <translation>Сертификат подписи</translation>
     </message>
     <message>
         <source>valid</source>
-        <translation>действительны</translation>
+        <translation>действителен</translation>
     </message>
     <message>
         <source>Your certificates will expire soon</source>
@@ -565,6 +565,14 @@ Additional licenses and components</source>
     <message>
         <source>Open utility</source>
         <translation>Открыть средство управления</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Обновить</translation>
+    </message>
+    <message>
+        <source>but needs an update.</source>
+        <translation>но необходимы обновления.</translation>
     </message>
 </context>
 </TS>

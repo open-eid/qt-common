@@ -566,5 +566,13 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Open utility</source>
         <translation>Ava haldusvahend</translation>
     </message>
+    <message>
+        <source>Update</source>
+        <translation>Uuenda</translation>
+    </message>
+    <message>
+        <source>but needs an update.</source>
+        <translation>kuid vajab uuendamist.</translation>
+    </message>
 </context>
 </TS>

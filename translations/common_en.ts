@@ -566,5 +566,13 @@ Additional licenses and components</translation>
         <source>Open utility</source>
         <translation>Open utility</translation>
     </message>
+    <message>
+        <source>Update</source>
+        <translation>Update</translation>
+    </message>
+    <message>
+        <source>but needs an update.</source>
+        <translation>but needs an update.</translation>
+    </message>
 </context>
 </TS>

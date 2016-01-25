@@ -179,8 +179,8 @@ QString TokenData::toHtml() const
 			(c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) &&
 			!c.validateEncoding())
 		{
-			s << ",<br /><font color=\"red\">" << tr("but contains encoding issues! ")
-				<< "<a href=\"openUtility\">" << tr("Update here") << "</a></font>";
+			s << ",<br /><font color=\"red\">" << tr("but needs an update.")
+				<< "</font> <a href=\"openUtility\"><font color=\"red\">" << tr("Update") << "</font></a>";
 		}
 		else if(c.expiryDate().toLocalTime() <= QDateTime::currentDateTime().addDays(105))
 			s << "<br /><font color=\"red\">" << tr("Your certificates will expire soon") << "</font>";
