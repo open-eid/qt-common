@@ -31,12 +31,15 @@
 #include "QBreakPad.h"
 
 #include <common/Common.h>
+#include <common/Configuration.h>
 #include <common/Settings.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
@@ -45,19 +48,11 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QVBoxLayout>
-#else
-#include <QtGui/QLabel>
-#include <QtGui/QMessageBox>
-#include <QtGui/QPlainTextEdit>
-#include <QtGui/QProgressBar>
-#include <QtGui/QVBoxLayout>
-#endif
 
 #if defined(Q_OS_MAC)
 #include "client/mac/handler/exception_handler.h"
@@ -226,6 +221,28 @@ QBreakPadDialog::~QBreakPadDialog()
 	QFile::remove( file );
 }
 
+void QBreakPadDialog::handleError(QNetworkReply *reply, const QList<QSslError> &errors)
+{
+	QList<QSslCertificate> trusted;
+	const QJsonArray list = Configuration::instance().object().value("CERT-BUNDLE").toArray();
+	for(QJsonArray::const_iterator i = list.constBegin(); i != list.constEnd(); ++i )
+		trusted << QSslCertificate(QByteArray::fromBase64((*i).toString().toLatin1()), QSsl::Der);
+	QList<QSslError> ignore;
+	for(QList<QSslError>::const_iterator i = errors.constBegin(); i != errors.constEnd(); ++i)
+	{
+		switch(i->error())
+		{
+		case QSslError::UnableToGetLocalIssuerCertificate:
+		case QSslError::CertificateUntrusted:
+			if(trusted.contains(reply->sslConfiguration().peerCertificate()))
+				ignore << *i;
+			break;
+		default: break;
+		}
+	}
+	reply->ignoreSslErrors(ignore);
+}
+
 QString QBreakPadDialog::parseStack() const
 {
 	QString st;
@@ -371,11 +388,12 @@ bool QBreakPadDialog::validateCurrentPage()
 
 	qDebug() << "uploading crash dump file" << f.fileName();
 	QNetworkAccessManager manager;
+	connect(&manager, &QNetworkAccessManager::sslErrors, this, &QBreakPadDialog::handleError);
 	QEventLoop e;
 	QNetworkReply *repl = manager.post( req, &multiPart );
 	progress->show();
-	connect( repl, SIGNAL(uploadProgress(qint64,qint64)), SLOT(updateProgress(qint64,qint64)) );
-	connect( repl, SIGNAL(finished()), &e, SLOT(quit()) );
+	connect(repl, &QNetworkReply::uploadProgress, this, &QBreakPadDialog::updateProgress);
+	connect(repl, &QNetworkReply::finished, &e, &QEventLoop::quit);
 	e.exec();
 	progress->hide();
 

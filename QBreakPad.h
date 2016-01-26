@@ -19,15 +19,12 @@
 
 #pragma once
 
-#include <QtCore/QtGlobal>
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QWizard>
-#else
-#include <QtGui/QWizard>
-#endif
 
+class QNetworkReply;
 class QPlainTextEdit;
 class QProgressBar;
+class QSslError;
 class QTextStream;
 namespace google_breakpad { class CallStack; class ExceptionHandler; }
 
@@ -57,11 +54,12 @@ public:
 private slots:
 	void toggleComments();
 	void toggleStack();
-	void updateProgress( qint64 value, qint64 range );
 
 private:
+	void handleError(QNetworkReply *reply, const QList<QSslError> &errors);
 	QString parseStack() const;
 	void printStack( const google_breakpad::CallStack *stack, QTextStream &s ) const;
+	void updateProgress( qint64 value, qint64 range );
 	bool validateCurrentPage();
 
 	QPlainTextEdit *edit, *stack;
