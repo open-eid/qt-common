@@ -140,24 +140,19 @@ typedef struct {
 class QPCSCPrivate
 {
 public:
-	QPCSCPrivate(): context(0), running(false) {}
-
-	SCARDCONTEXT context;
-	bool running;
+	SCARDCONTEXT context = 0;
 };
 
 class QPCSCReaderPrivate
 {
 public:
-	QPCSCReaderPrivate( QPCSCPrivate *d );
-
 	QByteArray attrib( DWORD id ) const;
 
-	QPCSCPrivate *d;
-	SCARDHANDLE card;
-	DWORD proto;
+	QPCSCPrivate *d = nullptr;
+	SCARDHANDLE card = 0;
+	DWORD proto = 0;
 	SCARD_READERSTATE state;
-	QByteArray reader, friendlyName;
+	QByteArray reader;
 
 	QHash<DRIVER_FEATURES,DWORD> ioctl;
 };

@@ -45,17 +45,10 @@ LONG SCCall( const char *file, int line, const char *function, Func func, Args..
 }
 #define SC(API, ...) SCCall(__FILE__, __LINE__, "SCard"#API, SCard##API, __VA_ARGS__)
 
-
-QPCSCReaderPrivate::QPCSCReaderPrivate( QPCSCPrivate *_d )
-	: d( _d )
-	, card( 0 )
-	, proto( 0 )
-{
-	std::memset( &state, 0, sizeof(state) );
-}
-
 QByteArray QPCSCReaderPrivate::attrib( DWORD id ) const
 {
+	if(!card)
+		return QByteArray();
 	DWORD size = 0;
 	LONG err = SC(GetAttrib, card, id, nullptr, &size);
 	if( err != SCARD_S_SUCCESS || !size )
@@ -75,8 +68,7 @@ QPCSC::QPCSC( Logging log, QObject *parent )
 {
 	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, log & PCSCLog);
 	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, log & APDULog);
-	DWORD err = SC(EstablishContext, SCARD_SCOPE_USER, nullptr, nullptr, &d->context);
-	d->running = err != SCARD_E_NO_SERVICE;
+	SC(EstablishContext, SCARD_SCOPE_USER, nullptr, nullptr, &d->context);
 }
 
 QPCSC::~QPCSC()
@@ -131,7 +123,7 @@ QStringList QPCSC::drivers() const
 
 QStringList QPCSC::readers() const
 {
-	if( !d->context )
+	if( !serviceRunning() )
 		return QStringList();
 
 	DWORD size = 0;
@@ -144,30 +136,27 @@ QStringList QPCSC::readers() const
 	if( err != SCARD_S_SUCCESS )
 		return QStringList();
 
-	data.resize( size );
-	QStringList readers;
-	for( QByteArray::const_iterator i = data.constBegin(); i != data.constEnd(); ++i )
-	{
-		QString reader( i );
-		if( !reader.isEmpty() )
-			readers << reader;
-		i += reader.size();
-	}
-
+	QStringList readers = QString::fromLocal8Bit(data, size).split(QChar(0));
+	readers.removeAll(QString());
 	return readers;
 }
 
 bool QPCSC::serviceRunning() const
 {
-	return d->running;
+	if(d->context)
+		return true;
+	SC(EstablishContext, SCARD_SCOPE_USER, nullptr, nullptr, &d->context);
+	return d->context;
 }
 
 
 
 QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 	: QObject( parent )
-	, d( new QPCSCReaderPrivate( parent->d ) )
+	, d( new QPCSCReaderPrivate )
 {
+	std::memset( &d->state, 0, sizeof(d->state) );
+	d->d = parent->d;
 	d->reader = reader.toUtf8();
 	d->state.szReader = d->reader.constData();
 	updateState();
@@ -181,7 +170,7 @@ QPCSCReader::~QPCSCReader()
 
 QByteArray QPCSCReader::atr() const
 {
-	return QByteArray( (const char*)d->state.rgbAtr, d->state.cbAtr ).toHex().toUpper();
+	return QByteArray::fromRawData( (const char*)d->state.rgbAtr, d->state.cbAtr ).toHex().toUpper();
 }
 
 bool QPCSCReader::beginTransaction()
@@ -195,16 +184,6 @@ bool QPCSCReader::connect( Connect connect, Mode mode )
 		return false;
 	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto);
 	updateState();
-	d->friendlyName = d->attrib( SCARD_ATTR_DEVICE_FRIENDLY_NAME_A );
-#if 0
-	qDebug() << "SCARD_ATTR_DEVICE_FRIENDLY_NAME:" << d->attrib( SCARD_ATTR_DEVICE_FRIENDLY_NAME_A );
-	qDebug() << "SCARD_ATTR_DEVICE_SYSTEM_NAME:" << d->attrib( SCARD_ATTR_DEVICE_SYSTEM_NAME_A );
-	qDebug() << "SCARD_ATTR_DEVICE_UNIT:" << d->attrib( SCARD_ATTR_DEVICE_UNIT );
-	qDebug() << "SCARD_ATTR_VENDOR_IFD_SERIAL_NO:" << d->attrib( SCARD_ATTR_VENDOR_IFD_SERIAL_NO );
-	qDebug() << "SCARD_ATTR_VENDOR_IFD_TYPE:" << d->attrib( SCARD_ATTR_VENDOR_IFD_TYPE );
-	qDebug() << "SCARD_ATTR_VENDOR_IFD_VERSION:" << d->attrib( SCARD_ATTR_VENDOR_IFD_VERSION );
-	qDebug() << "SCARD_ATTR_VENDOR_NAME:" << d->attrib( SCARD_ATTR_VENDOR_NAME );
-#endif
 
 	DWORD size = 0;
 	BYTE feature[256];
@@ -237,7 +216,7 @@ bool QPCSCReader::endTransaction( Reset reset )
 
 QString QPCSCReader::friendlyName() const
 {
-	return QString::fromLocal8Bit( d->friendlyName );
+	return QString::fromLocal8Bit( d->attrib( SCARD_ATTR_DEVICE_FRIENDLY_NAME_A ) );
 }
 
 bool QPCSCReader::isConnected() const
@@ -337,7 +316,7 @@ QStringList QPCSCReader::state() const
 
 QPCSCReader::Result QPCSCReader::transfer( const char *cmd, int size ) const
 {
-	return transfer( QByteArray( cmd, size ) );
+	return transfer( QByteArray::fromRawData( cmd, size ) );
 }
 
 QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
