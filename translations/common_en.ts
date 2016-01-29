@@ -189,10 +189,6 @@ Additional licenses and components</translation>
         <source>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</source>
         <translation>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</translation>
     </message>
-    <message>
-        <source>Install</source>
-        <translation>Install</translation>
-    </message>
 </context>
 <context>
     <name>Configuration</name>

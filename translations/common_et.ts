@@ -189,10 +189,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</source>
         <translation>Kui kasutad e-teenustesse autentimiseks ja dokumentide allkirjastamiseks lisaks Mobiil-ID’le ka ID-kaarti või ainult ID-kaarti, siis peaksid paigaldama lisaks ka veebilehitseja komponentide paki veebilehelt &lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;.</translation>
     </message>
-    <message>
-        <source>Install</source>
-        <translation>Paigaldama</translation>
-    </message>
 </context>
 <context>
     <name>Configuration</name>

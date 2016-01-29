@@ -118,13 +118,9 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 				"Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.<br />"
 				"<a href='http://installer.id.ee'>http://installer.id.ee</a>"),
 			0, activeWindow());
-		QAbstractButton *install = b->addButton(tr("Install"), QMessageBox::AcceptRole);
-		b->addButton(tr("Remind later"), QMessageBox::AcceptRole);
-		QAbstractButton *ignore = b->addButton(tr("Ignore forever"), QMessageBox::AcceptRole);
-		b->exec();
-		if(b->clickedButton() == install)
-			QDesktopServices::openUrl(QUrl("http://installer.id.ee"));
-		else if(b->clickedButton() == ignore)
+		b->addButton(tr("Remind later"), QMessageBox::RejectRole);
+		b->addButton(tr("Ignore forever"), QMessageBox::AcceptRole);
+		if(b->exec() == QDialog::Accepted)
 			QSettings().setValue("plugins", "ignore");
 	});
 	timer->start(1000);
