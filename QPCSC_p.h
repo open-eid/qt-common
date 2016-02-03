@@ -147,6 +147,7 @@ class QPCSCReaderPrivate
 {
 public:
 	QByteArray attrib( DWORD id ) const;
+	QHash<DRIVER_FEATURES,quint32> features();
 
 	QPCSCPrivate *d = nullptr;
 	SCARDHANDLE card = 0;
@@ -154,5 +155,5 @@ public:
 	SCARD_READERSTATE state;
 	QByteArray reader;
 
-	QHash<DRIVER_FEATURES,DWORD> ioctl;
+    QHash<DRIVER_FEATURES,quint32> featuresList;
 };

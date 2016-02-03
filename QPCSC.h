@@ -104,7 +104,7 @@ public:
 	QByteArray atr() const;
 	QString friendlyName() const;
 	bool isConnected() const;
-	bool isPinPad();
+	bool isPinPad() const;
 	bool isPresent() const;
 	QString name() const;
 	QHash<Properties,int> properties() const;

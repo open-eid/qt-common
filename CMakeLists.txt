@@ -30,7 +30,7 @@ endif()
 
 if( WIN32 )
 	list( APPEND SOURCES Diagnostics_win.cpp )
-	set( LIBRARIES Version Ws2_32 SetupApi winscard )
+	set( LIBRARIES Version SetupApi winscard )
 	add_definitions( -DUNICODE -DWIN32_LEAN_AND_MEAN )
 else()
 	list( APPEND SOURCES Diagnostics_unix.cpp )

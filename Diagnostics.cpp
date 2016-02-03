@@ -67,6 +67,17 @@ void Diagnostics::generalInfo(QTextStream &s) const
 	{
 		s << readername;
 		QPCSCReader reader( readername, &manager );
+		if( !reader.isPresent() )
+		{
+#ifndef Q_OS_WIN /* Apple 10.5.7 and pcsc-lite previous to v1.5.5 do not support 0 as protocol identifier */
+			reader.connect( QPCSCReader::Direct );
+#else
+			reader.connect( QPCSCReader::Direct, QPCSCReader::Undefined );
+#endif
+		}
+		else
+			reader.connect();
+
 		if( readername.contains( "EZIO SHIELD", Qt::CaseInsensitive ) )
 		{
 			s << " - Secure PinPad";
@@ -83,7 +94,6 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		if( !reader.isPresent() )
 			continue;
 
-		reader.connect();
 		reader.reconnect( QPCSCReader::UnpowerCard );
 		QString cold = reader.atr();
 		reader.reconnect( QPCSCReader::ResetCard );

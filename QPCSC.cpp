@@ -23,6 +23,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QStringList>
+#include <QtCore/QtEndian>
 
 #include <cstring>
 
@@ -58,6 +59,25 @@ QByteArray QPCSCReaderPrivate::attrib( DWORD id ) const
 	if( err != SCARD_S_SUCCESS || !size )
 		return QByteArray();
 	return data;
+}
+
+QHash<DRIVER_FEATURES,quint32> QPCSCReaderPrivate::features()
+{
+	if(!featuresList.isEmpty())
+		return featuresList;
+	DWORD size = 0;
+	BYTE feature[256];
+	LONG rv = SC(Control, card, CM_IOCTL_GET_FEATURE_REQUEST, nullptr, 0, feature, DWORD(sizeof(feature)), &size);
+	if(rv != SCARD_S_SUCCESS)
+		return featuresList;
+	for(unsigned char *p = feature; DWORD(p-feature) < size; )
+	{
+		int tag = *p++, len = *p++, value = 0;
+		for(int i = 0; i < len; ++i)
+			value |= *p++ << 8 * i;
+		featuresList[DRIVER_FEATURES(tag)] = qFromBigEndian<quint32>(value);
+	}
+	return featuresList;
 }
 
 
@@ -184,18 +204,6 @@ bool QPCSCReader::connect( Connect connect, Mode mode )
 		return false;
 	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto);
 	updateState();
-
-	DWORD size = 0;
-	BYTE feature[256];
-	LONG rv = SC(Control, d->card, CM_IOCTL_GET_FEATURE_REQUEST, nullptr, 0, feature, sizeof(feature), &size);
-	if( rv == SCARD_S_SUCCESS && (size % sizeof(PCSC_TLV_STRUCTURE)) == 0 )
-	{
-		size /= sizeof(PCSC_TLV_STRUCTURE);
-		PCSC_TLV_STRUCTURE *pcsc_tlv = (PCSC_TLV_STRUCTURE *)feature;
-		for( DWORD i = 0; i < size; i++ )
-			d->ioctl[DRIVER_FEATURES(pcsc_tlv[i].tag)] = ntohl( pcsc_tlv[i].value );
-	}
-
 	return err == SCARD_S_SUCCESS;
 }
 
@@ -205,7 +213,7 @@ void QPCSCReader::disconnect( Reset reset )
 		SC(Disconnect, d->card, reset);
 	d->proto = 0;
 	d->card = 0;
-	d->ioctl.clear();
+	d->featuresList.clear();
 	updateState();
 }
 
@@ -224,26 +232,10 @@ bool QPCSCReader::isConnected() const
 	return d->card;
 }
 
-bool QPCSCReader::isPinPad()
+bool QPCSCReader::isPinPad() const
 {
-	if( d->card )
-		return d->ioctl.contains(FEATURE_VERIFY_PIN_DIRECT) || d->ioctl.contains(FEATURE_VERIFY_PIN_START);
-
-	if( !isPresent() )
-	{
-#ifndef Q_OS_WIN /* Apple 10.5.7 and pcsc-lite previous to v1.5.5 do not support 0 as protocol identifier */
-		Mode mode = Mode(T0|T1);
-#else
-		Mode mode = Undefined;
-#endif
-		if( connect( Direct, mode ) )
-			return false;
-	}
-	else if( !connect() )
-		return false;
-	bool result = d->ioctl.contains(FEATURE_VERIFY_PIN_DIRECT) || d->ioctl.contains(FEATURE_VERIFY_PIN_START);
-	disconnect();
-	return result;
+	QHash<DRIVER_FEATURES,quint32> features = d->features();
+	return features.contains(FEATURE_VERIFY_PIN_DIRECT) || features.contains(FEATURE_VERIFY_PIN_START);
 }
 
 bool QPCSCReader::isPresent() const
@@ -259,24 +251,18 @@ QString QPCSCReader::name() const
 QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 {
 	QHash<Properties,int> properties;
-	if( DWORD ioctl = d->ioctl.value(FEATURE_GET_TLV_PROPERTIES) )
+	if( DWORD ioctl = d->features().value(FEATURE_GET_TLV_PROPERTIES) )
 	{
 		DWORD size = 0;
 		BYTE recv[256];
-		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, sizeof(recv), &size);
-		Q_UNUSED(rv);
-		unsigned char *p = recv;
-		while( DWORD(p-recv) < size )
+		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, DWORD(sizeof(recv)), &size);
+		if(rv != SCARD_S_SUCCESS)
+			return properties;
+		for(unsigned char *p = recv; DWORD(p-recv) < size; )
 		{
-			int tag = *p++, len = *p++, value = -1;
-			switch( len )
-			{
-			case 1: value = *p; break;
-			case 2: value = *p + (*(p+1)<<8); break;
-			case 4: value = *p + (*(p+1)<<8) + (*(p+2)<<16) + (*(p+3)<<24); break;
-			default: break;
-			}
-			p += len;
+			int tag = *p++, len = *p++, value = 0;
+			for(int i = 0; i < len; ++i)
+				value |= *p++ << 8 * i;
 			properties[Properties(tag)] = value;
 		}
 	}
@@ -350,11 +336,12 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verify, quint8 lang ) const
 {
 	bool display = false;
-	if( DWORD ioctl = d->ioctl.value(FEATURE_IFD_PIN_PROPERTIES) )
+	QHash<DRIVER_FEATURES,quint32> features = d->features();
+	if( DWORD ioctl = features.value(FEATURE_IFD_PIN_PROPERTIES) )
 	{
 		DWORD size = 0;
 		BYTE recv[256];
-		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, sizeof(recv), &size);
+		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, DWORD(sizeof(recv)), &size);
 		if( rv == SCARD_S_SUCCESS )
 		{
 			PIN_PROPERTIES_STRUCTURE *caps = (PIN_PROPERTIES_STRUCTURE *)recv;
@@ -400,9 +387,9 @@ QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verif
 	}
 	cmd += apdu;
 
-	DWORD ioctl = d->ioctl.value( verify ? FEATURE_VERIFY_PIN_START : FEATURE_MODIFY_PIN_START );
+	DWORD ioctl = features.value( verify ? FEATURE_VERIFY_PIN_START : FEATURE_MODIFY_PIN_START );
 	if( !ioctl )
-		ioctl = d->ioctl.value( verify ? FEATURE_VERIFY_PIN_DIRECT : FEATURE_MODIFY_PIN_DIRECT );
+		ioctl = features.value( verify ? FEATURE_VERIFY_PIN_DIRECT : FEATURE_MODIFY_PIN_DIRECT );
 
 	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
 		<< "> " << apdu.toHex().constData();
@@ -411,7 +398,7 @@ QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verif
 	DWORD size = data.size();
 	DWORD err = SC(Control, d->card, ioctl, cmd.constData(), cmd.size(), LPVOID(data.data()), data.size(), &size);
 
-	if( DWORD finish = d->ioctl.value( verify ? FEATURE_VERIFY_PIN_FINISH : FEATURE_MODIFY_PIN_FINISH ) )
+	if( DWORD finish = features.value( verify ? FEATURE_VERIFY_PIN_FINISH : FEATURE_MODIFY_PIN_FINISH ) )
 	{
 		size = data.size();
 		err = SC(Control, d->card, finish, nullptr, 0, LPVOID(data.data()), data.size(), &size);
