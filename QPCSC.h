@@ -29,19 +29,17 @@ class QPCSC: public QObject
 {
 	Q_OBJECT
 public:
-	enum Logging {
-		DisableLog = 0,
-		APDULog = 1,
-		PCSCLog = 2,
-	};
-	explicit QPCSC( Logging log = DisableLog, QObject *parent = 0 );
 	~QPCSC();
 
+	static QPCSC& instance();
 	QStringList drivers() const;
 	QStringList readers() const;
 	bool serviceRunning() const;
 
 private:
+	QPCSC();
+	QPCSC(const QPCSC &) = delete;
+	QPCSC &operator=(const QPCSC &) = delete;
 	QPCSCPrivate *d;
 
 	friend class QPCSCReader;

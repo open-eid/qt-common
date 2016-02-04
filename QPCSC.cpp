@@ -82,18 +82,16 @@ QHash<DRIVER_FEATURES,quint32> QPCSCReaderPrivate::features()
 
 
 
-QPCSC::QPCSC( Logging log, QObject *parent )
-	: QObject( parent )
-	, d( new QPCSCPrivate )
+QPCSC::QPCSC()
+	: d( new QPCSCPrivate )
 {
-	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, log & PCSCLog);
-	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, log & APDULog);
+	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
+	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
 	SC(EstablishContext, SCARD_SCOPE_USER, nullptr, nullptr, &d->context);
 }
 
 QPCSC::~QPCSC()
 {
-	qDeleteAll( findChildren<QPCSCReader*>() );
 	if( d->context )
 		SC(ReleaseContext, d->context);
 	delete d;
@@ -141,6 +139,12 @@ QStringList QPCSC::drivers() const
 #endif
 }
 
+QPCSC& QPCSC::instance()
+{
+	static QPCSC pcsc;
+	return pcsc;
+}
+
 QStringList QPCSC::readers() const
 {
 	if( !serviceRunning() )
@@ -172,8 +176,7 @@ bool QPCSC::serviceRunning() const
 
 
 QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
-	: QObject( parent )
-	, d( new QPCSCReaderPrivate )
+	: d( new QPCSCReaderPrivate )
 {
 	std::memset( &d->state, 0, sizeof(d->state) );
 	d->d = parent->d;

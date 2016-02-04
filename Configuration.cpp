@@ -206,10 +206,9 @@ Configuration::Configuration(QObject *parent)
 	d->rsaurl = QString("%1%2.rsa")
 		.arg(d->url.adjusted(QUrl::RemoveFilename).toString())
 		.arg(QFileInfo(d->url.fileName()).baseName());
-	QPCSC pcsc;
 	d->req.setRawHeader("User-Agent", QString("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(qApp->applicationName(), qApp->applicationVersion(),
-			 Common::applicationOs(), Settings().language(), pcsc.drivers().join("/")).toUtf8());
+			 Common::applicationOs(), Settings().language(), QPCSC::instance().drivers().join("/")).toUtf8());
 	d->net = new QNetworkAccessManager(this);
 	connect(d->net, &QNetworkAccessManager::sslErrors,
 			[=](QNetworkReply *reply, const QList<QSslError> &errors){

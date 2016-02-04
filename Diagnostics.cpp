@@ -58,15 +58,14 @@ void Diagnostics::generalInfo(QTextStream &s) const
 	s << "<br /><br />";
 #endif
 
-	QPCSC manager;
 	s << "<b>" << tr("Smart Card service status: ") << "</b>" << " "
-		<< (manager.serviceRunning() ? tr("Running") : tr("Not running"));
+		<< (QPCSC::instance().serviceRunning() ? tr("Running") : tr("Not running"));
 
 	s << "<br /><b>" << tr("Smart Card readers") << ":</b><br />";
-	foreach( const QString &readername, manager.readers() )
+	for( const QString &readername: QPCSC::instance().readers() )
 	{
 		s << readername;
-		QPCSCReader reader( readername, &manager );
+		QPCSCReader reader( readername, &QPCSC::instance() );
 		if( !reader.isPresent() )
 		{
 #ifndef Q_OS_WIN /* Apple 10.5.7 and pcsc-lite previous to v1.5.5 do not support 0 as protocol identifier */
@@ -128,6 +127,6 @@ void Diagnostics::generalInfo(QTextStream &s) const
 	}
 
 #ifdef Q_OS_WIN
-	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << manager.drivers().join( "<br />" );
+	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << QPCSC::instance().drivers().join( "<br />" );
 #endif
 }
