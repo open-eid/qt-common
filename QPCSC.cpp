@@ -201,13 +201,18 @@ bool QPCSCReader::beginTransaction()
 	return SC(BeginTransaction, d->card) == SCARD_S_SUCCESS;
 }
 
-bool QPCSCReader::connect( Connect connect, Mode mode )
+bool QPCSCReader::connect(Connect connect, Mode mode)
+{
+	return connectEx(connect, mode) == SCARD_S_SUCCESS;
+}
+
+quint32 QPCSCReader::connectEx(Connect connect, Mode mode)
 {
 	if( !d->d->context )
 		return false;
 	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto);
 	updateState();
-	return err == SCARD_S_SUCCESS;
+	return err;
 }
 
 void QPCSCReader::disconnect( Reset reset )

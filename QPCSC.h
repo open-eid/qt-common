@@ -111,6 +111,7 @@ public:
 	bool updateState( quint32 msec = 0 );
 
 	bool connect( Connect connect = Shared, Mode mode = Mode(T0|T1) );
+	quint32 connectEx( Connect connect = Shared, Mode mode = Mode(T0|T1) );
 	void disconnect( Reset reset = LeaveCard );
 	bool reconnect( Reset reset = LeaveCard, Mode mode = Mode(T0|T1) );
 	bool beginTransaction();
