@@ -331,7 +331,9 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	{
 		QByteArray cmd( "\x00\xC0\x00\x00\x00", 5 );
 		cmd[4] = data.at( size-1 );
-		return transfer( cmd );
+		Result result2 = transfer( cmd );
+		result2.data.prepend(result.data);
+		return result2;
 	}
 	return result;
 }
