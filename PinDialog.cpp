@@ -62,6 +62,7 @@ PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlag
 
 void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlags token )
 {
+	connect(this, &PinDialog::finish, this, &PinDialog::done);
 	setMinimumWidth( 350 );
 	setWindowModality( Qt::ApplicationModal );
 

@@ -54,6 +54,7 @@ public:
 
 signals:
 	void startTimer();
+	void finish(int result);
 
 private Q_SLOTS:
 	void textEdited( const QString &text );
