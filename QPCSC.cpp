@@ -343,7 +343,7 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	return result;
 }
 
-QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verify, quint8 lang ) const
+QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verify, quint8 lang, quint8 minlen ) const
 {
 	bool display = false;
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
@@ -365,9 +365,9 @@ QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verif
 		data->bmFormatString = 0x02; \
 		data->bmPINBlockString = 0x00; \
 		data->bmPINLengthFormat = 0x00; \
-		data->wPINMaxExtraDigit = (4 << 8) + 12; \
+		data->wPINMaxExtraDigit = (minlen << 8) + 12; \
 		data->bEntryValidationCondition = 0x02; \
-		data->bNumberMessage = display ? 0xFF: 0x00; \
+		data->bNumberMessage = display ? 0x03: 0x00; \
 		data->wLangId = lang; \
 		data->bTeoPrologue[0] = 0x00; \
 		data->bTeoPrologue[1] = 0x00; \
