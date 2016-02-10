@@ -191,6 +191,8 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 QString SslCertificate::keyName() const
 {
 	X509 *c = (X509*)handle();
+	if(!c)
+		return QString();
 	EVP_PKEY *key = X509_PUBKEY_get( c->cert_info->key );
 	QString name = tr("Unknown");
 	switch( EVP_PKEY_type( key->type ) )
@@ -223,7 +225,7 @@ QString SslCertificate::keyName() const
 }
 
 Qt::HANDLE SslCertificate::extension( int nid ) const
-{ return !isNull() ? Qt::HANDLE(X509_get_ext_d2i( (X509*)handle(), nid, 0, 0 )) : 0; }
+{ return !isNull() ? Qt::HANDLE(X509_get_ext_d2i( (X509*)handle(), nid, 0, 0 )) : nullptr; }
 
 QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 {
