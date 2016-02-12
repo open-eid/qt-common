@@ -38,8 +38,7 @@ public:
 
 private:
 	QPCSC();
-	QPCSC(const QPCSC &) = delete;
-	QPCSC &operator=(const QPCSC &) = delete;
+	Q_DISABLE_COPY(QPCSC);
 	QPCSCPrivate *d;
 
 	friend class QPCSCReader;
@@ -121,6 +120,7 @@ public:
 	Result transferCTL( const QByteArray &apdu, bool verify, quint8 lang = 0, quint8 minlen = 4 ) const;
 
 private:
+	Q_DISABLE_COPY(QPCSCReader)
 	QPCSCReaderPrivate *d;
 };
 

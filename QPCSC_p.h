@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QtCore/QHash>
+#include <QtCore/QMutex>
 
 #ifdef Q_OS_WIN
 #undef UNICODE
@@ -141,6 +142,7 @@ class QPCSCPrivate
 {
 public:
 	SCARDCONTEXT context = 0;
+	QHash<QString,QMutex*> lock;
 };
 
 class QPCSCReaderPrivate

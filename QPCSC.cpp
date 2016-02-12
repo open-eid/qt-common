@@ -94,6 +94,7 @@ QPCSC::~QPCSC()
 {
 	if( d->context )
 		SC(ReleaseContext, d->context);
+	qDeleteAll(d->lock);
 	delete d;
 }
 
@@ -178,6 +179,9 @@ bool QPCSC::serviceRunning() const
 QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 	: d( new QPCSCReaderPrivate )
 {
+	if(!parent->d->lock.contains(reader))
+		parent->d->lock[reader] = new QMutex();
+	parent->d->lock[reader]->lock();
 	std::memset( &d->state, 0, sizeof(d->state) );
 	d->d = parent->d;
 	d->reader = reader.toUtf8();
@@ -188,6 +192,7 @@ QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 QPCSCReader::~QPCSCReader()
 {
 	disconnect();
+	d->d->lock[d->reader]->unlock();
 	delete d;
 }
 
@@ -208,8 +213,6 @@ bool QPCSCReader::connect(Connect connect, Mode mode)
 
 quint32 QPCSCReader::connectEx(Connect connect, Mode mode)
 {
-	if( !d->d->context )
-		return false;
 	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto);
 	updateState();
 	return err;
