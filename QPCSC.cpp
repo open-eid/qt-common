@@ -370,7 +370,6 @@ QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verif
 		data->bmPINLengthFormat = 0x00; \
 		data->wPINMaxExtraDigit = (minlen << 8) + 12; \
 		data->bEntryValidationCondition = 0x02; \
-		data->bNumberMessage = display ? 0x03: 0x00; \
 		data->wLangId = lang; \
 		data->bTeoPrologue[0] = 0x00; \
 		data->bTeoPrologue[1] = 0x00; \
@@ -381,6 +380,7 @@ QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verif
 	{
 		PIN_VERIFY_STRUCTURE *data = (PIN_VERIFY_STRUCTURE*)cmd.data();
 		SET();
+		data->bNumberMessage = display ? 0xFF: 0x00;
 		data->bMsgIndex = 0x00;
 		data->ulDataLength = apdu.size();
 		cmd.resize( sizeof(PIN_VERIFY_STRUCTURE) - 1 );
@@ -389,6 +389,7 @@ QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verif
 	{
 		PIN_MODIFY_STRUCTURE *data = (PIN_MODIFY_STRUCTURE*)cmd.data();
 		SET();
+		data->bNumberMessage = display ? 0x03: 0x00;
 		data->bInsertionOffsetOld = 0x00;
 		data->bInsertionOffsetNew = 0x00;
 		data->bConfirmPIN = 0x03;
