@@ -389,33 +389,33 @@ SslCertificate::CertType SslCertificate::type() const
 		if( enhancedKeyUsage().keys().contains( OCSPSign ) )
 		{
 			return
-				p.startsWith( "1.3.6.1.4.1.10015.3." ) ||
+				p.startsWith( "1.3.6.1.4.1.10015.3" ) ||
 				subjectInfo( QSslCertificate::CommonName ).indexOf( "TEST" ) != -1 ?
 				OCSPTestType : OCSPType;
 		}
 
-		if( p.startsWith( "1.3.6.1.4.1.10015.1.1." ) )
+		if( p.startsWith( "1.3.6.1.4.1.10015.1.1" ) )
 			return EstEidType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.1.2." ) )
+		if( p.startsWith( "1.3.6.1.4.1.10015.1.2" ) )
 			return DigiIDType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.1.3." ) ||
-			p.startsWith( "1.3.6.1.4.1.10015.11.1." ) )
+		if( p.startsWith( "1.3.6.1.4.1.10015.1.3" ) ||
+			p.startsWith( "1.3.6.1.4.1.10015.11.1" ) )
 			return MobileIDType;
 
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.1." ) )
+		if( p.startsWith( "1.3.6.1.4.1.10015.3.1" ) )
 			return EstEidTestType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.2." ) )
+		if( p.startsWith( "1.3.6.1.4.1.10015.3.2" ) )
 			return DigiIDTestType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.3." ) ||
-			p.startsWith( "1.3.6.1.4.1.10015.3.11." ) )
+		if( p.startsWith( "1.3.6.1.4.1.10015.3.3" ) ||
+			p.startsWith( "1.3.6.1.4.1.10015.3.11" ) )
 			return MobileIDTestType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.7." ) ||
-			(p.startsWith( "1.3.6.1.4.1.10015.7.1." ) &&
+		if( p.startsWith( "1.3.6.1.4.1.10015.3.7" ) ||
+			(p.startsWith( "1.3.6.1.4.1.10015.7.1" ) &&
 			 issuerInfo( QSslCertificate::CommonName ).indexOf( "TEST" ) != -1) )
 			return TempelTestType;
 
-		if( p.startsWith( "1.3.6.1.4.1.10015.7.1." ) ||
-			p.startsWith( "1.3.6.1.4.1.10015.2.1." ) )
+		if( p.startsWith( "1.3.6.1.4.1.10015.7.1" ) ||
+			p.startsWith( "1.3.6.1.4.1.10015.2.1" ) )
 			return TempelType;
 	}
 	return UnknownType;
