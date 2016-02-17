@@ -245,6 +245,8 @@ bool QPCSCReader::isConnected() const
 
 bool QPCSCReader::isPinPad() const
 {
+	if(qEnvironmentVariableIsSet("SMARTCARDPP_NOPINPAD"))
+		return false;
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
 	return features.contains(FEATURE_VERIFY_PIN_DIRECT) || features.contains(FEATURE_VERIFY_PIN_START);
 }
