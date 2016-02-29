@@ -175,6 +175,7 @@ QString TokenData::toHtml() const
 	if( c.isValid() )
 	{
 		s << "<font color=\"green\">" << tr("valid") << "</font>";
+#ifdef CONFIG_URL
 		if(Configuration::instance().object().contains("EIDUPDATER-URL") &&
 			(c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) &&
 			!c.validateEncoding())
@@ -182,7 +183,9 @@ QString TokenData::toHtml() const
 			s << ",<br /><font color=\"red\">" << tr("but needs an update.")
 				<< "</font> <a href=\"openUtility\"><font color=\"red\">" << tr("Update") << "</font></a>";
 		}
-		else if(c.expiryDate().toLocalTime() <= QDateTime::currentDateTime().addDays(105))
+		else
+#endif
+		if(c.expiryDate().toLocalTime() <= QDateTime::currentDateTime().addDays(105))
 			s << "<br /><font color=\"red\">" << tr("Your certificates will expire soon") << "</font>";
 	}
 	else
