@@ -483,11 +483,11 @@ bool SslCertificate::validateEncoding() const
 	QByteArray exponent = elem.value();
 
 	// Verify Key elements
-	if(quint8(modulus[0]) > 0x80) // Missing padding
+	if(quint8(modulus[0]) >= 0x80) // Missing padding
 		return false;
 	if(quint8(modulus[0]) == 0x00 && quint8(modulus[1]) < 0x80) // Exessive padding
 		return false;
-	if(quint8(exponent[0]) > 0x80) // Missing padding
+	if(quint8(exponent[0]) >= 0x80) // Missing padding
 		return false;
 	if(quint8(exponent[0]) == 0x00 && quint8(exponent[1]) < 0x80) // Exessive padding
 		return false;
