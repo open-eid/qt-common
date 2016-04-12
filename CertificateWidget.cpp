@@ -21,6 +21,7 @@
 
 #include "ui_CertificateWidget.h"
 #include "DateTime.h"
+#include "Settings.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QStandardPaths>
@@ -28,6 +29,7 @@
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
 
 class CertificateDialogPrivate: public Ui::CertificateDialog
 {
@@ -51,6 +53,12 @@ CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *paren
 ,	d( new CertificateDialogPrivate )
 {
 	d->setupUi( this );
+	QPushButton *save = d->buttonBox->button(QDialogButtonBox::Save);
+	if(save && Settings(QSettings::SystemScope).value("disableSave", false).toBool())
+	{
+		d->buttonBox->removeButton(save);
+		save->deleteLater();
+	}
 	if(removePath)
 		d->tabWidget->removeTab( 2 );
 
@@ -62,7 +70,7 @@ CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *paren
 	s << "<hr>";
 	s << "<b>" << tr("This certificate is intended for following purpose(s):") << "</b>";
 	s << "<ul>";
-	Q_FOREACH( const QString &ext, c.enhancedKeyUsage() )
+	for(const QString &ext: c.enhancedKeyUsage())
 		s << "<li>" << ext << "</li>";
 	s << "</ul>";
 	s << "<br /><br /><br /><br />";
@@ -85,7 +93,7 @@ CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *paren
 	d->addItem( tr("Signature algorithm"), c.signatureAlgorithm() );
 
 	QStringList text, textExt;
-	Q_FOREACH( const QByteArray &obj, c.issuerInfoAttributes() )
+	for(const QByteArray &obj: c.issuerInfoAttributes())
 	{
 		const QString &data = c.issuerInfo( obj );
 		if( data.isEmpty() )
@@ -99,7 +107,7 @@ CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *paren
 
 	text.clear();
 	textExt.clear();
-	Q_FOREACH( const QByteArray &obj, c.subjectInfoAttributes() )
+	for(const QByteArray &obj: c.subjectInfoAttributes())
 	{
 		const QString &data = c.subjectInfo( obj );
 		if( data.isEmpty() )

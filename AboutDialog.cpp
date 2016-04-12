@@ -25,6 +25,7 @@
 #ifdef CONFIG_URL
 #include "Configuration.h"
 #endif
+#include "Settings.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QThreadPool>
@@ -70,9 +71,18 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	ui->diagnosticsTab->setEnabled( false );
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	Diagnostics *worker = new Diagnostics();
-	connect( worker, SIGNAL(update(QString)), ui->diagnostics, SLOT(insertHtml(QString)), Qt::QueuedConnection );
-	connect( worker, SIGNAL(destroyed()), SLOT(restoreCursor()) );
+	connect(worker, &Diagnostics::update, ui->diagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
+	connect(worker, &Diagnostics::destroyed, this, [=]{
+		ui->diagnosticsTab->setEnabled(true);
+		QApplication::restoreOverrideCursor();
+	});
 	QThreadPool::globalInstance()->start( worker );
+	QPushButton *save = ui->buttonBox1->button(QDialogButtonBox::Save);
+	if(save && Settings(QSettings::SystemScope).value("disableSave", false).toBool())
+	{
+		ui->buttonBox1->removeButton(save);
+		save->deleteLater();
+	}
 }
 
 AboutDialog::~AboutDialog()
@@ -84,12 +94,6 @@ void AboutDialog::openTab( int index )
 {
 	ui->tabWidget->setCurrentIndex( index );
 	open();
-}
-
-void AboutDialog::restoreCursor()
-{
-	ui->diagnosticsTab->setEnabled( true );
-	QApplication::restoreOverrideCursor();
 }
 
 void AboutDialog::saveDiagnostics()

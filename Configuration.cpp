@@ -34,12 +34,8 @@ public:
 	{
 		data = _data;
 		dataobject = QJsonDocument::fromJson(data).object();
-#ifdef Q_OS_MAC
-		QSettings s2(QSettings::SystemScope, qApp->organizationDomain(), qApp->applicationName());
-#else
-		QSettings s2(QSettings::SystemScope, "Estonian ID Card", qApp->applicationName());
-#endif
-		Q_FOREACH(const QString &key, s2.childKeys())
+		Settings s2(QSettings::SystemScope);
+		for(const QString &key: s2.childKeys())
 		{
 			if(dataobject.contains(key))
 			{

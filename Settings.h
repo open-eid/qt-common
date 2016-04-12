@@ -21,6 +21,7 @@
 
 #include <QtCore/QSettings>
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QLocale>
 
 class Settings : public QSettings
@@ -30,11 +31,13 @@ class Settings : public QSettings
 public:
 #ifdef Q_OS_MAC
 	Settings( const QString & = "" ): QSettings() {}
+	Settings(QSettings::Scope scope): QSettings(scope, qApp->organizationDomain(), qApp->applicationName()) {}
 #else
 	Settings( QObject *parent = 0 )
 	: QSettings( "Estonian ID Card", QString(), parent ) {}
 	Settings( const QString &application, QObject *parent = 0 )
 	: QSettings( "Estonian ID Card", application, parent ) {}
+	Settings(QSettings::Scope scope): QSettings(scope, "Estonian ID Card", qApp->applicationName()) {}
 #endif
 
 	void setValueEx( const QString &key, const QVariant &value, const QVariant &def )

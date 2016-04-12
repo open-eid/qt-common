@@ -35,7 +35,6 @@ public:
 	void openTab( int index );
 
 private slots:
-	void restoreCursor();
 	void saveDiagnostics();
 
 private:
