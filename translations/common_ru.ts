@@ -111,7 +111,7 @@ Additional licenses and components</source>
         <translation>Выдавший</translation>
     </message>
     <message>
-        <source>Vaild to</source>
+        <source>Valid to</source>
         <translation>Действительно до</translation>
     </message>
     <message>

@@ -107,8 +107,8 @@ Additional licenses and components</translation>
         <translation>Issuer</translation>
     </message>
     <message>
-        <source>Vaild to</source>
-        <translation>Vaild to</translation>
+        <source>Valid to</source>
+        <translation>Valid to</translation>
     </message>
     <message>
         <source>Subject</source>

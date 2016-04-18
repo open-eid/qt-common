@@ -107,7 +107,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Väljaandja</translation>
     </message>
     <message>
-        <source>Vaild to</source>
+        <source>Valid to</source>
         <translation>Kehtiv kuni</translation>
     </message>
     <message>

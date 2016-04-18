@@ -95,7 +95,7 @@ CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *paren
 	}
 	d->addItem( tr("Issuer"), text.join( ", " ), textExt.join( "\n" ) );
 	d->addItem( tr("Valid from"), DateTime( c.effectiveDate().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
-	d->addItem( tr("Vaild to"), DateTime( c.expiryDate().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
+	d->addItem( tr("Valid to"), DateTime( c.expiryDate().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
 
 	text.clear();
 	textExt.clear();
