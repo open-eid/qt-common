@@ -69,7 +69,7 @@ public:
 	QUrl rsaurl, url = QUrl(CONFIG_URL);
 	RSA *rsa = nullptr;
 	QNetworkRequest req;
-	QNetworkAccessManager *net;
+        QNetworkAccessManager *net = nullptr;
 	QList<QNetworkReply*> requestcache;
 #ifdef LAST_CHECK_DAYS
 	Settings s;
