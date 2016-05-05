@@ -19,12 +19,7 @@
 
 #include "ComboBox.h"
 
-#include <QtCore/QtGlobal>
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QListView>
-#else
-#include <QtGui/QListView>
-#endif
 
 ComboBox::ComboBox( QWidget *parent )
 :	QComboBox( parent )

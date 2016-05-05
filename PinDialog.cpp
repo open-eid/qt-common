@@ -24,21 +24,12 @@
 
 #include <QtCore/QTimeLine>
 #include <QtGui/QRegExpValidator>
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
-#else
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QProgressBar>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-#endif
 
 PinDialog::PinDialog( PinFlags flags, const TokenData &t, QWidget *parent )
 :	QDialog( parent )

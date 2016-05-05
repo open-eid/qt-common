@@ -44,7 +44,6 @@ SslCertificate::SslCertificate( const QByteArray &data, QSsl::EncodingFormat for
 SslCertificate::SslCertificate( const QSslCertificate &cert )
 : QSslCertificate( cert ) {}
 
-#if QT_VERSION >= 0x050000
 QString SslCertificate::issuerInfo( const QByteArray &tag ) const
 { return QSslCertificate::issuerInfo( tag ).value(0); }
 
@@ -56,7 +55,6 @@ QString SslCertificate::subjectInfo( const QByteArray &tag ) const
 
 QString SslCertificate::subjectInfo( QSslCertificate::SubjectInfo subject ) const
 { return QSslCertificate::subjectInfo( subject ).value(0); }
-#endif
 
 QByteArray SslCertificate::authorityKeyIdentifier() const
 {

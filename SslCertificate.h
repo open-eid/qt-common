@@ -74,12 +74,10 @@ public:
 	SslCertificate( const QByteArray &data, QSsl::EncodingFormat format );
 	SslCertificate( const QSslCertificate &cert );
 
-#if QT_VERSION >= 0x050000
 	QString		issuerInfo( const QByteArray &tag ) const;
 	QString		issuerInfo( QSslCertificate::SubjectInfo subject ) const;
 	QString		subjectInfo( const QByteArray &tag ) const;
 	QString		subjectInfo( QSslCertificate::SubjectInfo subject ) const;
-#endif
 
 	QByteArray	authorityKeyIdentifier() const;
 	QHash<EnhancedKeyUsage,QString> enhancedKeyUsage() const;
