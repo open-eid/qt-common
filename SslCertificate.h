@@ -85,6 +85,12 @@ public:
 	QHash<EnhancedKeyUsage,QString> enhancedKeyUsage() const;
 	QString		friendlyName() const;
 	bool		isCA() const;
+	inline bool isValid() const {
+		const QDateTime currentTime = QDateTime::currentDateTime();
+		return currentTime >= effectiveDate() &&
+			currentTime <= expiryDate() &&
+			!isBlacklisted();
+	}
 	QString		keyName() const;
 	QHash<KeyUsage,QString> keyUsage() const;
 	QStringList policies() const;

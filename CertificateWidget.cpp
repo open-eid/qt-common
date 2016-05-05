@@ -23,8 +23,8 @@
 #include "DateTime.h"
 #include "SslCertificate.h"
 
+#include <QtCore/QStandardPaths>
 #include <QtCore/QTextStream>
-#include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
@@ -122,7 +122,7 @@ CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *paren
 	if( !keyUsage.isEmpty() )
 		d->addItem( tr("Key usage"), keyUsage.join( ", " ), keyUsage.join( "\n" ) );
 
-	d->parameters->header()->setResizeMode( 0, QHeaderView::ResizeToContents );
+	d->parameters->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 }
 
 CertificateDialog::~CertificateDialog() { delete d; }
@@ -137,13 +137,11 @@ void CertificateDialog::on_parameters_itemSelectionChanged()
 
 void CertificateDialog::save()
 {
-	QString file = QFileDialog::getSaveFileName( this,
-		tr("Save certificate"),
-		QString( "%1%2%3.cer" )
-			.arg( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ) )
-			.arg( QDir::separator() )
-			.arg( d->cert.subjectInfo( "serialNumber" ) ),
-		tr("Certificates (*.cer *.crt *.pem)") );
+	QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QString("%1%2%3.cer")
+			.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
+			.arg(QDir::separator())
+			.arg(d->cert.subjectInfo("serialNumber")),
+		tr("Certificates (*.cer *.crt *.pem)"));
 	if( file.isEmpty() )
 		return;
 
