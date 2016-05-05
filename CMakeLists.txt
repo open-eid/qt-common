@@ -25,7 +25,7 @@ if( CONFIG_URL )
 	string( REPLACE ".json" ".pub" PUB_URL ${CONFIG_URL} )
 	file( DOWNLOAD ${PUB_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.pub )
 	configure_file( config.qrc config.qrc COPYONLY )
-	list( APPEND RC_FILES ${CMAKE_CURRENT_BINARY_DIR}/config.qrc )
+	qt5_add_resources( SOURCES ${CMAKE_CURRENT_BINARY_DIR}/config.qrc )
 endif()
 
 if( WIN32 )
@@ -48,16 +48,10 @@ else()
 	list( APPEND LIBRARIES qtsingleapplication )
 endif()
 
-set( TS_FILES translations/common_en.ts translations/common_et.ts translations/common_ru.ts )
-if( NOT Qt5Widgets_FOUND )
-	list( APPEND TS_FILES translations/qt_et.ts translations/qt_ru.ts )
-	configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
-else()
-	list( APPEND TS_FILES translations/qtbase_et.ts translations/qtbase_ru.ts )
-	configure_file( translations/common_tr5.qrc common_tr.qrc COPYONLY )
-endif()
-list( APPEND RC_FILES images/common_images.qrc ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
-set( UI_FILES ui/AboutDialog.ui ui/CertificateWidget.ui )
+configure_file( translations/common_tr5.qrc common_tr.qrc COPYONLY )
+qt5_add_translation( SOURCES translations/common_en.ts translations/common_et.ts translations/common_ru.ts translations/qtbase_et.ts translations/qtbase_ru.ts )
+qt5_add_resources( SOURCES images/common_images.qrc ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
+qt5_wrap_ui( SOURCES ui/AboutDialog.ui ui/CertificateWidget.ui )
 list( APPEND SOURCES
 	AboutDialog.cpp
 	CertificateWidget.cpp
@@ -194,22 +188,5 @@ if( BREAKPAD )
 	set_source_files_properties( ${SOURCES} PROPERTIES COMPILE_FLAGS "${SOURCES_FLAGS}" )
 endif()
 
-if( NOT Qt5Widgets_FOUND )
-	qt4_add_translation( SOURCES ${TS_FILES} )
-	qt4_add_resources( SOURCES ${RC_FILES} )
-	qt4_wrap_ui( SOURCES ${UI_FILES} )
-	list( APPEND LIBRARIES ${QT_LIBRARIES} )
-else()
-	qt5_add_translation( SOURCES ${TS_FILES} )
-	qt5_add_resources( SOURCES ${RC_FILES} )
-	qt5_wrap_ui( SOURCES ${UI_FILES} )
-	list( APPEND LIBRARIES Qt5::Widgets )
-endif()
-
-add_library( qdigidoccommon STATIC
-	${SOURCES}
-	${CSOURCES}
-	${CCSOURCES}
-)
-
-target_link_libraries( qdigidoccommon ${OPENSSL_LIBRARIES} ${LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
+add_library( qdigidoccommon STATIC ${SOURCES} ${CSOURCES} ${CCSOURCES} )
+target_link_libraries( qdigidoccommon Qt5::Network Qt5::Widgets ${OPENSSL_LIBRARIES} ${LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
