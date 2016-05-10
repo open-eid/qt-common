@@ -188,22 +188,23 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 
 QString SslCertificate::keyName() const
 {
-	X509 *c = (X509*)handle();
-	if(!c)
-		return QString();
-	EVP_PKEY *key = X509_PUBKEY_get( c->cert_info->key );
 	QString name = tr("Unknown");
-	switch( EVP_PKEY_type( key->type ) )
+	switch( publicKey().algorithm() )
 	{
-	case EVP_PKEY_DSA:
+	case QSsl::Dsa:
 		name = QString("DSA (%1)").arg( publicKey().length() );
 		break;
-	case EVP_PKEY_RSA:
+	case QSsl::Rsa:
 		name = QString("RSA (%1)").arg( publicKey().length() );
 		break;
 #ifndef OPENSSL_NO_ECDSA
-	case EVP_PKEY_EC:
+	case QSsl::Ec:
 	{
+		X509 *c = (X509*)handle();
+		if(!c)
+			return QString("EC (%1)").arg( publicKey().length() );
+
+		EVP_PKEY *key = X509_PUBKEY_get( c->cert_info->key );
 		EC_KEY *ec = EVP_PKEY_get1_EC_KEY( key );
 
 		int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec));
@@ -212,13 +213,14 @@ QString SslCertificate::keyName() const
 		if(OBJ_obj2txt(buff, 1024, obj, 0) > 0)
 			name = buff;
 
+		ASN1_OBJECT_free(obj);
 		EC_KEY_free( ec );
+		EVP_PKEY_free(key);
 		break;
 	}
 #endif
 	default: break;
 	}
-	EVP_PKEY_free( key );
 	return name;
 }
 
