@@ -96,8 +96,8 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList base = Common::packages( QStringList()
-		<< "Eesti ID-kaardi tarkvara" << "Estonian ID-card software", false );
+	QStringList base = Common::packages({
+		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "eID software"}, false);
 	if( !base.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << base.join( "<br />" ) << "<br />";
 	s << "<b>" << tr("Application version:") << "</b> "<< QCoreApplication::applicationVersion() << "<br />";
@@ -116,12 +116,13 @@ void Diagnostics::run()
 	QByteArray path = qgetenv("PATH");
 	qputenv("PATH", path + ";C:\\Program Files (x86)\\Open-EID");
 #endif
-	Q_FOREACH( const QString &lib, QStringList()
-			<< "digidoc" << "digidocpp" << "qdigidocclient.exe" << "qesteidutil.exe" << "id-updater.exe"
-			<< "esteidcm" << "esteidcm64" << "onepin-opensc-pkcs11" << "esteid-pkcs11" << "EsteidShellExtension"
-			<< "esteid-plugin-ie" << "esteid-plugin-ie64" << "npesteid-firefox-plugin" << "chrome-token-signing.exe"
-			<< "zlib1" << "libeay32" << "ssleay32" << "xerces-c_3_1" << "xsec_1_7" << "libxml2"
-			<< "advapi32" << "crypt32" << "winscard" )
+	const QStringList packages{
+		"digidoc", "digidocpp", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe",
+		"esteidcm", "esteidcm64", "onepin-opensc-pkcs11", "esteid-pkcs11", "EsteidShellExtension",
+		"esteid-plugin-ie", "esteid-plugin-ie64", "npesteid-firefox-plugin", "chrome-token-signing.exe",
+		"zlib1", "libeay32", "ssleay32", "xerces-c_3_1", "xsec_1_7", "libxml2",
+		"advapi32", "crypt32", "winscard"};
+	for(const QString &lib: packages)
 	{
 		DWORD infoHandle = 0;
 		LONG sz = GetFileVersionInfoSize( LPCWSTR(lib.utf16()), &infoHandle );

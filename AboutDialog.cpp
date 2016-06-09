@@ -43,8 +43,8 @@ AboutDialog::AboutDialog(QWidget *parent) :
 
 	QString package;
 #ifndef Q_OS_MAC
-	QStringList packages = Common::packages( QStringList()
-		<< "Eesti ID-kaardi tarkvara" << "Estonian ID-card software" << "estonianidcard" );
+	QStringList packages = Common::packages({
+		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "eID software"});
 	if( !packages.isEmpty() )
 		package = "<br />" + tr("Base version:") + " " + packages.first();
 #endif
