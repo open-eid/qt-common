@@ -298,6 +298,7 @@ QString SslCertificate::publicKeyHex() const
 	QString hex;
 	switch( EVP_PKEY_type( key->type ) )
 	{
+#ifndef OPENSSL_NO_ECDSA
 	case EVP_PKEY_EC:
 	{
 		EC_KEY *ec = EVP_PKEY_get1_EC_KEY(key);
@@ -308,6 +309,7 @@ QString SslCertificate::publicKeyHex() const
 		hex = toHex(key);
 		break;
 	}
+#endif
 	default:
 		hex = toHex( publicKey().toDer() );
 		break;
