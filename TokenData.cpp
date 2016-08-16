@@ -161,7 +161,7 @@ QString TokenData::toHtml() const
 		else
 		{
 			s << tr("Name") << ": <font color=\"black\">"
-				<< c.toString( "GN SN" ) << "</font><br />";
+				<< c.toString( "CN" ) << "</font><br />";
 		}
 		if(!c.subjectInfo( "serialNumber" ).isEmpty())
 		{
