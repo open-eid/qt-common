@@ -91,6 +91,7 @@ public:
 	}
 	QString		keyName() const;
 	QHash<KeyUsage,QString> keyUsage() const;
+	QString		personalCode() const;
 	QStringList policies() const;
 	QString		policyInfo( const QString &oid ) const;
 	QString		publicKeyHex() const;

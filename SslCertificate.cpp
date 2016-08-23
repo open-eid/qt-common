@@ -236,6 +236,16 @@ QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 	return list;
 }
 
+QString SslCertificate::personalCode() const
+{
+	// http://www.etsi.org/deliver/etsi_en/319400_319499/31941201/01.01.01_60/en_31941201v010101p.pdf
+	static const QStringList types {"PAS", "IDC", "PNO", "TAX", "TIN"};
+	QString data = subjectInfo(QSslCertificate::SerialNumber);
+	if(data.size() > 6 && (types.contains(data.left(3)) || data[2] == ':') && data[5] == '-')
+		return data.mid(6);
+	return data;
+}
+
 QStringList SslCertificate::policies() const
 {
 	CERTIFICATEPOLICIES *cp = (CERTIFICATEPOLICIES*)extension( NID_certificate_policies );
