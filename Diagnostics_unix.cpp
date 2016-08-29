@@ -88,7 +88,7 @@ void Diagnostics::run()
 	info.clear();
 
 #ifndef Q_OS_MAC
-	QStringList browsers = Common::packages( { "chromium-browser", "firefox", "MozillaFirefox" } );
+	QStringList browsers = Common::packages( { "chromium-browser", "firefox", "MozillaFirefox", "google-chrome-stable" } );
 	if( !browsers.isEmpty() )
 		s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join( "<br />" ) << "<br /><br />";
 	emit update( info );
