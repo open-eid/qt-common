@@ -347,11 +347,11 @@ Additional licenses and components</translation>
     <name>PinDialog</name>
     <message>
         <source>Selected action requires sign certificate.</source>
-        <translation>Selected action requires sign certificate.</translation>
+        <translation>Selected action requires signature certificate.</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2</source>
-        <translation>For using sign certificate enter PIN2</translation>
+        <translation>For using signature certificate enter PIN2</translation>
     </message>
     <message>
         <source>PIN will be locked next failed attempt</source>
@@ -367,7 +367,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>For using sign certificate enter PIN2 at the reader</translation>
+        <translation>For using signature certificate enter PIN2 at the reader</translation>
     </message>
     <message>
         <source>Authentication</source>
@@ -481,11 +481,11 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Key certificate sign</source>
-        <translation>Key certificate sign</translation>
+        <translation>Key certificate signature</translation>
     </message>
     <message>
         <source>CRL sign</source>
-        <translation>CRL sign</translation>
+        <translation>CRL signature</translation>
     </message>
     <message>
         <source>Encipher only</source>
@@ -536,11 +536,11 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Sign certificate is</source>
-        <translation>Sign certificate is</translation>
+        <translation>Signature certificate is</translation>
     </message>
     <message>
         <source>Auth certificate is</source>
-        <translation>Auth certificate is</translation>
+        <translation>Authentication certificate is</translation>
     </message>
     <message>
         <source>valid</source>
