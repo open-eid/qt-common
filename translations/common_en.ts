@@ -481,11 +481,11 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Key certificate sign</source>
-        <translation>Key certificate signing</translation>
+        <translation>Key certificate signature</translation>
     </message>
     <message>
         <source>CRL sign</source>
-        <translation>CRL signing</translation>
+        <translation>CRL signature</translation>
     </message>
     <message>
         <source>Encipher only</source>
