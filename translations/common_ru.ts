@@ -351,7 +351,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>For using sign certificate enter PIN2</source>
-        <translation>Для использования  сертификата подписи введите PIN2</translation>
+        <translation>Для использования сертификата подписи введите PIN2</translation>
     </message>
     <message>
         <source>PIN will be locked next failed attempt</source>
@@ -540,7 +540,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Auth certificate is</source>
-        <translation>Сертификат подписи</translation>
+        <translation>Идентификационный сертификат</translation>
     </message>
     <message>
         <source>valid</source>
