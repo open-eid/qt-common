@@ -55,10 +55,12 @@ qt5_wrap_ui( SOURCES AboutDialog.ui CertificateWidget.ui )
 list( APPEND SOURCES
 	AboutDialog.cpp
 	CertificateWidget.cpp
+	CliApplication.cpp
 	ComboBox.cpp
 	Common.cpp
 	DateTime.cpp
 	Diagnostics.cpp
+	DiagnosticsTask.cpp
 	IKValidator.cpp
 	PinDialog.cpp
 	QPCSC.cpp
