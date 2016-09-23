@@ -31,7 +31,7 @@
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
 Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
 Additional licenses and components</source>
-        <translation>&lt;p&gt;Заказчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet, разработчик - AS Sertifitseerimiskeskus.&lt;br /&gt;
+        <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
 В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
     </message>
