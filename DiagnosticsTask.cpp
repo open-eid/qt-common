@@ -18,42 +18,64 @@
  */
 #include "DiagnosticsTask.h"
 
+#include <iostream>
 #include <cstdio>
+
 #include <QFile>
+#include <QFileDevice>
 #include <QTextDocument>
 #include <QTextStream>
+#include <QtCore/QCoreApplication>
 
 
-DiagnosticsTask::DiagnosticsTask( QObject *parent, QString outFile ) : QObject(parent), outFile(outFile)
+DiagnosticsTask::DiagnosticsTask( QObject *parent, const QString &appInfo, const QString &outFile )
+	: QObject(parent), appInfo(appInfo), outFile(outFile)
 {
 }
 
 void DiagnosticsTask::run()
 {
-	Diagnostics *worker = new Diagnostics( false );
+	Diagnostics *worker = new Diagnostics( appInfo );
 	QObject::connect( worker, &Diagnostics::update, this, &DiagnosticsTask::insertHtml );
 	worker->run();
 	complete();
-	logDiagnostics();
 
-	emit finished();
-}
-
-void DiagnosticsTask::logDiagnostics()
-{
-	QFile file( outFile );
-	if( outFile.isEmpty() )
+	if( logDiagnostics() )
 	{
-		file.open( stdout, QIODevice::WriteOnly );
+		emit finished();
 	}
 	else
 	{
-		file.open( QIODevice::WriteOnly );
+		emit failed();
+	}
+}
+
+bool DiagnosticsTask::logDiagnostics()
+{
+	QFile file( outFile );
+	bool isOpened = false;
+
+	if( outFile.isEmpty() )
+	{
+		isOpened = file.open( stdout, QIODevice::WriteOnly );
+	}
+	else
+	{
+		isOpened = file.open( QIODevice::WriteOnly );
 	}
 
-	QTextStream out( &file );
-	out << getDiagnostics();
-	out.flush();
+	if ( isOpened )
+	{
+		QTextStream out( &file );
+		out << getDiagnostics();
+		out.flush();
+	}
+	else
+	{
+		std::cerr << outFile.toStdString() << ": " << file.errorString().toStdString() << std::endl;
+	}
+
+	return isOpened;
 }
 
 QString DiagnosticsTask::getDiagnostics() const

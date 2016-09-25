@@ -22,11 +22,11 @@
 #include "Diagnostics.h"
 #include <QObject>
 
-class DiagnosticsTask : public QObject
+class DiagnosticsTask: public QObject
 {
 	Q_OBJECT
 public:
-	DiagnosticsTask(QObject *parent, QString outFile = "" );
+	DiagnosticsTask(QObject *parent, const QString &appInfo, const QString &outFile = "" );
 	QString getDiagnostics() const;
 	void complete();
 
@@ -36,11 +36,13 @@ public slots:
 
 signals:
 	void finished();
+	void failed();
 
 private:
 	QStringList html;
 	QString data;
 	QString outFile;
+	QString appInfo;
 
-	void logDiagnostics();
+	bool logDiagnostics();
 };

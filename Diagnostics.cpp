@@ -30,19 +30,24 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
-Diagnostics::Diagnostics() : hasAppInfo( true ), QObject( 0 )
+Diagnostics::Diagnostics() : QObject( 0 ), hasAppInfo( true )
 {
 }
 
-Diagnostics::Diagnostics(bool) : hasAppInfo( false ), QObject( 0 )
+Diagnostics::Diagnostics( const QString &appInfo )
+	: QObject( 0 ), hasAppInfo( false ), appInfoMsg( appInfo )
 {
 }
 
 void Diagnostics::appInfo(QTextStream &s) const
 {
-	if (hasAppInfo)
+	if( hasAppInfo )
 	{
 		qApp->diagnostics(s);
+	}
+	else if ( !appInfoMsg.isEmpty() )
+	{
+		s << appInfoMsg;
 	}
 }
 

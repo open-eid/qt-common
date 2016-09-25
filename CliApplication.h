@@ -20,18 +20,28 @@
 #pragma once
 
 #include <QString>
+#include <QTextStream>
 
-class CliApplication
+class CliApplication: public QObject
 {
+	Q_OBJECT
 public:
-	CliApplication( int &argc, char **argv );
-	CliApplication( int &argc, char **argv, QString outFile );
+	CliApplication( int &argc, char **argv, const QString &appName );
+	CliApplication( int &argc, char **argv, const QString &appName, const QString &outFile );
 
 	bool isDiagnosticRun();
 	int run() const;
 
+public slots:
+	void exit() const;
+
+
+protected:
+	virtual void diagnostics( QTextStream &s ) const;
+
 private:
 	int &argc;
 	char **argv;
+	QString appName;
 	QString outFile;
 };

@@ -19,19 +19,19 @@
 #include "CliApplication.h"
 #include "DiagnosticsTask.h"
 
-#include <iostream>
 #include <QtCore/QObject>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QTimer>
 
 
-CliApplication::CliApplication( int &argc, char **argv ) : argc(argc), argv(argv)
+CliApplication::CliApplication( int &argc, char **argv, const QString &appName )
+	: CliApplication( argc, argv, appName, QString() )
 {
 }
 
-CliApplication::CliApplication( int &argc, char **argv, QString outFile ) : CliApplication(argc, argv) 
+CliApplication::CliApplication( int &argc, char **argv, const QString &appName, const QString &outFile )
+	: QObject( 0 ), argc(argc), argv(argv), appName(appName), outFile(outFile)
 {
-	this->outFile = outFile;
 }
 
 bool CliApplication::isDiagnosticRun()
@@ -39,9 +39,9 @@ bool CliApplication::isDiagnosticRun()
 	for( size_t i = 1; i < argc; ++i )
 	{
 		auto parameter = QString( argv[i] );
-		if( parameter.startsWith("/diag") )
+		if( parameter.startsWith("-diag") )
 		{
-			outFile = parameter.remove("/diag").remove(QRegExp("^[:]*"));
+			outFile = parameter.remove("-diag").remove(QRegExp("^[:]*"));
 			return true;
 		}
 	}
@@ -52,9 +52,30 @@ bool CliApplication::isDiagnosticRun()
 int CliApplication::run() const
 {
 	QCoreApplication qtApp( argc, argv );
-	DiagnosticsTask *task = new DiagnosticsTask( &qtApp, outFile );
+
+	qtApp.setApplicationName( appName );
+	qtApp.setApplicationVersion( QString( "%1.%2.%3.%4" )
+		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
+	qtApp.setOrganizationDomain( "ria.ee" );
+	qtApp.setOrganizationName( ORG );
+
+	QString appInfo;
+	QTextStream s( &appInfo );
+	diagnostics(s);
+
+	DiagnosticsTask *task = new DiagnosticsTask( &qtApp, appInfo, outFile );
 	QObject::connect( task, SIGNAL(finished()), &qtApp, SLOT(quit()));
+	QObject::connect( task, SIGNAL(failed()), this, SLOT(exit()));
 
 	QTimer::singleShot( 0, task, SLOT(run()) );
 	return qtApp.exec();
+}
+
+void CliApplication::diagnostics( QTextStream &s ) const
+{
+}
+
+void CliApplication::exit() const
+{
+	QCoreApplication::exit(1);
 }
