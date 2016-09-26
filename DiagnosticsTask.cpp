@@ -29,15 +29,14 @@
 
 
 DiagnosticsTask::DiagnosticsTask( QObject *parent, const QString &appInfo, const QString &outFile )
-	: QObject(parent), appInfo(appInfo), outFile(outFile)
+	: QObject(parent), appInfo(appInfo), outFile(outFile), worker( appInfo )
 {
 }
 
 void DiagnosticsTask::run()
 {
-	Diagnostics *worker = new Diagnostics( appInfo );
-	QObject::connect( worker, &Diagnostics::update, this, &DiagnosticsTask::insertHtml );
-	worker->run();
+	QObject::connect( &worker, &Diagnostics::update, this, &DiagnosticsTask::insertHtml );
+	worker.run();
 	complete();
 
 	if( logDiagnostics() )

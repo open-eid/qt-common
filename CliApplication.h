@@ -37,6 +37,8 @@ public slots:
 
 
 protected:
+	// Override method to add an application-specific message
+	// to the diagnostics after the "URLs" block
 	virtual void diagnostics( QTextStream &s ) const;
 
 private:

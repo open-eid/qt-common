@@ -30,7 +30,7 @@ CliApplication::CliApplication( int &argc, char **argv, const QString &appName )
 }
 
 CliApplication::CliApplication( int &argc, char **argv, const QString &appName, const QString &outFile )
-	: QObject( 0 ), argc(argc), argv(argv), appName(appName), outFile(outFile)
+	: argc(argc), argv(argv), appName(appName), outFile(outFile)
 {
 }
 
@@ -63,11 +63,11 @@ int CliApplication::run() const
 	QTextStream s( &appInfo );
 	diagnostics(s);
 
-	DiagnosticsTask *task = new DiagnosticsTask( &qtApp, appInfo, outFile );
-	QObject::connect( task, SIGNAL(finished()), &qtApp, SLOT(quit()));
-	QObject::connect( task, SIGNAL(failed()), this, SLOT(exit()));
+	DiagnosticsTask task( &qtApp, appInfo, outFile );
+	QObject::connect( &task, SIGNAL(finished()), &qtApp, SLOT(quit()));
+	QObject::connect( &task, SIGNAL(failed()), this, SLOT(exit()));
 
-	QTimer::singleShot( 0, task, SLOT(run()) );
+	QTimer::singleShot( 0, &task, SLOT(run()) );
 	return qtApp.exec();
 }
 
