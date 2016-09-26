@@ -21,6 +21,8 @@
 
 #include "Diagnostics.h"
 #include <QObject>
+#include <QString>
+#include <QStringList>
 
 class DiagnosticsTask: public QObject
 {
@@ -43,6 +45,7 @@ private:
 	QString data;
 	QString outFile;
 	QString appInfo;
+	Diagnostics worker;
 
 	bool logDiagnostics();
 };
