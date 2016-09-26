@@ -19,27 +19,30 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QRunnable>
+#include "Diagnostics.h"
+#include <QObject>
 
-class QTextStream;
-
-class Diagnostics: public QObject, public QRunnable
+class DiagnosticsTask: public QObject
 {
 	Q_OBJECT
 public:
-	Diagnostics();
-	explicit Diagnostics( const QString &appInfo );
+	DiagnosticsTask(QObject *parent, const QString &appInfo, const QString &outFile = "" );
+	QString getDiagnostics() const;
+	void complete();
 
+public slots:
 	void run();
+	void insertHtml( const QString &text );
 
 signals:
-	void update( const QString &data );
+	void finished();
+	void failed();
 
 private:
-	bool hasAppInfo;
-	QString appInfoMsg;
+	QStringList html;
+	QString data;
+	QString outFile;
+	QString appInfo;
 
-	void generalInfo(QTextStream &s) const;
-	void appInfo(QTextStream &s) const;
+	bool logDiagnostics();
 };

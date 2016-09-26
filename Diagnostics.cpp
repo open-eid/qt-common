@@ -30,9 +30,31 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
+Diagnostics::Diagnostics() : QObject( 0 ), hasAppInfo( true )
+{
+}
+
+Diagnostics::Diagnostics( const QString &appInfo )
+	: QObject( 0 ), hasAppInfo( false ), appInfoMsg( appInfo )
+{
+}
+
+void Diagnostics::appInfo(QTextStream &s) const
+{
+	if( hasAppInfo )
+	{
+		qApp->diagnostics(s);
+	}
+	else if ( !appInfoMsg.isEmpty() )
+	{
+		s << appInfoMsg;
+	}
+}
+
 void Diagnostics::generalInfo(QTextStream &s) const
 {
-	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(" ") << "<br />";
+	auto app = QCoreApplication::instance();
+	s << "<b>" << tr("Arguments:") << "</b> " << app->arguments().join(" ") << "<br />";
 	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
 	s << "<b>" << "URLs:" << "</b>";
 #ifdef BREAKPAD
@@ -41,7 +63,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 #ifdef CONFIG_URL
 	s << "<br />CONFIG_URL: " << CONFIG_URL;
 #endif
-	qApp->diagnostics(s);
+	appInfo(s);
 	s << "<br /><br />";
 
 #ifdef CONFIG_URL

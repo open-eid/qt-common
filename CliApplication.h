@@ -19,27 +19,29 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QRunnable>
+#include <QString>
+#include <QTextStream>
 
-class QTextStream;
-
-class Diagnostics: public QObject, public QRunnable
+class CliApplication: public QObject
 {
 	Q_OBJECT
 public:
-	Diagnostics();
-	explicit Diagnostics( const QString &appInfo );
+	CliApplication( int &argc, char **argv, const QString &appName );
+	CliApplication( int &argc, char **argv, const QString &appName, const QString &outFile );
 
-	void run();
+	bool isDiagnosticRun();
+	int run() const;
 
-signals:
-	void update( const QString &data );
+public slots:
+	void exit() const;
+
+
+protected:
+	virtual void diagnostics( QTextStream &s ) const;
 
 private:
-	bool hasAppInfo;
-	QString appInfoMsg;
-
-	void generalInfo(QTextStream &s) const;
-	void appInfo(QTextStream &s) const;
+	int &argc;
+	char **argv;
+	QString appName;
+	QString outFile;
 };
