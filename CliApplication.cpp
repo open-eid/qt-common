@@ -30,7 +30,7 @@ CliApplication::CliApplication( int &argc, char **argv, const QString &appName )
 }
 
 CliApplication::CliApplication( int &argc, char **argv, const QString &appName, const QString &outFile )
-	: QObject(), argc(argc), argv(argv), appName(appName), outFile(outFile)
+	: argc(argc), argv(argv), appName(appName), outFile(outFile)
 {
 }
 
