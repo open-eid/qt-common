@@ -30,12 +30,12 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
-Diagnostics::Diagnostics() : QObject( 0 ), hasAppInfo( true )
+Diagnostics::Diagnostics() : hasAppInfo( true )
 {
 }
 
 Diagnostics::Diagnostics( const QString &appInfo )
-	: QObject( 0 ), hasAppInfo( false ), appInfoMsg( appInfo )
+	: hasAppInfo( false ), appInfoMsg( appInfo )
 {
 }
 
