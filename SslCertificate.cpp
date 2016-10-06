@@ -108,24 +108,6 @@ QString SslCertificate::friendlyName() const
 	return cn;
 }
 
-QString SslCertificate::formatName( const QString &name )
-{
-	QString ret = name.toLower();
-	bool firstChar = true;
-	for( QString::iterator i = ret.begin(); i != ret.end(); ++i )
-	{
-		if( !firstChar && !i->isLetter() )
-			firstChar = true;
-
-		if( firstChar && i->isLetter() )
-		{
-			*i = i->toUpper();
-			firstChar = false;
-		}
-	}
-	return ret;
-}
-
 QSslCertificate SslCertificate::fromX509( Qt::HANDLE x509 )
 {
 	QByteArray der( i2d_X509( (X509*)x509, 0 ), 0 );
@@ -379,7 +361,7 @@ QString SslCertificate::toString( const QString &format ) const
 		ret.replace( pos, r.cap(0).size(), si );
 		pos += si.size();
 	}
-	return showCN() ? ret : formatName( ret );
+	return ret;
 }
 
 SslCertificate::CertType SslCertificate::type() const
