@@ -228,7 +228,7 @@ Additional licenses and components</source>
 <context>
     <name>Diagnostics</name>
     <message>
-        <source>Locale (time-, number format / codepage):</source>
+        <source>Locale:</source>
         <translation>Языковые настройки:</translation>
     </message>
     <message>

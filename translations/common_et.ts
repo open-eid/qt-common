@@ -228,8 +228,8 @@ Täiendavad litsentsid ja komponendid</translation>
 <context>
     <name>Diagnostics</name>
     <message>
-        <source>Locale (time-, number format / codepage):</source>
-        <translation>Keeleseaded (aja-, numbriformaat / kooditabel):</translation>
+        <source>Locale:</source>
+        <translation>Keeleseaded:</translation>
     </message>
     <message>
         <source>Base version:</source>
