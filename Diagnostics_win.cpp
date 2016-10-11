@@ -82,7 +82,7 @@ void Diagnostics::run()
 	QString info;
 	QTextStream s( &info );
 
-	s << "<b>" << tr("Locale (time-, number format / codepage):") << "</b> ";
+	s << "<b>" << tr("Locale:") << "</b> ";
 	QLocale::Language language = QLocale::system().language();
 	QString locale = (language == QLocale::C ? "English/United States" : QLocale::languageToString( language ) );
 	CPINFOEX CPInfoEx;

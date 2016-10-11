@@ -228,8 +228,8 @@ Additional licenses and components</translation>
 <context>
     <name>Diagnostics</name>
     <message>
-        <source>Locale (time-, number format / codepage):</source>
-        <translation>Locale (time-, number format / codepage):</translation>
+        <source>Locale:</source>
+        <translation>Locale:</translation>
     </message>
     <message>
         <source>Base version:</source>

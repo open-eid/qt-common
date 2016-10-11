@@ -35,7 +35,7 @@ void Diagnostics::run()
 	QLocale::Language language = QLocale::system().language();
 	QString ctype = QProcessEnvironment::systemEnvironment().value( "LC_CTYPE",
 		QProcessEnvironment::systemEnvironment().value( "LANG" ) );
-	s << "<b>" << tr("Locale (time-, number format / codepage):") << "</b> "
+	s << "<b>" << tr("Locale:") << "</b> "
 		<< (language == QLocale::C ? "English/United States" : QLocale::languageToString( language )) << " / "
 		<< ctype << "<br /><br />";
 	emit update( info );
