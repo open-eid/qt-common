@@ -36,8 +36,12 @@ void Diagnostics::run()
 	QString ctype = QProcessEnvironment::systemEnvironment().value( "LC_CTYPE",
 		QProcessEnvironment::systemEnvironment().value( "LANG" ) );
 	s << "<b>" << tr("Locale:") << "</b> "
-		<< (language == QLocale::C ? "English/United States" : QLocale::languageToString( language )) << " / "
-		<< ctype << "<br /><br />";
+		<< (language == QLocale::C ? "English/United States" : QLocale::languageToString( language ));
+	if( !ctype.isEmpty() )
+	{
+		s << " / " << ctype;
+	}
+	s << "<br /><br />";
 	emit update( info );
 	info.clear();
 
