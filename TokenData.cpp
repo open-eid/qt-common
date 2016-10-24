@@ -178,7 +178,7 @@ QString TokenData::toHtml() const
 #ifdef CONFIG_URL
 		if(Configuration::instance().object().contains("EIDUPDATER-URL") &&
 			(c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) &&
-			!c.validateEncoding())
+			(!c.validateEncoding() || (Configuration::instance().object().contains("EIDUPDATER-SHA1") && c.signatureAlgorithm() == "sha1WithRSAEncryption")))
 		{
 			s << ",<br /><font color=\"red\">" << tr("but needs an update.")
 				<< "</font> <a href=\"openUtility\"><font color=\"red\">" << tr("Update") << "</font></a>";
