@@ -1,6 +1,6 @@
-set_ex( CONFIG_URL "$ENV{CONFIG_URL}" "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
-set_ex( BREAKPAD "$ENV{BREAKPAD}" "https://cr.eesti.ee/" CACHE STRING "URL for breakpad crash reporting, empty for disabled" )
-set_ex( ENABLE_CRASH "$ENV{ENABLE_CRASH}" NO CACHE BOOL "Enable -crash parameter" )
+set_env( CONFIG_URL "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
+set_env( BREAKPAD "https://cr.eesti.ee/" CACHE STRING "URL for breakpad crash reporting, empty for disabled" )
+set_env( ENABLE_CRASH NO CACHE BOOL "Enable -crash parameter" )
 
 find_package( OpenSSL REQUIRED )
 
@@ -13,7 +13,7 @@ endif()
 include_directories(${OPENSSL_INCLUDE_DIR} ${PCSCLITE_INCLUDE_DIR})
 
 if( CONFIG_URL )
-	set_ex( LAST_CHECK_DAYS "$ENV{LAST_CHECK_DAYS}" 7 CACHE STRING "How often check configuration changes" )
+	set_env( LAST_CHECK_DAYS 7 CACHE STRING "How often check configuration changes" )
 	if( LAST_CHECK_DAYS )
 		set_source_files_properties( Configuration.cpp PROPERTIES COMPILE_DEFINITIONS "LAST_CHECK_DAYS=${LAST_CHECK_DAYS}" )
 	endif()
