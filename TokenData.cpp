@@ -27,6 +27,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
+#include <QtNetwork/QSslKey>
 
 class TokenDataPrivate: public QSharedData
 {
@@ -177,6 +178,7 @@ QString TokenData::toHtml() const
 		s << "<font color=\"green\">" << tr("valid") << "</font>";
 #ifdef CONFIG_URL
 		if(Configuration::instance().object().contains("EIDUPDATER-URL") &&
+			c.publicKey().length() > 1024 &&
 			(c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) &&
 			(!c.validateEncoding() || (Configuration::instance().object().contains("EIDUPDATER-SHA1") && c.signatureAlgorithm() == "sha1WithRSAEncryption")))
 		{
