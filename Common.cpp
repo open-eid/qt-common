@@ -387,7 +387,6 @@ QStringList Common::packages( const QStringList &names, bool withName )
 		packages << QString("%1 (%2.%3)").arg(name)
 			.arg(QString::fromCFString(ver))
 			.arg(QString::fromCFString(build));
-		CFRelease(bundle);
 	}
 #elif defined(Q_OS_LINUX)
 	QProcess p;
