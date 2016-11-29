@@ -452,7 +452,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Tuvastab isikut serverarvutile</translation>
     </message>
     <message>
-        <source>Protects e-mail messages</source>
+        <source>Protects email messages</source>
         <translation>Kaitseb e-posti sõnumeid</translation>
     </message>
     <message>

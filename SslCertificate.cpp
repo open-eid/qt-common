@@ -86,7 +86,7 @@ QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage
 		case NID_server_auth:
 			list[ServerAuth] = tr("Ensures the identity of a remote computer"); break;
 		case NID_email_protect:
-			list[EmailProtect] = tr("Protects e-mail messages"); break;
+			list[EmailProtect] = tr("Protects email messages"); break;
 		case NID_OCSP_sign:
 			list[OCSPSign] = tr("OCSP signing"); break;
 		case NID_time_stamp:

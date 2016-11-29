@@ -452,8 +452,8 @@ Additional licenses and components</translation>
         <translation>Proves your identity to a remote computer</translation>
     </message>
     <message>
-        <source>Protects e-mail messages</source>
-        <translation>Protects e-mail messages</translation>
+        <source>Protects email messages</source>
+        <translation>Protects email messages</translation>
     </message>
     <message>
         <source>OCSP signing</source>
