@@ -60,7 +60,7 @@ bool DiagnosticsTask::logDiagnostics()
 	}
 	else
 	{
-		isOpened = file.open( QIODevice::WriteOnly );
+		isOpened = file.open( QIODevice::WriteOnly|QIODevice::Text );
 	}
 
 	if ( isOpened )
