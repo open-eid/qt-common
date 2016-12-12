@@ -452,7 +452,7 @@ Additional licenses and components</source>
         <translation>Подтверждает Вашу личность на отдалённом компьютере</translation>
     </message>
     <message>
-        <source>Protects e-mail messages</source>
+        <source>Protects email messages</source>
         <translation>Защищает сообщения электронной почты</translation>
     </message>
     <message>
