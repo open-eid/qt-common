@@ -527,6 +527,14 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Nimi</translation>
     </message>
     <message>
+        <source>Given Names</source>
+        <translation>Eesnimed</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Perekonnanimi</translation>
+    </message>
+    <message>
         <source>Personal code</source>
         <translation>Isikukood</translation>
     </message>
