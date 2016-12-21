@@ -527,6 +527,14 @@ Additional licenses and components</source>
         <translation>Имя</translation>
     </message>
     <message>
+        <source>Given Names</source>
+        <translation>Имя</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Фамилия</translation>
+    </message>
+    <message>
         <source>Personal code</source>
         <translation>Личный код</translation>
     </message>

@@ -154,10 +154,14 @@ QString TokenData::toHtml() const
 	}
 	else
 	{
+		bool breakOnSerial = true;
 		if(!c.subjectInfo("GN").isEmpty() && !c.subjectInfo("SN").isEmpty())
 		{
-			s << tr("Name") << ": <font color=\"black\">"
-				<< c.toString( "GN SN" ) << "</font><br />";
+			s << tr("Given Names") << ": <font color=\"black\">"
+				<< c.toString( "GN" ) << "</font><br />";
+			s << tr("Surname") << ": <font color=\"black\">"
+				<< c.toString( "SN" ) << "</font><br />";
+			breakOnSerial = false;
 		}
 		else
 		{
@@ -167,7 +171,7 @@ QString TokenData::toHtml() const
 		if(!c.subjectInfo( "serialNumber" ).isEmpty())
 		{
 			s << tr("Personal code") << ": <font color=\"black\">"
-				<< c.subjectInfo( "serialNumber" ) << "</font><br />";
+				<< c.subjectInfo( "serialNumber" ) << "</font>" << ( breakOnSerial ? "<br />" : "&nbsp;&nbsp;" );
 		}
 	}
 	s << tr("Card in reader") << ": <font color=\"black\">" << d->card << "</font><br />";

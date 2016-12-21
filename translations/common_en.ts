@@ -527,6 +527,14 @@ Additional licenses and components</translation>
         <translation>Name</translation>
     </message>
     <message>
+        <source>Given Names</source>
+        <translation>Given Names</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Surname</translation>
+    </message>
+    <message>
         <source>Personal code</source>
         <translation>Personal code</translation>
     </message>
