@@ -193,7 +193,7 @@ if( BREAKPAD )
 endif()
 
 add_library( qdigidoccommon STATIC ${SOURCES} ${CSOURCES} ${CCSOURCES} )
-if( CMAKE_VERSION VERSION_GREATER 3.1.0 )
+if( CMAKE_VERSION VERSION_GREATER 3.1.0 AND BREAKPAD )
 	set_target_properties( qdigidoccommon PROPERTIES CXX_STANDARD 98 )
 endif()
 target_link_libraries( qdigidoccommon Qt5::Network Qt5::Widgets ${OPENSSL_LIBRARIES} ${LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
