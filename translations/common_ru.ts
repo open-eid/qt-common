@@ -568,7 +568,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Open utility</source>
-        <translation>Открыть средство управления</translation>
+        <translation>Открыть утилиту</translation>
     </message>
     <message>
         <source>Update</source>
