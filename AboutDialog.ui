@@ -33,7 +33,7 @@
        <item>
         <widget class="QLabel" name="elLogo">
          <property name="pixmap">
-          <pixmap resource="../images/common_images.qrc">:/images/EL_Regionaalareng_horisontaal.png</pixmap>
+          <pixmap resource="images/common_images.qrc">:/images/EL_Regionaalareng_horisontaal@2x.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -124,7 +124,7 @@ Additional licenses and components</string>
   </layout>
  </widget>
  <resources>
-  <include location="../images/common_images.qrc"/>
+  <include location="images/common_images.qrc"/>
  </resources>
  <connections>
   <connection>
