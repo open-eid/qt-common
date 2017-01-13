@@ -55,7 +55,6 @@ public:
 	static QUrl helpUrl();
 	static QStringList packages( const QStringList &names, bool withName = true );
 	static void setAccessibleName( QLabel *widget );
-	static void showHelp( const QString &msg, int code = -1 );
 
 private:
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
