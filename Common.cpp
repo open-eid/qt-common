@@ -360,10 +360,11 @@ QStringList Common::packages( const QStringList &names, bool withName )
 	}
 	packages.removeDuplicates();
 #else // problems on 64bit windows
-	Q_FOREACH( const QString &group, QStringList() << "HKEY_LOCAL_MACHINE" << "HKEY_CURRENT_USER" )
+	static const QStringList roots{"HKEY_LOCAL_MACHINE", "HKEY_CURRENT_USER"},
+	for(const QString &group: roots)
 	{
 		QSettings s( group + "\\" + path, QSettings::NativeFormat );
-		Q_FOREACH( const QString &key, s.childGroups() )
+		for(const QString &key: s.childGroups())
 		{
 			QString name = s.value( key + "/DisplayName" ).toString();
 			QString version = s.value( key + "/DisplayVersion" ).toString();
@@ -391,7 +392,7 @@ QStringList Common::packages( const QStringList &names, bool withName )
 #elif defined(Q_OS_LINUX)
 	QProcess p;
 
-	Q_FOREACH( const QString &name, names )
+	for(const QString &name: names)
 	{
 		p.start( "dpkg-query", QStringList() << "-W" << "-f=${Version}" << name );
 		if( !p.waitForStarted() && p.error() == QProcess::FailedToStart )
@@ -416,30 +417,4 @@ void Common::setAccessibleName( QLabel *widget )
 	QTextDocument doc;
 	doc.setHtml( widget->text() );
 	widget->setAccessibleName( doc.toPlainText() );
-}
-
-void Common::showHelp( const QString &msg, int code )
-{
-	QUrl u;
-
-	if( code > 0 )
-	{
-		u.setUrl( "http://www.sk.ee/digidoc/support/errorinfo/" );
-		QUrlQuery q(u);
-		q.addQueryItem( "app", applicationName() );
-		q.addQueryItem( "appver", applicationVersion() );
-		q.addQueryItem( "l", Settings::language() );
-		q.addQueryItem( "code", QString::number( code ) );
-		q.addQueryItem( "os", applicationOs() );
-	}
-	else
-	{
-		u = helpUrl();
-		QUrlQuery q(u);
-		q.addQueryItem( "searchquery", msg );
-		q.addQueryItem( "searchtype", "all" );
-		q.addQueryItem( "_m", "core" );
-		q.addQueryItem( "_a", "searchclient" );
-	}
-	QDesktopServices::openUrl( u );
 }
