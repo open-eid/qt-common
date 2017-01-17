@@ -100,7 +100,7 @@ void Diagnostics::run()
 		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "eID software"}, false);
 	if( !base.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << base.join( "<br />" ) << "<br />";
-	s << "<b>" << tr("Application version:") << "</b> "<< QCoreApplication::applicationVersion() << "<br />";
+	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion() << " (" << QSysInfo::WordSize << " bit)<br />";
 	emit update( info );
 	info.clear();
 
