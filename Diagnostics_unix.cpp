@@ -50,7 +50,7 @@ void Diagnostics::run()
 	if( !package.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << package.first() << "<br />";
 #endif
-	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion() << "<br />";
+	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion() << " (" << QSysInfo::WordSize << " bit)<br />";
 	emit update( info );
 	info.clear();
 
