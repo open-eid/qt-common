@@ -104,10 +104,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	s << "<b>" << tr("OS:") << "</b> " << Common::applicationOs() << "<br />";
-	SYSTEM_INFO sysinfo;
-	GetSystemInfo( &sysinfo );
-	s << "<b>" << tr("CPU:") << "</b> " << QString::number( sysinfo.dwProcessorType ) << "<br /><br />";
+	s << "<b>" << tr("OS:") << "</b> " << Common::applicationOs() << "<br /><br /";
 	emit update( info );
 	info.clear();
 
