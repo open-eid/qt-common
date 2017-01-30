@@ -69,6 +69,9 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	setWindowIcon( QIcon( icon ) );
 	if( QFile::exists( QString("%1/%2.log").arg( QDir::tempPath(), app ) ) )
 		qInstallMessageHandler(msgHandler);
+#ifdef Q_OS_DARWIN
+	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
+#endif
 
 #ifdef BREAKPAD
 	new QBreakPad(this);
