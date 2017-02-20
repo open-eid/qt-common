@@ -33,6 +33,21 @@
 #include <openssl/x509v3.h>
 #include <openssl/pkcs12.h>
 
+#if OPENSSL_VERSION_NUMBER < 0x10010000L
+void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
+{
+	if(n) *n = r->n;
+	if(e) *e = r->e;
+	if(d) *d = r->d;
+}
+
+void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGNUM **priv_key)
+{
+	if(pub_key) *pub_key = d->pub_key;
+	if(priv_key) *priv_key = d->priv_key;
+}
+#endif
+
 uint qHash( const SslCertificate &cert ) { return qHash( cert.digest() ); }
 
 SslCertificate::SslCertificate()
@@ -137,24 +152,28 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 	QSsl::KeyAlgorithm alg;
 	QSsl::KeyType type;
 
-	switch( EVP_PKEY_type( key->type ) )
+	switch(EVP_PKEY_base_id(key))
 	{
 	case EVP_PKEY_RSA:
 	{
-		RSA *rsa = EVP_PKEY_get1_RSA( key );
+		RSA *rsa = EVP_PKEY_get1_RSA(key);
 		alg = QSsl::Rsa;
-		type = rsa->d ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = rsa->d ? i2d_RSAPrivateKey( rsa, &data ) : i2d_RSAPublicKey( rsa, &data );
-		RSA_free( rsa );
+		const BIGNUM *d = nullptr;
+		RSA_get0_key(rsa, nullptr, nullptr, &d);
+		type = d ? QSsl::PrivateKey : QSsl::PublicKey;
+		len = d ? i2d_RSAPrivateKey(rsa, &data) : i2d_RSAPublicKey(rsa, &data);
+		RSA_free(rsa);
 		break;
 	}
 	case EVP_PKEY_DSA:
 	{
-		DSA *dsa = EVP_PKEY_get1_DSA( key );
+		DSA *dsa = EVP_PKEY_get1_DSA(key);
 		alg = QSsl::Dsa;
-		type = dsa->priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = dsa->priv_key ? i2d_DSAPrivateKey( dsa, &data ) : i2d_DSAPublicKey( dsa, &data );
-		DSA_free( dsa );
+		const BIGNUM *priv_key = nullptr;
+		DSA_get0_key(dsa, nullptr, &priv_key);
+		type = priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
+		len = priv_key ? i2d_DSAPrivateKey(dsa, &data) : i2d_DSAPublicKey(dsa, &data);
+		DSA_free(dsa);
 		break;
 	}
 	default: break;
@@ -173,9 +192,9 @@ QString SslCertificate::keyName() const
 	X509 *c = (X509*)handle();
 	if(!c)
 		return QString();
-	EVP_PKEY *key = X509_PUBKEY_get( c->cert_info->key );
+	EVP_PKEY *key = X509_get_pubkey(c);
 	QString name = tr("Unknown");
-	switch( EVP_PKEY_type( key->type ) )
+	switch(EVP_PKEY_base_id(key))
 	{
 	case EVP_PKEY_DSA:
 		name = QString("DSA (%1)").arg( publicKey().length() );
@@ -286,9 +305,9 @@ QString SslCertificate::publicKeyHex() const
 	X509 *x = static_cast<X509*>(handle());
 	if(!x)
 		return QString();
-	EVP_PKEY *key = X509_PUBKEY_get( x->cert_info->key );
+	EVP_PKEY *key = X509_get_pubkey(x);
 	QString hex;
-	switch( EVP_PKEY_type( key->type ) )
+	switch(EVP_PKEY_base_id(key))
 	{
 #ifndef OPENSSL_NO_ECDSA
 	case EVP_PKEY_EC:
@@ -338,7 +357,14 @@ QString SslCertificate::signatureAlgorithm() const
 
 	char buf[50];
 	memset( buf, 0, 50 );
-	i2t_ASN1_OBJECT( buf, 50, ((X509*)handle())->cert_info->signature->algorithm );
+
+#if OPENSSL_VERSION_NUMBER < 0x10010000L
+	X509_ALGOR *algo = nullptr;
+#else
+	const X509_ALGOR *algo = nullptr;
+#endif
+	X509_get0_signature(nullptr, &algo, (X509*)handle());
+	i2t_ASN1_OBJECT(buf, 50, algo->algorithm);
 	return buf;
 }
 
