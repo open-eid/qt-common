@@ -53,6 +53,7 @@ public:
 		QByteArray SW;
 		QByteArray data;
 		quint32 err;
+		inline bool operator!() const { !resultOk(); }
 		inline bool resultOk() const
 		{
 			static const QByteArray OK("\x90\x00", 2);
@@ -117,7 +118,7 @@ public:
 	bool endTransaction( Reset reset = LeaveCard );
 	Result transfer( const char *cmd, int size ) const;
 	Result transfer( const QByteArray &apdu ) const;
-	Result transferCTL( const QByteArray &apdu, bool verify, quint8 lang = 0, quint8 minlen = 4 ) const;
+	Result transferCTL(const QByteArray &apdu, bool verify, quint16 lang = 0, quint8 minlen = 4) const;
 
 private:
 	Q_DISABLE_COPY(QPCSCReader)
