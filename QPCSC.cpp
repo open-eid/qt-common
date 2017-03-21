@@ -348,7 +348,7 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	return result;
 }
 
-QPCSCReader::Result QPCSCReader::transferCTL( const QByteArray &apdu, bool verify, quint8 lang, quint8 minlen ) const
+QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify, quint16 lang, quint8 minlen) const
 {
 	bool display = false;
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
