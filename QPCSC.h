@@ -53,7 +53,7 @@ public:
 		QByteArray SW;
 		QByteArray data;
 		quint32 err;
-		inline bool operator!() const { !resultOk(); }
+		inline bool operator!() const { return !resultOk(); }
 		inline bool resultOk() const
 		{
 			static const QByteArray OK("\x90\x00", 2);
