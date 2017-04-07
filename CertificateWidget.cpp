@@ -93,13 +93,17 @@ CertificateDialog::CertificateDialog(const QSslCertificate &cert, QWidget *paren
 	d->addItem( tr("Signature algorithm"), c.signatureAlgorithm() );
 
 	QStringList text, textExt;
+	static const QByteArray ORGID_OID = QByteArrayLiteral("2.5.4.97");
 	for(const QByteArray &obj: c.issuerInfoAttributes())
 	{
 		const QString &data = c.issuerInfo( obj );
 		if( data.isEmpty() )
 			continue;
 		text << data;
-		textExt << QString( "%1 = %2" ).arg( obj.constData() ).arg( data );
+		// organizationIdentifier OID might not be known by SSL backend
+		textExt << QString( "%1 = %2" ).arg(
+				obj.constData() == ORGID_OID ? "organizationIdentifier" : obj.constData()
+			).arg( data );
 	}
 	d->addItem( tr("Issuer"), text.join( ", " ), textExt.join( "\n" ) );
 	d->addItem( tr("Valid from"), DateTime( c.effectiveDate().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
