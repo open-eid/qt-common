@@ -323,7 +323,7 @@ Configuration::Configuration(QObject *parent)
 			qDebug() << "Bundled configuration serial:" << bundledSerial;
 			if(serial < bundledSerial)
 			{
-				qWarning() << "Bundled configuration is recent than cache, reseting cache";
+				qWarning() << "Bundled configuration is recent than cache, resetting cache";
 				d->initCache(true);
 			}
 		}
