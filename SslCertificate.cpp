@@ -33,7 +33,7 @@
 #include <openssl/x509v3.h>
 #include <openssl/pkcs12.h>
 
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
+#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
 {
 	if(n) *n = r->n;
@@ -358,13 +358,14 @@ QString SslCertificate::signatureAlgorithm() const
 	char buf[50];
 	memset( buf, 0, 50 );
 
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
+#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 	X509_ALGOR *algo = nullptr;
+	i2t_ASN1_OBJECT( buf, 50, ((X509*)handle())->cert_info->signature->algorithm );
 #else
 	const X509_ALGOR *algo = nullptr;
-#endif
 	X509_get0_signature(nullptr, &algo, (X509*)handle());
 	i2t_ASN1_OBJECT(buf, 50, algo->algorithm);
+#endif
 	return buf;
 }
 
