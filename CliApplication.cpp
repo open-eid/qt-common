@@ -36,7 +36,7 @@ CliApplication::CliApplication( int &argc, char **argv, const QString &appName, 
 
 bool CliApplication::isDiagnosticRun()
 {
-	for( size_t i = 1; i < argc; ++i )
+	for( int i = 1; i < argc; ++i )
 	{
 		auto parameter = QString( argv[i] );
 		if( parameter.startsWith("-diag") )

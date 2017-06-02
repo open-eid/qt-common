@@ -359,7 +359,6 @@ QString SslCertificate::signatureAlgorithm() const
 	memset( buf, 0, 50 );
 
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
-	X509_ALGOR *algo = nullptr;
 	i2t_ASN1_OBJECT( buf, 50, ((X509*)handle())->cert_info->signature->algorithm );
 #else
 	const X509_ALGOR *algo = nullptr;

@@ -29,7 +29,7 @@
 
 
 DiagnosticsTask::DiagnosticsTask( QObject *parent, const QString &appInfo, const QString &outFile )
-	: QObject(parent), appInfo(appInfo), outFile(outFile), worker( appInfo )
+	: QObject(parent), outFile(outFile), appInfo(appInfo), worker( appInfo )
 {
 }
 
