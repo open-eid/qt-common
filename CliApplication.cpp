@@ -71,7 +71,7 @@ int CliApplication::run() const
 	return qtApp.exec();
 }
 
-void CliApplication::diagnostics( QTextStream &s ) const
+void CliApplication::diagnostics( QTextStream & ) const
 {
 }
 
