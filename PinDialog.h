@@ -34,16 +34,20 @@ class PinDialog: public QDialog
 public:
 	enum PinFlags
 	{
-		Pin1Type = 0,
-		Pin2Type = 1,
-		PinpadFlag = 2,
-		PinpadNoProgressFlag = 4,
+		Pin1Type = 1,
+		Pin2Type = 2,
+		PinpadFlag = 4,
+		PinpadNoProgressFlag = 8,
+		Pin1ChangePinpadType = 16|PinpadFlag,
+		Pin2ChangePinpadType = 32|PinpadFlag,
+		PukChangePinpadType = 64|PinpadFlag,
 		Pin1PinpadType = Pin1Type|PinpadFlag,
 		Pin2PinpadType = Pin2Type|PinpadFlag
 	};
 	PinDialog( PinFlags flags, const TokenData &t, QWidget *parent = 0 );
 	PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
 	PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
+    PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText);
 
 	QString text() const;
 
@@ -55,7 +59,7 @@ private Q_SLOTS:
 	void textEdited( const QString &text );
 
 private:
-	void init( PinFlags flags, const QString &title, TokenData::TokenFlags token );
+	void init( PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText="" );
 
 	QLineEdit	*m_text;
 	QPushButton	*ok;

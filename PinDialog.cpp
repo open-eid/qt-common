@@ -51,7 +51,13 @@ PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlag
 	init( flags, title, token );
 }
 
-void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlags token )
+PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText )
+	: QDialog(parent)
+{
+	init( flags, title, token, bodyText );
+}
+
+void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText )
 {
 	connect(this, &PinDialog::finish, this, &PinDialog::done);
 	setMinimumWidth( 350 );
@@ -79,7 +85,7 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 		text += tr("Selected action requires sign certificate.") + "<br />" + t;
 		regexp.setPattern( "\\d{5,12}" );
 	}
-	else
+	else if( flags & Pin1Type )
 	{
 		_title = tr("Authentication") + " - " + title;
 		QString t = flags & PinpadFlag ?
@@ -87,6 +93,10 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 			tr("For using authentication certificate enter PIN1");
 		text += tr("Selected action requires authentication certificate.") + "<br />" + t;
 		regexp.setPattern( "\\d{4,12}" );
+	}
+	else
+	{
+		text = bodyText;
 	}
 	setWindowTitle( _title );
 	label->setText( text );
