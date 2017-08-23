@@ -38,16 +38,12 @@ public:
 		Pin2Type = 2,
 		PinpadFlag = 4,
 		PinpadNoProgressFlag = 8,
-		Pin1ChangePinpadType = 16|PinpadFlag,
-		Pin2ChangePinpadType = 32|PinpadFlag,
-		PukChangePinpadType = 64|PinpadFlag,
 		Pin1PinpadType = Pin1Type|PinpadFlag,
 		Pin2PinpadType = Pin2Type|PinpadFlag
 	};
 	PinDialog( PinFlags flags, const TokenData &t, QWidget *parent = 0 );
 	PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
-	PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
-    PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText);
+	PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0, const QString &bodyText = "" );
 
 	QString text() const;
 

@@ -45,12 +45,6 @@ PinDialog::PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::To
 	init( flags, c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), token );
 }
 
-PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent )
-	: QDialog(parent)
-{
-	init( flags, title, token );
-}
-
 PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText )
 	: QDialog(parent)
 {
@@ -70,34 +64,39 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 	QString _title = title;
 	QString text;
 
-	if( token & TokenData::PinFinalTry )
-		text += "<font color='red'><b>" + tr("PIN will be locked next failed attempt") + "</b></font><br />";
-	else if( token & TokenData::PinCountLow )
-		text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
-
-	text += QString( "<b>%1</b><br />" ).arg( title );
-	if( flags & Pin2Type )
-	{
-		_title = tr("Signing") + " - " + title;
-		QString t = flags & PinpadFlag ?
-			tr("For using sign certificate enter PIN2 at the reader") :
-			tr("For using sign certificate enter PIN2");
-		text += tr("Selected action requires sign certificate.") + "<br />" + t;
-		regexp.setPattern( "\\d{5,12}" );
-	}
-	else if( flags & Pin1Type )
-	{
-		_title = tr("Authentication") + " - " + title;
-		QString t = flags & PinpadFlag ?
-			tr("For using authentication certificate enter PIN1 at the reader") :
-			tr("For using authentication certificate enter PIN1");
-		text += tr("Selected action requires authentication certificate.") + "<br />" + t;
-		regexp.setPattern( "\\d{4,12}" );
-	}
-	else
+	if( !bodyText.isEmpty() ) 
 	{
 		text = bodyText;
 	}
+	else
+	{
+		if( token & TokenData::PinFinalTry )
+			text += "<font color='red'><b>" + tr("PIN will be locked next failed attempt") + "</b></font><br />";
+		else if( token & TokenData::PinCountLow )
+			text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
+
+		text += QString( "<b>%1</b><br />" ).arg( title );
+
+		if( flags & Pin2Type )
+		{
+			_title = tr("Signing") + " - " + title;
+			QString t = flags & PinpadFlag ?
+				tr("For using sign certificate enter PIN2 at the reader") :
+				tr("For using sign certificate enter PIN2");
+			text += tr("Selected action requires sign certificate.") + "<br />" + t;
+			regexp.setPattern( "\\d{5,12}" );
+		}
+		else if( flags & Pin1Type )
+		{
+			_title = tr("Authentication") + " - " + title;
+			QString t = flags & PinpadFlag ?
+				tr("For using authentication certificate enter PIN1 at the reader") :
+				tr("For using authentication certificate enter PIN1");
+			text += tr("Selected action requires authentication certificate.") + "<br />" + t;
+			regexp.setPattern( "\\d{4,12}" );
+		}
+	}
+
 	setWindowTitle( _title );
 	label->setText( text );
 	Common::setAccessibleName( label );
