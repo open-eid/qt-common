@@ -483,6 +483,13 @@ bool SslCertificate::validateEncoding() const
 	// Key algo OID
 	if (!elem.read(keyStream) || elem.type() != QAsn1Element::SequenceType)
 		return false;
+
+	QAsn1Element oidElem;
+	if (!oidElem.read(elem.value()) || oidElem.type() != QAsn1Element::ObjectIdentifierType)
+		return false;
+	if (oidElem.toObjectId() == EC_ENCRYPTION_OID)
+		return true;
+
 	// Key data
 	if (!elem.read(keyStream) || elem.type() != QAsn1Element::BitStringType)
 		return false;
