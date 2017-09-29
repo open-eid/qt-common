@@ -202,7 +202,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Request timed out</source>
-        <translation type="unfinished"></translation>
+        <translation>Päringu kannatus katkes</translation>
     </message>
     <message>
         <source>The configuration file located on the server cannot be validated.</source>
@@ -571,12 +571,12 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Ava haldusvahend</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Uuenda</translation>
+        <source>Please verify if your card requires update</source>
+        <translation>Kontrolli, kas ID-kaart vajab uuendamist</translation>
     </message>
     <message>
-        <source>but needs an update.</source>
-        <translation>kuid vajab uuendamist.</translation>
+        <source>This version of Digidoc software does not yet&lt;br /&gt;support decrypting with Your digital identity card.</source>
+        <translation>Tarkvara ei toeta veel selle ID-kaardiga dekrüpteerimist.</translation>
     </message>
 </context>
 </TS>

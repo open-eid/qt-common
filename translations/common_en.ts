@@ -509,7 +509,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Ensures the identity of a remote computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ensures the identity of a remote computer</translation>
     </message>
 </context>
 <context>
@@ -571,12 +571,12 @@ Additional licenses and components</translation>
         <translation>Open utility</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Update</translation>
+        <source>Please verify if your card requires update</source>
+        <translation>Please verify if your card requires update</translation>
     </message>
     <message>
-        <source>but needs an update.</source>
-        <translation>but needs an update.</translation>
+        <source>This version of Digidoc software does not yet&lt;br /&gt;support decrypting with Your digital identity card.</source>
+        <translation>This version of Digidoc software does not yet&lt;br /&gt;support decrypting with Your digital identity card.</translation>
     </message>
 </context>
 </TS>
