@@ -202,7 +202,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Request timed out</source>
-        <translation type="unfinished"></translation>
+        <translation>Время запроса истекло</translation>
     </message>
     <message>
         <source>The configuration file located on the server cannot be validated.</source>
@@ -571,12 +571,12 @@ Additional licenses and components</source>
         <translation>Открыть утилиту</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Обновить</translation>
+        <source>Please verify if your card requires update</source>
+        <translation>Проверьте, требуется ли обновление ID-карты</translation>
     </message>
     <message>
-        <source>but needs an update.</source>
-        <translation>но необходимы обновления.</translation>
+        <source>This version of Digidoc software does not yet&lt;br /&gt;support decrypting with Your digital identity card.</source>
+        <translation>Программное обеспечение пока не поддерживает дешифрование с помощью этой ID-карты.</translation>
     </message>
 </context>
 </TS>
