@@ -187,7 +187,8 @@ QString TokenData::toHtml() const
 		else if(c.expiryDate().toLocalTime() <= QDateTime::currentDateTime().addDays(105))
 				s << "<br /><font color=\"red\">" << tr("Your certificates will expire soon") << "</font>";
 
-		if(c.keyUsage().keys().contains(SslCertificate::KeyEncipherment) && c.publicKey().algorithm() == QSsl::Ec &&
+		if((c.keyUsage().keys().contains(SslCertificate::KeyEncipherment) || c.keyUsage().keys().contains(SslCertificate::KeyAgreement)) &&
+			c.publicKey().algorithm() == QSsl::Ec &&
 			(c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType))
 				s << "<br /><font color=\"red\">" << tr("This version of Digidoc software does not yet<br />"
 					"support decrypting with Your digital identity card.") << "</font>";
