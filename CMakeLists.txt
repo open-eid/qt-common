@@ -48,7 +48,7 @@ else()
 	list( APPEND LIBRARIES qtsingleapplication )
 endif()
 
-configure_file( translations/common_tr5.qrc common_tr.qrc COPYONLY )
+configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/common_en.ts translations/common_et.ts translations/common_ru.ts translations/qtbase_et.ts translations/qtbase_ru.ts )
 qt5_add_resources( SOURCES images/common_images.qrc ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
 qt5_wrap_ui( SOURCES AboutDialog.ui CertificateWidget.ui )
