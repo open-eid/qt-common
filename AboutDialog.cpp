@@ -51,7 +51,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	ui->version->setText( tr("%1 version %2, released %3%4")
 		.arg( qApp->applicationName(), qApp->applicationVersion(), BUILD_DATE, package ) );
 
-#ifdef CONFIG_URL
+#if defined(CONFIG_URL) && !defined(Q_OS_MAC)
 	QPushButton *update = ui->buttonBox->addButton(tr("Check for updates"), QDialogButtonBox::ActionRole);
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
