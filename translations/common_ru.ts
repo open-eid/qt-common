@@ -43,18 +43,6 @@ Additional licenses and components</source>
         <source>%1 version %2, released %3%4</source>
         <translation>%1, версия %2, выпуск %3%4</translation>
     </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Проверить на обновления</translation>
-    </message>
-    <message>
-        <source>Checking updates has failed.</source>
-        <translation>Проверка обновлений не удалась.</translation>
-    </message>
-    <message>
-        <source>Please try again.</source>
-        <translation>Попробуйте снова.</translation>
-    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -213,16 +201,8 @@ Additional licenses and components</source>
         <translation>Находящийся на Вашем компьютере конфигурационный файл новее файла на сервере.</translation>
     </message>
     <message>
-        <source>You are using the latest software version. Software and configuration updates are not available.</source>
-        <translation>Вы используете последнюю версию программного обеспечения. Обновления программного обеспечения или конфигурации не доступны.</translation>
-    </message>
-    <message>
         <source>Update is available</source>
         <translation>Доступна обновлённая версия</translation>
-    </message>
-    <message>
-        <source>No updates are available</source>
-        <translation>На вашем компьютере установлена последняя версия программного обеспечения для ИД-карты</translation>
     </message>
 </context>
 <context>

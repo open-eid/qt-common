@@ -43,18 +43,6 @@ Additional licenses and components</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 version %2, released %3%4</translation>
     </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Check for updates</translation>
-    </message>
-    <message>
-        <source>Checking updates has failed.</source>
-        <translation>Checking updates has failed.</translation>
-    </message>
-    <message>
-        <source>Please try again.</source>
-        <translation>Please try again.</translation>
-    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -213,16 +201,8 @@ Additional licenses and components</translation>
         <translation>Your computer&apos;s configuration file is later than the server has.</translation>
     </message>
     <message>
-        <source>You are using the latest software version. Software and configuration updates are not available.</source>
-        <translation>You are using the latest software version. Software and configuration updates are not available.</translation>
-    </message>
-    <message>
         <source>Update is available</source>
         <translation>Update is available</translation>
-    </message>
-    <message>
-        <source>No updates are available</source>
-        <translation>No updates are available</translation>
     </message>
 </context>
 <context>
