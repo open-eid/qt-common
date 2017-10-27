@@ -43,18 +43,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 versioon %2, avaldatud %3%4</translation>
     </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Kontrolli uuendusi</translation>
-    </message>
-    <message>
-        <source>Checking updates has failed.</source>
-        <translation>Uuenduste kontroll ebaõnnestus.</translation>
-    </message>
-    <message>
-        <source>Please try again.</source>
-        <translation>Palun proovi uuesti.</translation>
-    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -213,16 +201,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sinu arvutis on uuem konfiguratsioonifail kui serveris.</translation>
     </message>
     <message>
-        <source>You are using the latest software version. Software and configuration updates are not available.</source>
-        <translation>Kasutad kõige uuemat tarkvara. Tarkvara- ega konfiguratsiooniuuendusi ei ole saadaval.</translation>
-    </message>
-    <message>
         <source>Update is available</source>
         <translation>ID-kaardi baastarkvarast on saadaval uus versioon</translation>
-    </message>
-    <message>
-        <source>No updates are available</source>
-        <translation>ID-tarkvara uuendusi ei ole saadaval</translation>
     </message>
 </context>
 <context>

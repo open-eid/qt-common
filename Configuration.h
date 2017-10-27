@@ -10,7 +10,7 @@ public:
 	void checkVersion(const QString &name);
 	static Configuration& instance();
 	QJsonObject object() const;
-	void update(bool force = false);
+	void update();
 
 Q_SIGNALS:
 	void finished(bool changed, const QString &error);
