@@ -38,9 +38,6 @@ endif()
 
 if( APPLE )
 	list( APPEND SOURCES MacMenuBar.cpp )
-	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
-	set_source_files_properties( Configuration.cpp SslCertificate.cpp
-		PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	set( LIBRARIES "-framework Cocoa -framework PCSC -fobjc-arc" )
 else()
 	include_directories( ${CMAKE_SOURCE_DIR} )
