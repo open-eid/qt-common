@@ -57,9 +57,6 @@ void Diagnostics::generalInfo(QTextStream &s) const
 	s << "<b>" << tr("Arguments:") << "</b> " << app->arguments().join(" ") << "<br />";
 	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
 	s << "<b>" << "URLs:" << "</b>";
-#ifdef BREAKPAD
-	s << "<br />BREAKPAD: " << BREAKPAD;
-#endif
 #ifdef CONFIG_URL
 	s << "<br />CONFIG_URL: " << CONFIG_URL;
 #endif
