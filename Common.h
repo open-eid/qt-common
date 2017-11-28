@@ -48,7 +48,6 @@ public:
 	Common( int &argc, char **argv, const QString &app, const QString &icon );
 #endif
 
-	bool isCrashReport();
 	virtual void diagnostics(QTextStream &s);
 
 	static QString applicationOs();
