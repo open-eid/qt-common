@@ -174,8 +174,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Mitte kunagi</translation>
     </message>
     <message>
-        <source>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</source>
-        <translation>Kui kasutad e-teenustesse autentimiseks ja dokumentide allkirjastamiseks lisaks Mobiil-ID’le ka ID-kaarti või ainult ID-kaarti, siis peaksid paigaldama lisaks ka veebilehitseja komponentide paki veebilehelt &lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;.</translation>
+        <source>PLUGIN_WARNING</source>
+        <translation>E-teenustes ID-kaardiga allkirjastamiseks on Teil vajalik veel aktiveerida veebilehitsejas allkirjastamise plugin.&lt;br/&gt;Juhend aktiveerimiseks on leitav &lt;a href=&quot;http://id.ee/?lang=et&amp;id=36636&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
