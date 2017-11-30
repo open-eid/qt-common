@@ -99,9 +99,7 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	connect(timer, &QTimer::timeout, this, [=]{
 		timer->deleteLater();
 		QMessageBox *b = new QMessageBox(QMessageBox::Information, tr("Browser plugins"),
-			tr("If you are using e-services for authentication and signing documents in addition to "
-				"Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.<br />"
-				"<a href='http://installer.id.ee'>http://installer.id.ee</a>"),
+			tr("PLUGIN_WARNING"),
 			0, activeWindow());
 		b->addButton(tr("Remind later"), QMessageBox::RejectRole);
 		b->addButton(tr("Ignore forever"), QMessageBox::AcceptRole);
