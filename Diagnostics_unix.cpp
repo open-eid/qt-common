@@ -80,8 +80,8 @@ void Diagnostics::run()
 	s << Common::packages( { "libdigidoc", "digidocpp" } ).join( "<br />" ) << "<br />";
 #else
 	s << Common::packages( { "libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil",
-		"esteidpkcs11loader", "esteidfirefoxplugin", "chrome-token-signing", "openssl",
-		"libpcsclite1", "pcsc-lite", "opensc", "esteid-pkcs11" } ).join( "<br />" ) << "<br />";
+		"firefox-pkcs11-loader", "esteidpkcs11loader", "esteidfirefoxplugin", "chrome-token-signing",
+		"openssl", "libpcsclite1", "pcsc-lite", "opensc", "esteid-pkcs11" } ).join( "<br />" ) << "<br />";
 #endif
 	s << "QT (" << qVersion() << ")" << "<br /><br />";
 	emit update( info );
