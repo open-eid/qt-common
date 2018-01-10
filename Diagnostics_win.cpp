@@ -109,12 +109,14 @@ void Diagnostics::run()
 	info.clear();
 
 	s << "<b>" << tr("Libraries") << ":</b><br />" << "QT (" << qVersion() << ")<br />";
-#ifdef Q_OS_WIN64
+
 	QByteArray path = qgetenv("PATH");
-	qputenv("PATH", path + ";C:\\Program Files (x86)\\Open-EID");
+	qputenv("PATH", path + ";C:\\Program Files\\TeRa Client");
+#ifdef Q_OS_WIN64
+	qputenv("PATH", path + ";C:\\Program Files (x86)\\Open-EID;C:\\Program Files (x86)\\TeRa Client");
 #endif
 	const QStringList packages{
-		"digidoc", "digidocpp", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe",
+		"digidoc", "digidocpp", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "TeRa.exe", "qdigidoc_tera_gui.exe",
 		"esteidcm", "esteidcm64", "onepin-opensc-pkcs11", "esteid-pkcs11", "EsteidShellExtension",
 		"esteid-plugin-ie", "esteid-plugin-ie64", "npesteid-firefox-plugin", "chrome-token-signing.exe",
 		"zlib1", "libeay32", "ssleay32", "xerces-c_3_1", "xsec_1_7", "libxml2",
@@ -138,9 +140,7 @@ void Diagnostics::run()
 			.arg( HIWORD(info->dwFileVersionLS) )
 			.arg( LOWORD(info->dwFileVersionLS) ) << "<br />";
 	}
-#ifdef Q_OS_WIN64
 	qputenv("PATH", path);
-#endif
 	s << "<br />";
 	emit update( info );
 	info.clear();
