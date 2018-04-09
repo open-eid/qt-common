@@ -21,7 +21,9 @@
 
 #include "qasn1element_p.h"
 
+#ifdef LIBDIGIDOCPP
 #include <digidocpp/crypto/X509Cert.h>
+#endif
 
 #include <QtCore/QDataStream>
 #include <QtCore/QDateTime>
@@ -441,6 +443,7 @@ SslCertificate::CertType SslCertificate::type() const
 			return TempelType;
 	}
 
+#ifdef LIBDIGIDOCPP
 	// Check qcStatements extension according to ETSI EN 319 412-5
 	QByteArray der = toDer();
 	if (!der.isNull())
@@ -455,6 +458,7 @@ SslCertificate::CertType SslCertificate::type() const
 				return TempelType;
 		}
 	}
+#endif
 	return UnknownType;
 }
 
