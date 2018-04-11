@@ -452,9 +452,9 @@ SslCertificate::CertType SslCertificate::type() const
 			size_t(der.size()), digidoc::X509Cert::Der);
 		for(const std::string &statement: x509Cert.qcStatements())
 		{
-			if(statement == X509Cert::QCT_ESIGN)
+			if(statement == digidoc::X509Cert::QCT_ESIGN)
 				return DigiIDType;
-			if(statement == X509Cert::QCT_ESEAL)
+			if(statement == digidoc::X509Cert::QCT_ESEAL)
 				return TempelType;
 		}
 	}
