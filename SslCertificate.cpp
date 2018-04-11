@@ -21,6 +21,10 @@
 
 #include "qasn1element_p.h"
 
+#ifndef NO_LIBDIGIDOCPP
+#include <digidocpp/crypto/X509Cert.h>
+#endif
+
 #include <QtCore/QDataStream>
 #include <QtCore/QDateTime>
 #include <QtCore/QFile>
@@ -428,14 +432,33 @@ SslCertificate::CertType SslCertificate::type() const
 			p.startsWith( "1.3.6.1.4.1.10015.3.11" ) )
 			return MobileIDTestType;
 		if( p.startsWith( "1.3.6.1.4.1.10015.3.7" ) ||
-			(p.startsWith( "1.3.6.1.4.1.10015.7.1" ) &&
+			((p.startsWith( "1.3.6.1.4.1.10015.7.1" ) ||
+			  p.startsWith( "1.3.6.1.4.1.10015.7.3" )) &&
 			 issuerInfo( QSslCertificate::CommonName ).indexOf( "TEST" ) != -1) )
 			return TempelTestType;
 
 		if( p.startsWith( "1.3.6.1.4.1.10015.7.1" ) ||
+			p.startsWith( "1.3.6.1.4.1.10015.7.3" ) ||
 			p.startsWith( "1.3.6.1.4.1.10015.2.1" ) )
 			return TempelType;
 	}
+
+#ifndef NO_LIBDIGIDOCPP
+	// Check qcStatements extension according to ETSI EN 319 412-5
+	QByteArray der = toDer();
+	if (!der.isNull())
+	{
+		digidoc::X509Cert x509Cert((const unsigned char*)der.constData(),
+			size_t(der.size()), digidoc::X509Cert::Der);
+		for(const std::string &statement: x509Cert.qcStatements())
+		{
+			if(statement == digidoc::X509Cert::QCT_ESIGN)
+				return DigiIDType;
+			if(statement == digidoc::X509Cert::QCT_ESEAL)
+				return TempelType;
+		}
+	}
+#endif
 	return UnknownType;
 }
 
