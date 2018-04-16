@@ -79,9 +79,8 @@ void Diagnostics::run()
 #ifdef Q_OS_MAC
 	s << Common::packages( { "libdigidoc", "digidocpp" } ).join( "<br />" ) << "<br />";
 #else
-	s << Common::packages( { "libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil",
-		"esteidpkcs11loader", "esteidfirefoxplugin", "chrome-token-signing", "openssl",
-		"libpcsclite1", "pcsc-lite", "opensc", "esteid-pkcs11" } ).join( "<br />" ) << "<br />";
+	s << Common::packages( { "libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil", "qdigidoc-tera", "firefox-pkcs11-loader",
+		"chrome-token-signing", "openssl", "libpcsclite1", "pcsc-lite", "opensc" } ).join( "<br />" ) << "<br />";
 #endif
 	s << "QT (" << qVersion() << ")" << "<br /><br />";
 	emit update( info );

@@ -84,7 +84,7 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 				tr("For using sign certificate enter PIN2 at the reader") :
 				tr("For using sign certificate enter PIN2");
 			text += tr("Selected action requires sign certificate.") + "<br />" + t;
-			regexp.setPattern( "\\d{5,12}" );
+			setMinPinLen(5);
 		}
 		else if( flags & Pin1Type )
 		{
@@ -93,7 +93,7 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 				tr("For using authentication certificate enter PIN1 at the reader") :
 				tr("For using authentication certificate enter PIN1");
 			text += tr("Selected action requires authentication certificate.") + "<br />" + t;
-			regexp.setPattern( "\\d{4,12}" );
+			setMinPinLen(4);
 		}
 	}
 
@@ -112,8 +112,8 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 		QTimeLine *statusTimer = new QTimeLine( progress->maximum() * 1000, this );
 		statusTimer->setCurveShape( QTimeLine::LinearCurve );
 		statusTimer->setFrameRange( progress->maximum(), progress->minimum() );
-		connect( statusTimer, SIGNAL(frameChanged(int)), progress, SLOT(setValue(int)) );
-		connect( this, SIGNAL(startTimer()), statusTimer, SLOT(start()) );
+		connect(statusTimer, &QTimeLine::frameChanged, progress, &QProgressBar::setValue);
+		connect(this, &PinDialog::startTimer, statusTimer, &QTimeLine::start);
 	}
 	else if( !(flags & PinpadNoProgressFlag) )
 	{
@@ -122,7 +122,7 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 		m_text->setFocus();
 		m_text->setValidator( new QRegExpValidator( regexp, m_text ) );
 		m_text->setMaxLength( 12 );
-		connect( m_text, SIGNAL(textEdited(QString)), SLOT(textEdited(QString)) );
+		connect(m_text, &QLineEdit::textEdited, this, &PinDialog::textEdited);
 		l->addWidget( m_text );
 		label->setBuddy( m_text );
 
@@ -130,12 +130,17 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 			QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this );
 		ok = buttons->button( QDialogButtonBox::Ok );
 		ok->setAutoDefault( true );
-		connect( buttons, SIGNAL(accepted()), SLOT(accept()) );
-		connect( buttons, SIGNAL(rejected()), SLOT(reject()) );
+		connect(buttons, &QDialogButtonBox::accepted, this, &PinDialog::accept);
+		connect(buttons, &QDialogButtonBox::rejected, this, &PinDialog::reject);
 		l->addWidget( buttons );
 
 		textEdited( QString() );
 	}
+}
+
+void PinDialog::setMinPinLen(unsigned long len)
+{
+	regexp.setPattern(QString("\\d{%1,12}").arg(len));
 }
 
 QString PinDialog::text() const { return m_text->text(); }

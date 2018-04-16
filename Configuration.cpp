@@ -65,12 +65,11 @@ public:
 	QUrl rsaurl, url = QUrl(CONFIG_URL);
 	RSA *rsa = nullptr;
 	QNetworkRequest req;
-        QNetworkAccessManager *net = nullptr;
+	QNetworkAccessManager *net = nullptr;
 	QList<QNetworkReply*> requestcache;
 #ifdef LAST_CHECK_DAYS
 	Settings s;
 #endif
-	bool forceUpdate = false;
 };
 
 void ConfigurationPrivate::initCache(bool clear)
@@ -218,9 +217,7 @@ Configuration::Configuration(QObject *parent)
 			if(reply->url() == d->rsaurl)
 			{
 				d->tmpsignature = QByteArray::fromBase64(reply->readAll());
-				if(d->forceUpdate)
-					qDebug() << "Forced update";
-				else if(d->validate(d->data, d->tmpsignature))
+				if(d->validate(d->data, d->tmpsignature))
 				{
 #ifdef LAST_CHECK_DAYS
 					d->s.setValue("LastCheck", QDate::currentDate().toString("yyyyMMdd"));
@@ -356,16 +353,13 @@ void Configuration::checkVersion(const QString &name)
 				"Mac OS X users can download the latest ID-software version from the "
 				"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
 
-	connect(this, &Configuration::finished, [=](bool changed, const QString &error){
+	connect(this, &Configuration::finished, [=](bool changed, const QString &){
 		if(changed && ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
 			QMessageBox::information(qApp->activeWindow(), tr("Update is available"),
 				tr("An ID-software update has been found. To download the update, go to the "
 					"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
 					"Mac OS X users can download the update from the "
 					"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
-		else if(d->forceUpdate && error.isEmpty())
-			QMessageBox::information(qApp->activeWindow(), tr("No updates are available"),
-				tr("You are using the latest software version. Software and configuration updates are not available."));
 	});
 }
 
@@ -399,8 +393,7 @@ void Configuration::sendRequest(const QUrl &url)
 	timer->start(30*1000);
 }
 
-void Configuration::update(bool force)
+void Configuration::update()
 {
-	d->forceUpdate = force;
 	sendRequest(d->rsaurl);
 }

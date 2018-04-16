@@ -22,9 +22,6 @@
 
 #include "Common.h"
 #include "Diagnostics.h"
-#ifdef CONFIG_URL
-#include "Configuration.h"
-#endif
 #include "Settings.h"
 
 #include <QtCore/QFile>
@@ -50,23 +47,6 @@ AboutDialog::AboutDialog(QWidget *parent) :
 #endif
 	ui->version->setText( tr("%1 version %2, released %3%4")
 		.arg( qApp->applicationName(), qApp->applicationVersion(), BUILD_DATE, package ) );
-
-#ifdef CONFIG_URL
-	QPushButton *update = ui->buttonBox->addButton(tr("Check for updates"), QDialogButtonBox::ActionRole);
-	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
-		if(error.isEmpty())
-			return;
-		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
-			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
-			QMessageBox::Ok, this);
-		b.setTextFormat(Qt::RichText);
-		b.setDetailedText(error);
-		b.exec();
-	});
-	connect(update, &QPushButton::clicked, []{
-		Configuration::instance().update(true);
-	});
-#endif
 
 	ui->diagnosticsTab->setEnabled( false );
 	QApplication::setOverrideCursor( Qt::WaitCursor );

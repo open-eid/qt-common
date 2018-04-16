@@ -45,9 +45,10 @@ public:
 	PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
 	PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0, const QString &bodyText = "" );
 
+	void setMinPinLen(unsigned long len);
 	QString text() const;
 
-signals:
+Q_SIGNALS:
 	void startTimer();
 	void finish(int result);
 

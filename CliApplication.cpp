@@ -57,7 +57,7 @@ int CliApplication::run() const
 	qtApp.setApplicationVersion( QString( "%1.%2.%3.%4" )
 		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
 	qtApp.setOrganizationDomain( "ria.ee" );
-	qtApp.setOrganizationName( ORG );
+	qtApp.setOrganizationName("RIA");
 
 	QString appInfo;
 	QTextStream s( &appInfo );

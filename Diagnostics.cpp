@@ -57,9 +57,6 @@ void Diagnostics::generalInfo(QTextStream &s) const
 	s << "<b>" << tr("Arguments:") << "</b> " << app->arguments().join(" ") << "<br />";
 	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
 	s << "<b>" << "URLs:" << "</b>";
-#ifdef BREAKPAD
-	s << "<br />BREAKPAD: " << BREAKPAD;
-#endif
 #ifdef CONFIG_URL
 	s << "<br />CONFIG_URL: " << CONFIG_URL;
 #endif
@@ -124,28 +121,33 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		  << "ATR warm - " << warm << "<br />";
 
 		reader.beginTransaction();
-		reader.transfer( "\x00\xA4\x00\x0C\x00", 5 ); // MASTER FILE
-		reader.transfer( "\x00\xA4\x01\x0C\x02\xEE\xEE", 7 ); // ESTEID DATAFILE
-		reader.transfer( "\x00\xA4\x02\x04\x02\x50\x44", 7 ); // PERSONAL DATAFILE
-		QString id = reader.transfer( "\x00\xB2\x07\x04\x00", 5 ).data; // read card id
-		if( id.trimmed().isEmpty() )
+		#define APDU QByteArray::fromHex
+		const QByteArray AID34 = APDU("00A40400 0E F04573744549442076657220312E");
+		const QByteArray AID35 = APDU("00A40400 0F D23300000045737445494420763335");
+		const QByteArray UPDATER_AID =	APDU("00A40400 0A D2330000005550443101");
+		const QByteArray MASTER_FILE =	APDU("00A4000C");// 00"); // Compatibilty for some cards
+		const QByteArray ESTEIDDF =		APDU("00A4010C 02 EEEE");
+		const QByteArray PERSONALDATA =	APDU("00A4020C 02 5044");
+		const QByteArray READRECORD =	APDU("00B20004 00");
+		auto printAID = [&s, &reader](const QString &label, const QByteArray &apdu)
 		{
-			reader.transfer( "\x00\xA4\x02\x04\x02\xAA\xCE", 7 );
-			QByteArray cert;
-			while( cert.size() < 0x0600 )
-			{
-				QByteArray cmd( "\x00\xB0\x00\x00\x00", 5 );
-				cmd[2] = cert.size() >> 8;
-				cmd[3] = cert.size();
-				QByteArray data = reader.transfer( cmd ).data;
-				if( data.isEmpty() )
-					break;
-				cert += data;
-			}
-			id = SslCertificate( cert, QSsl::Der ).subjectInfo( "serialNumber" );
-		}
+			QByteArray SW = reader.transfer(apdu).SW;
+			s << label << ": " << SW.toHex();
+			if (SW == APDU("9000")) s << " (OK)";
+			if (SW == APDU("6A81")) s << " (Locked)";
+			if (SW == APDU("6A82")) s << " (Not found)";
+			s << "<br />";
+		};
+		printAID("AID34", AID34);
+		printAID("AID35", AID35);
+		printAID("UPDATER_AID", UPDATER_AID);
+		reader.transfer(MASTER_FILE);
+		reader.transfer(ESTEIDDF);
+		reader.transfer(PERSONALDATA);
+		QByteArray row = READRECORD;
+		row[2] = 0x07; // read card id
+		s << "ID - " << reader.transfer(row).data << "<br />";
 		reader.endTransaction();
-		s << "ID - " << id << "<br />";
 	}
 
 #ifdef Q_OS_WIN

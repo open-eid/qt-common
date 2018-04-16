@@ -109,15 +109,19 @@ void Diagnostics::run()
 	info.clear();
 
 	s << "<b>" << tr("Libraries") << ":</b><br />" << "QT (" << qVersion() << ")<br />";
-#ifdef Q_OS_WIN64
+
 	QByteArray path = qgetenv("PATH");
-	qputenv("PATH", path + ";C:\\Program Files (x86)\\Open-EID");
-#endif
-	const QStringList packages{
-		"digidoc", "digidocpp", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe",
-		"esteidcm", "esteidcm64", "onepin-opensc-pkcs11", "esteid-pkcs11", "EsteidShellExtension",
+	qputenv("PATH", path
+		+ ";C:\\Program Files\\Open-EID"
+		+ ";C:\\Program Files\\TeRa Client"
+		+ ";C:\\Program Files (x86)\\Open-EID"
+		+ ";C:\\Program Files (x86)\\TeRa Client");
+	SetDllDirectory(LPCWSTR(qApp->applicationDirPath().utf16()));
+	static const QStringList packages{
+		"digidoc", "digidocpp", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "TeRa.exe", "qdigidoc_tera_gui.exe",
+		"esteidcm", "esteidcm64", "onepin-opensc-pkcs11", "opensc-pkcs11", "esteid-pkcs11", "EsteidShellExtension",
 		"esteid-plugin-ie", "esteid-plugin-ie64", "npesteid-firefox-plugin", "chrome-token-signing.exe",
-		"zlib1", "libeay32", "ssleay32", "xerces-c_3_1", "xsec_1_7", "libxml2",
+		"zlib1", "libeay32", "ssleay32", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "libxml2",
 		"advapi32", "crypt32", "winscard"};
 	for(const QString &lib: packages)
 	{
@@ -138,9 +142,9 @@ void Diagnostics::run()
 			.arg( HIWORD(info->dwFileVersionLS) )
 			.arg( LOWORD(info->dwFileVersionLS) ) << "<br />";
 	}
-#ifdef Q_OS_WIN64
 	qputenv("PATH", path);
-#endif
+	SetDllDirectory(nullptr);
+
 	s << "<br />";
 	emit update( info );
 	info.clear();

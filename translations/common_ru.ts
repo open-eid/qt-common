@@ -43,18 +43,6 @@ Additional licenses and components</source>
         <source>%1 version %2, released %3%4</source>
         <translation>%1, версия %2, выпуск %3%4</translation>
     </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Проверить на обновления</translation>
-    </message>
-    <message>
-        <source>Checking updates has failed.</source>
-        <translation>Проверка обновлений не удалась.</translation>
-    </message>
-    <message>
-        <source>Please try again.</source>
-        <translation>Попробуйте снова.</translation>
-    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -186,8 +174,8 @@ Additional licenses and components</source>
         <translation>Не устанавливать</translation>
     </message>
     <message>
-        <source>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</source>
-        <translation>Если для аутентификации в э-услугах и подписывания документов Вы используете кроме Mobiil-ID также ID-карту или только ID-карту, Вам необходимо дополнительно установить пакет компонентов для браузера. Его можно скачать на странице &lt;a href=&apos;http://installer.id.ee&apos;&gt;https://installer.id.ee&lt;/a&gt;.</translation>
+        <source>PLUGIN_WARNING</source>
+        <translation>Чтобы использовать ID-кару для подписи в Э-услугах , вам также необходимо активировать подключаемый модуль для браузера.&lt;br/&gt;Руководство по активации можно найти &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=36641&quot;&gt;здесь&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -202,7 +190,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Request timed out</source>
-        <translation type="unfinished"></translation>
+        <translation>Время запроса истекло</translation>
     </message>
     <message>
         <source>The configuration file located on the server cannot be validated.</source>
@@ -213,16 +201,8 @@ Additional licenses and components</source>
         <translation>Находящийся на Вашем компьютере конфигурационный файл новее файла на сервере.</translation>
     </message>
     <message>
-        <source>You are using the latest software version. Software and configuration updates are not available.</source>
-        <translation>Вы используете последнюю версию программного обеспечения. Обновления программного обеспечения или конфигурации не доступны.</translation>
-    </message>
-    <message>
         <source>Update is available</source>
         <translation>Доступна обновлённая версия</translation>
-    </message>
-    <message>
-        <source>No updates are available</source>
-        <translation>На вашем компьютере установлена последняя версия программного обеспечения для ИД-карты</translation>
     </message>
 </context>
 <context>
@@ -387,61 +367,6 @@ Additional licenses and components</source>
     </message>
 </context>
 <context>
-    <name>QBreakPadDialog</name>
-    <message>
-        <source>%1 has stopped working</source>
-        <translation>%1 прекратило работать</translation>
-    </message>
-    <message>
-        <source>Send report</source>
-        <translation>Отправить отчет</translation>
-    </message>
-    <message>
-        <source>Close the program</source>
-        <translation>Закрыть программу</translation>
-    </message>
-    <message>
-        <source>Error Report</source>
-        <translation>Отчет об ошибке</translation>
-    </message>
-    <message>
-        <source>Please send us this error report to help fix the problem and improve this software.</source>
-        <translation>Пожалуйста, отправьте нам этот отчет, чтобы помочь исправить ошибку и улучшить программу.</translation>
-    </message>
-    <message>
-        <source>Provide additional info about the problem (recommended)</source>
-        <translation>Предоставить дополнительные сведения (рекомендуется)</translation>
-    </message>
-    <message>
-        <source>ID software error reporting principles</source>
-        <translation>Принципы рапорта об ошибке программного обеспечения ID-карты.</translation>
-    </message>
-    <message>
-        <source>https://installer.id.ee/Privacy_Policy_ENG.html</source>
-        <translation>https://installer.id.ee/Privacy_Policy_RUS.html</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Детали</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Закрыть</translation>
-    </message>
-    <message>
-        <source>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</source>
-        <translation>Во время прошлого запуска программа неожиданно завершила работу. Желаете отправить нам информацию для анализа и решения проблемы?</translation>
-    </message>
-    <message>
-        <source>qdigidocclient</source>
-        <translation>DigiDoc3 клиент</translation>
-    </message>
-    <message>
-        <source>qesteidutil</source>
-        <translation>Программа управления ID-картой</translation>
-    </message>
-</context>
-<context>
     <name>SslCertificate</name>
     <message>
         <source>All application policies</source>
@@ -571,12 +496,8 @@ Additional licenses and components</source>
         <translation>Открыть утилиту</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Обновить</translation>
-    </message>
-    <message>
-        <source>but needs an update.</source>
-        <translation>но необходимы обновления.</translation>
+        <source>Please verify if your card requires update</source>
+        <translation>Проверьте, требуется ли обновление ID-карты</translation>
     </message>
 </context>
 </TS>

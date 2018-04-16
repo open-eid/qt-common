@@ -19,7 +19,6 @@
 
 #include "TokenData.h"
 
-#include "Configuration.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QDateTime>
@@ -180,19 +179,13 @@ QString TokenData::toHtml() const
 	if( c.isValid() )
 	{
 		s << "<font color=\"green\">" << tr("valid") << "</font>";
-#ifdef CONFIG_URL
-		if(Configuration::instance().object().contains("EIDUPDATER-URL") &&
-			c.publicKey().length() > 1024 &&
-			(c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) &&
-			(!c.validateEncoding() || (Configuration::instance().object().contains("EIDUPDATER-SHA1") && c.signatureAlgorithm() == "sha1WithRSAEncryption")))
+		if((c.type() & SslCertificate::EstEidType || c.type() & SslCertificate::DigiIDType) &&
+			c.publicKey().algorithm() == QSsl::Rsa)
 		{
-			s << ",<br /><font color=\"red\">" << tr("but needs an update.")
-				<< "</font> <a href=\"openUtility\"><font color=\"red\">" << tr("Update") << "</font></a>";
+			s << "<br /><a href=\"openUtility\"><font color=\"red\">" << tr("Please verify if your card requires update") << "</font></a>";
 		}
-		else
-#endif
-		if(c.expiryDate().toLocalTime() <= QDateTime::currentDateTime().addDays(105))
-			s << "<br /><font color=\"red\">" << tr("Your certificates will expire soon") << "</font>";
+		else if(c.expiryDate().toLocalTime() <= QDateTime::currentDateTime().addDays(105))
+				s << "<br /><font color=\"red\">" << tr("Your certificates will expire soon") << "</font>";
 	}
 	else
 		s << "<font color=\"red\">" << tr("expired") << "</font>";

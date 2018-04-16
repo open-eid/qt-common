@@ -43,18 +43,6 @@ Additional licenses and components</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 version %2, released %3%4</translation>
     </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Check for updates</translation>
-    </message>
-    <message>
-        <source>Checking updates has failed.</source>
-        <translation>Checking updates has failed.</translation>
-    </message>
-    <message>
-        <source>Please try again.</source>
-        <translation>Please try again.</translation>
-    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -186,8 +174,8 @@ Additional licenses and components</translation>
         <translation>Ignore forever</translation>
     </message>
     <message>
-        <source>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</source>
-        <translation>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</translation>
+        <source>PLUGIN_WARNING</source>
+        <translation>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -213,16 +201,8 @@ Additional licenses and components</translation>
         <translation>Your computer&apos;s configuration file is later than the server has.</translation>
     </message>
     <message>
-        <source>You are using the latest software version. Software and configuration updates are not available.</source>
-        <translation>You are using the latest software version. Software and configuration updates are not available.</translation>
-    </message>
-    <message>
         <source>Update is available</source>
         <translation>Update is available</translation>
-    </message>
-    <message>
-        <source>No updates are available</source>
-        <translation>No updates are available</translation>
     </message>
 </context>
 <context>
@@ -387,61 +367,6 @@ Additional licenses and components</translation>
     </message>
 </context>
 <context>
-    <name>QBreakPadDialog</name>
-    <message>
-        <source>%1 has stopped working</source>
-        <translation>%1 has stopped working</translation>
-    </message>
-    <message>
-        <source>Send report</source>
-        <translation>Send report</translation>
-    </message>
-    <message>
-        <source>Close the program</source>
-        <translation>Close the program</translation>
-    </message>
-    <message>
-        <source>Error Report</source>
-        <translation>Error Report</translation>
-    </message>
-    <message>
-        <source>Please send us this error report to help fix the problem and improve this software.</source>
-        <translation>Please send us this error report to help fix the problem and improve this software.</translation>
-    </message>
-    <message>
-        <source>Provide additional info about the problem (recommended)</source>
-        <translation>Provide additional info about the problem (recommended)</translation>
-    </message>
-    <message>
-        <source>ID software error reporting principles</source>
-        <translation>ID software error reporting principles</translation>
-    </message>
-    <message>
-        <source>https://installer.id.ee/Privacy_Policy_ENG.html</source>
-        <translation>https://installer.id.ee/Privacy_Policy_ENG.html</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Details</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Close</translation>
-    </message>
-    <message>
-        <source>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</source>
-        <translation>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</translation>
-    </message>
-    <message>
-        <source>qdigidocclient</source>
-        <translation>DigiDoc3 client</translation>
-    </message>
-    <message>
-        <source>qesteidutil</source>
-        <translation>ID-card utility</translation>
-    </message>
-</context>
-<context>
     <name>SslCertificate</name>
     <message>
         <source>All application policies</source>
@@ -509,7 +434,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Ensures the identity of a remote computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ensures the identity of a remote computer</translation>
     </message>
 </context>
 <context>
@@ -571,12 +496,8 @@ Additional licenses and components</translation>
         <translation>Open utility</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Update</translation>
-    </message>
-    <message>
-        <source>but needs an update.</source>
-        <translation>but needs an update.</translation>
+        <source>Please verify if your card requires update</source>
+        <translation>Please verify if your card requires update</translation>
     </message>
 </context>
 </TS>

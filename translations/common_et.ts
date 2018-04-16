@@ -43,18 +43,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 versioon %2, avaldatud %3%4</translation>
     </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Kontrolli uuendusi</translation>
-    </message>
-    <message>
-        <source>Checking updates has failed.</source>
-        <translation>Uuenduste kontroll ebaõnnestus.</translation>
-    </message>
-    <message>
-        <source>Please try again.</source>
-        <translation>Palun proovi uuesti.</translation>
-    </message>
 </context>
 <context>
     <name>CertificateDialog</name>
@@ -186,8 +174,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Mitte kunagi</translation>
     </message>
     <message>
-        <source>If you are using e-services for authentication and signing documents in addition to Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.&lt;br /&gt;&lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;</source>
-        <translation>Kui kasutad e-teenustesse autentimiseks ja dokumentide allkirjastamiseks lisaks Mobiil-ID’le ka ID-kaarti või ainult ID-kaarti, siis peaksid paigaldama lisaks ka veebilehitseja komponentide paki veebilehelt &lt;a href=&apos;http://installer.id.ee&apos;&gt;http://installer.id.ee&lt;/a&gt;.</translation>
+        <source>PLUGIN_WARNING</source>
+        <translation>E-teenustes ID-kaardiga allkirjastamiseks on Teil vajalik veel aktiveerida veebilehitsejas allkirjastamise plugin.&lt;br/&gt;Juhend aktiveerimiseks on leitav &lt;a href=&quot;http://id.ee/?lang=et&amp;id=36636&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -202,7 +190,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Request timed out</source>
-        <translation type="unfinished"></translation>
+        <translation>Päringu kannatus katkes</translation>
     </message>
     <message>
         <source>The configuration file located on the server cannot be validated.</source>
@@ -213,16 +201,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sinu arvutis on uuem konfiguratsioonifail kui serveris.</translation>
     </message>
     <message>
-        <source>You are using the latest software version. Software and configuration updates are not available.</source>
-        <translation>Kasutad kõige uuemat tarkvara. Tarkvara- ega konfiguratsiooniuuendusi ei ole saadaval.</translation>
-    </message>
-    <message>
         <source>Update is available</source>
         <translation>ID-kaardi baastarkvarast on saadaval uus versioon</translation>
-    </message>
-    <message>
-        <source>No updates are available</source>
-        <translation>ID-tarkvara uuendusi ei ole saadaval</translation>
     </message>
 </context>
 <context>
@@ -387,61 +367,6 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
 </context>
 <context>
-    <name>QBreakPadDialog</name>
-    <message>
-        <source>%1 has stopped working</source>
-        <translation>%1 on lõpetanud töötamise</translation>
-    </message>
-    <message>
-        <source>Send report</source>
-        <translation>Saada vearaport</translation>
-    </message>
-    <message>
-        <source>Close the program</source>
-        <translation>Sulge programm</translation>
-    </message>
-    <message>
-        <source>Please send us this error report to help fix the problem and improve this software.</source>
-        <translation>Selleks, et saaksime tarkvara töökindlust parandada palun edasta meile see vearaport.</translation>
-    </message>
-    <message>
-        <source>Provide additional info about the problem (recommended)</source>
-        <translation>Võimalusel lisa täiendavat infot veaolukorra tekkimise kohta (soovitatav)</translation>
-    </message>
-    <message>
-        <source>Error Report</source>
-        <translation>Vearaport</translation>
-    </message>
-    <message>
-        <source>ID software error reporting principles</source>
-        <translation>ID-tarkvara vearaporti põhimõtted</translation>
-    </message>
-    <message>
-        <source>https://installer.id.ee/Privacy_Policy_ENG.html</source>
-        <translation>https://installer.id.ee/Privacy_Policy_EST.html</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Detailid</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Sulge</translation>
-    </message>
-    <message>
-        <source>We detected that last time this application was used, it stopped unexpectedly. Do You wish to send a crash report so we can diagnose and fix the problem?</source>
-        <translation>Tuvastasime, et eelmine kord lõpetas programm ootamatult töö. Kas soovite saata meile info probleemi analüüsimiseks ja parandamiseks?</translation>
-    </message>
-    <message>
-        <source>qdigidocclient</source>
-        <translation>DigiDoc3 klient</translation>
-    </message>
-    <message>
-        <source>qesteidutil</source>
-        <translation>ID-kaardi haldusvahend</translation>
-    </message>
-</context>
-<context>
     <name>SslCertificate</name>
     <message>
         <source>All application policies</source>
@@ -571,12 +496,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Ava haldusvahend</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Uuenda</translation>
-    </message>
-    <message>
-        <source>but needs an update.</source>
-        <translation>kuid vajab uuendamist.</translation>
+        <source>Please verify if your card requires update</source>
+        <translation>Kontrolli, kas ID-kaart vajab uuendamist</translation>
     </message>
 </context>
 </TS>

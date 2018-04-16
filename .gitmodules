@@ -1,3 +1,0 @@
-[submodule "google-breakpad"]
-	path = google-breakpad
-	url = ../google-breakpad

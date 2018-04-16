@@ -22,9 +22,6 @@
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "Settings.h"
-#ifdef BREAKPAD
-#include "QBreakPad.h"
-#endif
 
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
@@ -65,23 +62,12 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	setApplicationVersion( QString( "%1.%2.%3.%4" )
 		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
 	setOrganizationDomain( "ria.ee" );
-	setOrganizationName( ORG );
+	setOrganizationName("RIA");
 	setWindowIcon( QIcon( icon ) );
 	if( QFile::exists( QString("%1/%2.log").arg( QDir::tempPath(), app ) ) )
 		qInstallMessageHandler(msgHandler);
 #ifdef Q_OS_DARWIN
 	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
-#endif
-
-#ifdef BREAKPAD
-	new QBreakPad(this);
-#ifdef TESTING
-	if( arguments().contains( "-crash" ) )
-	{
-		QBreakPad *crash;
-		delete crash;
-	}
-#endif
 #endif
 
 	Q_INIT_RESOURCE(common_images);
@@ -105,10 +91,6 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
 #elif defined(Q_OS_MAC)
-#ifdef BREAKPAD
-	if(arguments().contains("-crashreport", Qt::CaseInsensitive))
-		return;
-#endif
 	if(!QSettings().value("plugins").isNull())
 		return;
 
@@ -117,9 +99,7 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	connect(timer, &QTimer::timeout, this, [=]{
 		timer->deleteLater();
 		QMessageBox *b = new QMessageBox(QMessageBox::Information, tr("Browser plugins"),
-			tr("If you are using e-services for authentication and signing documents in addition to "
-				"Mobile-ID an ID-card or only ID-card, you should install the browser integration packages.<br />"
-				"<a href='http://installer.id.ee'>http://installer.id.ee</a>"),
+			tr("PLUGIN_WARNING"),
 			0, activeWindow());
 		b->addButton(tr("Remind later"), QMessageBox::RejectRole);
 		b->addButton(tr("Ignore forever"), QMessageBox::AcceptRole);
@@ -182,7 +162,7 @@ QString Common::applicationOs()
 		case 0x0601: os = workstation ? "7" : "Server 2008 R2"; break;
 		case 0x0602: os = workstation ? "8" : "Server 2012"; break;
 		case 0x0603: os = workstation ? "8.1" : "Server 2012 R2"; break;
-		case 0x0A00: os = workstation ? "10" : "Server 10"; break;
+		case 0x0A00: os = (workstation ? "10" : "Server 10") + QString(" %1").arg(osvi.dwBuildNumber); break;
 		default: break;
 		}
 		QString extversion( (const QChar*)osvi.szCSDVersion );
@@ -220,21 +200,6 @@ QUrl Common::helpUrl()
 	if( lang == "en" ) u = "http://www.id.ee/index.php?id=30466";
 	if( lang == "ru" ) u = "http://www.id.ee/index.php?id=30515";
 	return u;
-}
-
-bool Common::isCrashReport()
-{
-#ifdef BREAKPAD
-	if(arguments().contains("-crashreport", Qt::CaseInsensitive))
-	{
-		QBreakPadDialog d(applicationName());
-		d.setProperty("User-Agent", QString( "%1/%2 (%3)")
-			.arg(applicationName(), applicationVersion(), applicationOs()).toUtf8());
-		d.show();
-		return true;
-	}
-#endif
-	return false;
 }
 
 void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
