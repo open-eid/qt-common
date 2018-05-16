@@ -337,7 +337,9 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 		<< "< " << result.SW.toHex().constData();
 	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(size).toHex().constData();
 
-	if( result.SW.at( 0 ) == 0x61 )
+	switch(result.SW.at(0))
+	{
+	case 0x61: // Read more
 	{
 		QByteArray cmd( "\x00\xC0\x00\x00\x00", 5 );
 		cmd[4] = data.at( size-1 );
@@ -345,7 +347,14 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 		result2.data.prepend(result.data);
 		return result2;
 	}
-	return result;
+	case 0x6C: // Excpected lenght
+	{
+		QByteArray cmd = apdu;
+		cmd[4] = result.SW.at(1);
+		return transfer(cmd);
+	}
+	default: return result;
+	}
 }
 
 QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify, quint16 lang, quint8 minlen) const
