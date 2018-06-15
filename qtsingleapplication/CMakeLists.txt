@@ -3,7 +3,4 @@ if( WIN32 )
 endif()
 add_library( qtsingleapplication STATIC src/qtlocalpeer.cpp src/qtsingleapplication.cpp )
 set_target_properties( qtsingleapplication PROPERTIES AUTOMOC TRUE )
-
-if( Qt5Widgets_FOUND )
-	qt5_use_modules( qtsingleapplication Widgets Network )
-endif()
+target_link_libraries( qtsingleapplication Qt5::Widgets Qt5::Network )
