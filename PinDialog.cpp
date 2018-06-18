@@ -45,13 +45,13 @@ PinDialog::PinDialog( PinFlags flags, const QSslCertificate &cert, TokenData::To
 	init( flags, c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), token );
 }
 
-PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent )
+PinDialog::PinDialog( PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText )
 	: QDialog(parent)
 {
-	init( flags, title, token );
+	init( flags, title, token, bodyText );
 }
 
-void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlags token )
+void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText )
 {
 	connect(this, &PinDialog::finish, this, &PinDialog::done);
 	setMinimumWidth( 350 );
@@ -64,30 +64,39 @@ void PinDialog::init( PinFlags flags, const QString &title, TokenData::TokenFlag
 	QString _title = title;
 	QString text;
 
-	if( token & TokenData::PinFinalTry )
-		text += "<font color='red'><b>" + tr("PIN will be locked next failed attempt") + "</b></font><br />";
-	else if( token & TokenData::PinCountLow )
-		text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
-
-	text += QString( "<b>%1</b><br />" ).arg( title );
-	if( flags & Pin2Type )
+	if( !bodyText.isEmpty() ) 
 	{
-		_title = tr("Signing") + " - " + title;
-		QString t = flags & PinpadFlag ?
-			tr("For using sign certificate enter PIN2 at the reader") :
-			tr("For using sign certificate enter PIN2");
-		text += tr("Selected action requires sign certificate.") + "<br />" + t;
-		setMinPinLen(5);
+		text = bodyText;
 	}
 	else
 	{
-		_title = tr("Authentication") + " - " + title;
-		QString t = flags & PinpadFlag ?
-			tr("For using authentication certificate enter PIN1 at the reader") :
-			tr("For using authentication certificate enter PIN1");
-		text += tr("Selected action requires authentication certificate.") + "<br />" + t;
-		setMinPinLen(4);
+		if( token & TokenData::PinFinalTry )
+			text += "<font color='red'><b>" + tr("PIN will be locked next failed attempt") + "</b></font><br />";
+		else if( token & TokenData::PinCountLow )
+			text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
+
+		text += QString( "<b>%1</b><br />" ).arg( title );
+
+		if( flags & Pin2Type )
+		{
+			_title = tr("Signing") + " - " + title;
+			QString t = flags & PinpadFlag ?
+				tr("For using sign certificate enter PIN2 at the reader") :
+				tr("For using sign certificate enter PIN2");
+			text += tr("Selected action requires sign certificate.") + "<br />" + t;
+			setMinPinLen(5);
+		}
+		else if( flags & Pin1Type )
+		{
+			_title = tr("Authentication") + " - " + title;
+			QString t = flags & PinpadFlag ?
+				tr("For using authentication certificate enter PIN1 at the reader") :
+				tr("For using authentication certificate enter PIN1");
+			text += tr("Selected action requires authentication certificate.") + "<br />" + t;
+			setMinPinLen(4);
+		}
 	}
+
 	setWindowTitle( _title );
 	label->setText( text );
 	Common::setAccessibleName( label );
