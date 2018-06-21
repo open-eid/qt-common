@@ -37,7 +37,8 @@
 #define SCARD_CTL_CODE(code) (0x42000000 + (code))
 #endif
 
-// http://www.pcscworkgroup.com/specifications/files/pcsc10_v2.02.09.pdf
+// http://pcscworkgroup.com/Download/Specifications/pcsc10_v2.02.09.pdf
+// http://ludovic.rousseau.free.fr/softwares/pcsc-lite/SecurePIN%20discussion%20v5.pdf
 #define CM_IOCTL_GET_FEATURE_REQUEST SCARD_CTL_CODE(3400)
 
 enum DRIVER_FEATURES {
@@ -75,43 +76,89 @@ typedef struct
 	quint32 value;
 } PCSC_TLV_STRUCTURE;
 
+enum bmFormatString : quint8
+{
+	FormatBinary = 0, // (1234 => 01h 02h 03h 04h)
+	FormatBCD = 1 << 0, // (1234 => 12h 34h)
+	FormatASCII = 1 << 1, // (1234 => 31h 32h 33h 34h)
+	AlignLeft = 0,
+	AlignRight = 1 << 2,
+	PINFrameOffsetUnitBits = 0,
+	PINFrameOffsetUnitBytes = 1 << 7,
+};
+
+enum bmPINBlockString : quint8
+{
+	PINLengthNone = 0,
+	PINFrameSizeAuto = 0,
+};
+
+enum bmPINLengthFormat : quint8
+{
+	PINLengthOffsetUnitBits = 0,
+	PINLengthOffsetUnitBytes = 1 << 5,
+};
+
+enum bEntryValidationCondition : quint8
+{
+	ValidOnMaxSizeReached = 1 << 0,
+	ValidOnKeyPressed = 1 << 1,
+	ValidOnTimeout = 1 << 2,
+};
+
+enum bNumberMessage : quint8
+{
+	NoInvitationMessage = 0,
+	OneInvitationMessage = 1,
+	TwoInvitationMessage = 2, // MODIFY
+	ThreeInvitationMessage = 3, // MODIFY
+	CCIDDefaultInvitationMessage = 0xFF,
+};
+
+enum bConfirmPIN : quint8
+{
+	ConfirmNewPin = 1 << 0,
+	RequestCurrentPin = 1 << 1,
+	AdvancedModify = 1 << 2,
+};
+
 typedef struct
 {
-	quint8 bTimerOut;
-	quint8 bTimerOut2;
-	quint8 bmFormatString;
-	quint8 bmPINBlockString;
-	quint8 bmPINLengthFormat;
-	quint16 wPINMaxExtraDigit;
-	quint8 bEntryValidationCondition;
-	quint8 bNumberMessage;
-	quint16 wLangId;
-	quint8 bMsgIndex;
-	quint8 bTeoPrologue[3];
-	quint32 ulDataLength;
-	quint8 abData[1];
+	quint8 bTimerOut; // timeout in seconds (00 means use default timeout)
+	quint8 bTimerOut2; // timeout in seconds after first key stroke
+	quint8 bmFormatString; // formatting options
+	quint8 bmPINBlockString; // PIN block definition
+	quint8 bmPINLengthFormat; // PIN length definition
+	quint16 wPINMaxExtraDigit; // 0xXXYY where XX is minimum PIN size in digits, and YY is maximum PIN size in digits
+	quint8 bEntryValidationCondition; // Conditions under which PIN entry should be considered complete
+	quint8 bNumberMessage; // Number of messages to display for PIN verification
+	quint16 wLangId; // Language for messages (http://www.usb.org/developers/docs/USB_LANGIDs.pdf)
+	quint8 bMsgIndex; // Message index (should be 00)
+	quint8 bTeoPrologue[3]; // T=1 I-block prologue field to use (fill with 00)
+	quint32 ulDataLength; // length of Data to be sent to the ICC
+	quint8 abData[1]; // Data to send to the ICC
 } PIN_VERIFY_STRUCTURE;
 
 typedef struct
 {
-	quint8 bTimerOut;
-	quint8 bTimerOut2;
-	quint8 bmFormatString;
-	quint8 bmPINBlockString;
-	quint8 bmPINLengthFormat;
-	quint8 bInsertionOffsetOld;
-	quint8 bInsertionOffsetNew;
-	quint16 wPINMaxExtraDigit;
-	quint8 bConfirmPIN;
-	quint8 bEntryValidationCondition;
-	quint8 bNumberMessage;
-	quint16 wLangId;
-	quint8 bMsgIndex1;
-	quint8 bMsgIndex2;
-	quint8 bMsgIndex3;
-	quint8 bTeoPrologue[3];
-	quint32 ulDataLength;
-	quint8 abData[1];
+	quint8 bTimerOut; // timeout in seconds (00 means use default timeout)
+	quint8 bTimerOut2; // timeout in seconds after first key stroke
+	quint8 bmFormatString; // formatting options
+	quint8 bmPINBlockString; // PIN block definition
+	quint8 bmPINLengthFormat; // PIN length definition
+	quint8 bInsertionOffsetOld; // Insertion position offset in bytes for the current PIN
+	quint8 bInsertionOffsetNew; // Insertion position offset in bytes for the new PIN
+	quint16 wPINMaxExtraDigit; // 0xXXYY where XX is minimum PIN size in digits, and YY is maximum PIN size in digits
+	quint8 bConfirmPIN; // Flags governing need for confirmation of new PIN
+	quint8 bEntryValidationCondition; // Conditions under which PIN entry should be considered complete
+	quint8 bNumberMessage; // Number of messages to display for PIN verification
+	quint16 wLangId; // Language for messages (http://www.usb.org/developers/docs/USB_LANGIDs.pdf)
+	quint8 bMsgIndex1; // Index of the invitation message
+	quint8 bMsgIndex2; // Index of the invitation message
+	quint8 bMsgIndex3; // Index of the invitation message
+	quint8 bTeoPrologue[3]; // T=1 I-block prologue field to use (fill with 00)
+	quint32 ulDataLength; // length of Data to be sent to the ICC
+	quint8 abData[1]; // Data to send to the ICC
 } PIN_MODIFY_STRUCTURE;
 
 typedef struct {

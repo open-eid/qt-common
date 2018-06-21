@@ -357,7 +357,7 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	}
 }
 
-QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify, quint16 lang, quint8 minlen) const
+QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify, quint16 lang, quint8 minlen, quint8 newPINOffset, bool requestCurrentPIN) const
 {
 	bool display = false;
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
@@ -373,41 +373,51 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 		}
 	}
 
+	quint8 PINFrameOffset = 0, PINLengthOffset = 0;
 	#define SET() \
 		data->bTimerOut = 30; \
 		data->bTimerOut2 = 30; \
-		data->bmFormatString = 0x02; \
-		data->bmPINBlockString = 0x00; \
-		data->bmPINLengthFormat = 0x00; \
-		data->wPINMaxExtraDigit = (minlen << 8) + 12; \
-		data->bEntryValidationCondition = 0x02; \
+		data->bmFormatString = FormatASCII|AlignLeft|PINFrameOffset << 4|PINFrameOffsetUnitBits; \
+		data->bmPINBlockString = PINLengthNone << 5|PINFrameSizeAuto; \
+		data->bmPINLengthFormat = PINLengthOffsetUnitBits|PINLengthOffset; \
+		data->wPINMaxExtraDigit = quint16(minlen << 8) | 12; \
+		data->bEntryValidationCondition = ValidOnKeyPressed; \
 		data->wLangId = lang; \
 		data->bTeoPrologue[0] = 0x00; \
 		data->bTeoPrologue[1] = 0x00; \
-		data->bTeoPrologue[2] = 0x00
+		data->bTeoPrologue[2] = 0x00; \
+		data->ulDataLength = quint32(apdu.size())
 
 	QByteArray cmd( 255, 0 );
 	if( verify )
 	{
 		PIN_VERIFY_STRUCTURE *data = (PIN_VERIFY_STRUCTURE*)cmd.data();
 		SET();
-		data->bNumberMessage = display ? 0xFF: 0x00;
+		data->bNumberMessage = display ? CCIDDefaultInvitationMessage : NoInvitationMessage;
 		data->bMsgIndex = 0x00;
-		data->ulDataLength = apdu.size();
 		cmd.resize( sizeof(PIN_VERIFY_STRUCTURE) - 1 );
 	}
 	else
 	{
 		PIN_MODIFY_STRUCTURE *data = (PIN_MODIFY_STRUCTURE*)cmd.data();
 		SET();
-		data->bNumberMessage = display ? 0x03: 0x00;
+		data->bNumberMessage = display ? ThreeInvitationMessage : NoInvitationMessage;
 		data->bInsertionOffsetOld = 0x00;
-		data->bInsertionOffsetNew = 0x00;
-		data->bConfirmPIN = 0x03;
-		data->bMsgIndex1 = 0x00;
-		data->bMsgIndex2 = 0x01;
-		data->bMsgIndex3 = 0x02;
-		data->ulDataLength = apdu.size();
+		data->bInsertionOffsetNew = newPINOffset;
+		data->bConfirmPIN = ConfirmNewPin;
+		if(requestCurrentPIN)
+		{
+			data->bConfirmPIN |= RequestCurrentPin;
+			data->bMsgIndex1 = ThreeInvitationMessage;
+			data->bMsgIndex2 = OneInvitationMessage;
+			data->bMsgIndex3 = TwoInvitationMessage;
+		}
+		else
+		{
+			data->bMsgIndex1 = OneInvitationMessage;
+			data->bMsgIndex2 = TwoInvitationMessage;
+			data->bMsgIndex3 = ThreeInvitationMessage;
+		}
 		cmd.resize( sizeof(PIN_MODIFY_STRUCTURE) - 1 );
 	}
 	cmd += apdu;
