@@ -34,8 +34,8 @@
 #include <QtNetwork/QSslKey>
 
 #include <openssl/err.h>
-#include <openssl/x509v3.h>
 #include <openssl/pkcs12.h>
+#include <openssl/x509v3.h>
 
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
@@ -129,7 +129,7 @@ QString SslCertificate::friendlyName() const
 
 QSslCertificate SslCertificate::fromX509( Qt::HANDLE x509 )
 {
-	QByteArray der( i2d_X509( (X509*)x509, 0 ), 0 );
+	QByteArray der(i2d_X509((X509*)x509, nullptr), Qt::Uninitialized);
 	if( !der.isEmpty() )
 	{
 		unsigned char *p = (unsigned char*)der.data();
@@ -151,10 +151,10 @@ bool SslCertificate::isCA() const
 QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 {
 	EVP_PKEY *key = (EVP_PKEY*)evp;
-	unsigned char *data = 0;
+	unsigned char *data = nullptr;
 	int len = 0;
-	QSsl::KeyAlgorithm alg;
-	QSsl::KeyType type;
+	QSsl::KeyAlgorithm alg = QSsl::Rsa;
+	QSsl::KeyType type = QSsl::PublicKey;
 
 	switch(EVP_PKEY_base_id(key))
 	{
@@ -185,7 +185,7 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 
 	QSslKey k;
 	if( len > 0 )
-		k = QSslKey( QByteArray( (char*)data, len ), alg, QSsl::Der, type );
+		k = QSslKey(QByteArray::fromRawData((char*)data, len), alg, QSsl::Der, type);
 	OPENSSL_free( data );
 
 	return k;
@@ -228,7 +228,7 @@ QString SslCertificate::keyName() const
 }
 
 Qt::HANDLE SslCertificate::extension( int nid ) const
-{ return !isNull() ? Qt::HANDLE(X509_get_ext_d2i( (X509*)handle(), nid, 0, 0 )) : nullptr; }
+{ return !isNull() ? Qt::HANDLE(X509_get_ext_d2i((X509*)handle(), nid, nullptr, nullptr)) : nullptr; }
 
 QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 {
@@ -317,7 +317,7 @@ QString SslCertificate::publicKeyHex() const
 	case EVP_PKEY_EC:
 	{
 		EC_KEY *ec = EVP_PKEY_get1_EC_KEY(key);
-		QByteArray key(i2d_EC_PUBKEY(ec, 0), 0);
+		QByteArray key(i2d_EC_PUBKEY(ec, nullptr), Qt::Uninitialized);
 		unsigned char *p = (unsigned char*)key.data();
 		i2d_EC_PUBKEY(ec, &p);
 		EC_KEY_free(ec);
@@ -335,11 +335,11 @@ QString SslCertificate::publicKeyHex() const
 
 QByteArray SslCertificate::serialNumber( bool hex ) const
 {
-	if( isNull() )
-		return QByteArray();
-
 	QByteArray serial;
-	if( BIGNUM *bn = ASN1_INTEGER_to_BN( X509_get_serialNumber( (X509*)handle() ), 0 ) )
+	if( isNull() )
+		return serial;
+
+	if(BIGNUM *bn = ASN1_INTEGER_to_BN(X509_get_serialNumber((X509*)handle()), nullptr))
 	{
 		if( char *str = hex ? BN_bn2hex( bn ) : BN_bn2dec( bn ) )
 		{
@@ -411,36 +411,47 @@ SslCertificate::CertType SslCertificate::type() const
 		if( enhancedKeyUsage().keys().contains( OCSPSign ) )
 		{
 			return
-				p.startsWith( "1.3.6.1.4.1.10015.3" ) ||
-				subjectInfo( QSslCertificate::CommonName ).indexOf( "TEST" ) != -1 ?
+				p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3")) ||
+				subjectInfo(QSslCertificate::CommonName).indexOf(QLatin1String("TEST")) != -1 ?
 				OCSPTestType : OCSPType;
 		}
 
-		if( p.startsWith( "1.3.6.1.4.1.10015.1.1" ) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")))
 			return EstEidType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.1.2" ) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")))
 			return DigiIDType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.1.3" ) ||
-			p.startsWith( "1.3.6.1.4.1.10015.11.1" ) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.3")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.11.1")))
 			return MobileIDType;
 
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.1" ) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")))
 			return EstEidTestType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.2" ) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.2")))
 			return DigiIDTestType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.3" ) ||
-			p.startsWith( "1.3.6.1.4.1.10015.3.11" ) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.3")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.11")))
 			return MobileIDTestType;
-		if( p.startsWith( "1.3.6.1.4.1.10015.3.7" ) ||
-			((p.startsWith( "1.3.6.1.4.1.10015.7.1" ) ||
-			  p.startsWith( "1.3.6.1.4.1.10015.7.3" )) &&
-			 issuerInfo( QSslCertificate::CommonName ).indexOf( "TEST" ) != -1) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.7")) ||
+			((p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.1")) ||
+			  p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.3"))) &&
+			 issuerInfo(QSslCertificate::CommonName).indexOf(QLatin1String("TEST")) != -1))
 			return TempelTestType;
 
-		if( p.startsWith( "1.3.6.1.4.1.10015.7.1" ) ||
-			p.startsWith( "1.3.6.1.4.1.10015.7.3" ) ||
-			p.startsWith( "1.3.6.1.4.1.10015.2.1" ) )
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.3")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.2.1")) )
 			return TempelType;
+
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.1")))
+			return EstEidType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.1")))
+			return EstEidTestType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")))
+			return DigiIDType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.2")))
+			return DigiIDTestType;
 	}
 
 #ifndef NO_LIBDIGIDOCPP
@@ -453,7 +464,7 @@ SslCertificate::CertType SslCertificate::type() const
 		for(const std::string &statement: x509Cert.qcStatements())
 		{
 			if(statement == digidoc::X509Cert::QCT_ESIGN)
-				return DigiIDType;
+				return EstEidType;
 			if(statement == digidoc::X509Cert::QCT_ESEAL)
 				return TempelType;
 		}
@@ -548,27 +559,26 @@ bool SslCertificate::validateEncoding() const
 class PKCS12CertificatePrivate: public QSharedData
 {
 public:
-	PKCS12CertificatePrivate(): error(PKCS12Certificate::NullError) {}
 	void init( const QByteArray &data, const QString &pin );
 	void setLastError();
 
 	QList<QSslCertificate> caCerts;
 	QSslCertificate cert;
 	QSslKey key;
-	PKCS12Certificate::ErrorType error;
+	PKCS12Certificate::ErrorType error = PKCS12Certificate::NullError;
 	QString errorString;
 };
 
 void PKCS12CertificatePrivate::init( const QByteArray &data, const QString &pin )
 {
 	const unsigned char *p = (const unsigned char*)data.constData();
-	PKCS12 *p12 = d2i_PKCS12( 0, &p, data.size() );
+	PKCS12 *p12 = d2i_PKCS12(nullptr, &p, data.size());
 	if( !p12 )
 		return setLastError();
 
-	STACK_OF(X509) *ca = 0;
-	X509 *c = 0;
-	EVP_PKEY *k = 0;
+	STACK_OF(X509) *ca = nullptr;
+	X509 *c = nullptr;
+	EVP_PKEY *k = nullptr;
 	QByteArray _pin = pin.toUtf8();
 	int ret = PKCS12_parse( p12, _pin.constData(), &k, &c, &ca );
 	PKCS12_free( p12 );
@@ -601,7 +611,7 @@ void PKCS12CertificatePrivate::setLastError()
 			return;
 		}
 		error = PKCS12Certificate::UnknownError;
-		errorString += ERR_error_string( err, 0 );
+		errorString += ERR_error_string(err, nullptr);
 	}
 }
 
@@ -615,9 +625,9 @@ PKCS12Certificate::PKCS12Certificate( const QByteArray &data, const QString &pin
 :	d(new PKCS12CertificatePrivate)
 { d->init( data, pin ); }
 
-PKCS12Certificate::PKCS12Certificate( const PKCS12Certificate &other ): d(other.d) {}
+PKCS12Certificate::PKCS12Certificate( const PKCS12Certificate &other ) = default;
 
-PKCS12Certificate::~PKCS12Certificate() {}
+PKCS12Certificate::~PKCS12Certificate() = default;
 QList<QSslCertificate> PKCS12Certificate::caCertificates() const { return d->caCerts; }
 QSslCertificate PKCS12Certificate::certificate() const { return d->cert; }
 PKCS12Certificate::ErrorType PKCS12Certificate::error() const { return d->error; }
@@ -625,7 +635,7 @@ QString PKCS12Certificate::errorString() const { return d->errorString; }
 
 PKCS12Certificate PKCS12Certificate::fromPath( const QString &path, const QString &pin )
 {
-	PKCS12Certificate p12( 0, QString() );
+	PKCS12Certificate p12(nullptr, QString());
 	QFile f( path );
 	if( !f.exists() )
 		p12.d->error = PKCS12Certificate::FileNotExist;
