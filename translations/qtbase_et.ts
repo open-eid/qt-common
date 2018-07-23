@@ -2351,7 +2351,7 @@ Do you want to delete it anyway?</source>
     <name>QNetworkAccessManager</name>
     <message>
         <source>Network access is disabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrguühendus on keelatud.</translation>
     </message>
 </context>
 <context>
