@@ -32,7 +32,7 @@
 Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>
-        &lt;p&gt;Estonian ID-software é distribuido por Information Systems&apos;s Auhtority, desenvolvido por AS Sertifitseerimiskeskus&lt;br /&gt;
+        &lt;p&gt;Estonian ID-software é distribuído por Information Systems&apos;s Auhtority, desenvolvido por AS Sertifitseerimiskeskus&lt;br /&gt;
 Contato (em inglês) para assistência por e-mail &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; ou pelo telefone 1777 (somente na Estónia), (+372) 677 3377 para outros países.&lt;/p&gt;
 Licenças e componentes adicionais</translation>
     </message>
@@ -53,7 +53,7 @@ Licenças e componentes adicionais</translation>
     </message>
     <message>
         <source>Failed to save file</source>
-        <translation>Falha ao savar arquivo</translation>
+        <translation>Falha ao salvar arquivo</translation>
     </message>
     <message>
         <source>Certificate Information</source>
@@ -176,14 +176,14 @@ Licenças e componentes adicionais</translation>
     </message>
     <message>
         <source>PLUGIN_WARNING</source>
-        <translation>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
+        <translation>Para assinar digitalmente online a extensão precisa estar habilitada no seu navegador web.&lt;br/&gt;Instruções de como habilitar a extensão para uso do token pode ser acessado em &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
     <name>Configuration</name>
     <message>
         <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+        <translation>Seu ID-software expirou. Para baixar a última versão do software, acesse a página &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt;. Usuários Mac OS X podem baixar a última versão em &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
