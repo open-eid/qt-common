@@ -54,7 +54,7 @@ QByteArray QPCSCReaderPrivate::attrib( DWORD id ) const
 	LONG err = SC(GetAttrib, card, id, nullptr, &size);
 	if( err != SCARD_S_SUCCESS || !size )
 		return QByteArray();
-	QByteArray data( size, 0 );
+	QByteArray data(int(size), 0);
 	err = SC(GetAttrib, card, id, LPBYTE(data.data()), &size);
 	if( err != SCARD_S_SUCCESS || !size )
 		return QByteArray();
@@ -67,7 +67,7 @@ QHash<DRIVER_FEATURES,quint32> QPCSCReaderPrivate::features()
 		return featuresList;
 	DWORD size = 0;
 	BYTE feature[256];
-	LONG rv = SC(Control, card, CM_IOCTL_GET_FEATURE_REQUEST, nullptr, 0, feature, DWORD(sizeof(feature)), &size);
+	LONG rv = SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0u, feature, DWORD(sizeof(feature)), &size);
 	if(rv != SCARD_S_SUCCESS)
 		return featuresList;
 	for(unsigned char *p = feature; DWORD(p-feature) < size; )
@@ -87,7 +87,7 @@ QPCSC::QPCSC()
 {
 	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
 	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
-	SC(EstablishContext, SCARD_SCOPE_USER, nullptr, nullptr, &d->context);
+	serviceRunning();
 }
 
 QPCSC::~QPCSC()
@@ -156,12 +156,12 @@ QStringList QPCSC::readers() const
 	if( err != SCARD_S_SUCCESS || !size )
 		return QStringList();
 
-	QByteArray data( size, 0 );
+	QByteArray data(int(size), 0);
 	err = SC(ListReaders, d->context, nullptr, data.data(), &size);
 	if( err != SCARD_S_SUCCESS )
 		return QStringList();
 
-	QStringList readers = QString::fromLocal8Bit(data, size).split(QChar(0));
+	QStringList readers = QString::fromLocal8Bit(data, int(size)).split(QChar(0));
 	readers.removeAll(QString());
 	return readers;
 }
@@ -170,7 +170,7 @@ bool QPCSC::serviceRunning() const
 {
 	if(d->context)
 		return true;
-	SC(EstablishContext, SCARD_SCOPE_USER, nullptr, nullptr, &d->context);
+	SC(EstablishContext, DWORD(SCARD_SCOPE_USER), nullptr, nullptr, &d->context);
 	return d->context;
 }
 
@@ -198,7 +198,7 @@ QPCSCReader::~QPCSCReader()
 
 QByteArray QPCSCReader::atr() const
 {
-	return QByteArray::fromRawData( (const char*)d->state.rgbAtr, d->state.cbAtr ).toHex().toUpper();
+	return QByteArray::fromRawData((const char*)d->state.rgbAtr, int(d->state.cbAtr)).toHex().toUpper();
 }
 
 bool QPCSCReader::beginTransaction()
@@ -215,7 +215,7 @@ quint32 QPCSCReader::connectEx(Connect connect, Mode mode)
 {
 	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto);
 	updateState();
-	return err;
+	return quint32(err);
 }
 
 void QPCSCReader::disconnect( Reset reset )
@@ -245,6 +245,9 @@ bool QPCSCReader::isConnected() const
 
 bool QPCSCReader::isPinPad() const
 {
+	if(d->reader.contains("HID Global OMNIKEY 3x21 Smart Card Reader") ||
+		d->reader.contains("HID Global OMNIKEY 6121 Smart Card Reader"))
+		return false;
 	if(qEnvironmentVariableIsSet("SMARTCARDPP_NOPINPAD"))
 		return false;
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
@@ -268,8 +271,7 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 	{
 		DWORD size = 0;
 		BYTE recv[256];
-		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, DWORD(sizeof(recv)), &size);
-		if(rv != SCARD_S_SUCCESS)
+		if(SC(Control, d->card, ioctl, nullptr, 0u, recv, DWORD(sizeof(recv)), &size) != SCARD_S_SUCCESS)
 			return properties;
 		for(unsigned char *p = recv; DWORD(p-recv) < size; )
 		{
@@ -284,14 +286,14 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 
 int QPCSCReader::protocol() const
 {
-	return d->proto;
+	return int(d->proto);
 }
 
 bool QPCSCReader::reconnect( Reset reset, Mode mode )
 {
 	if( !d->card )
 		return false;
-	LONG err = SC(Reconnect, d->card, SCARD_SHARE_SHARED, mode, reset, &d->proto);
+	LONG err = SC(Reconnect, d->card, DWORD(SCARD_SHARE_SHARED), mode, reset, &d->proto);
 	updateState();
 	return err == SCARD_S_SUCCESS;
 }
@@ -299,7 +301,7 @@ bool QPCSCReader::reconnect( Reset reset, Mode mode )
 QStringList QPCSCReader::state() const
 {
 	QStringList result;
-#define STATE(X) if( d->state.dwEventState & SCARD_STATE_##X ) result << #X
+#define STATE(X) if( d->state.dwEventState & SCARD_STATE_##X ) result << QStringLiteral(#X)
 	STATE(IGNORE);
 	STATE(CHANGED);
 	STATE(UNKNOWN);
@@ -320,29 +322,27 @@ QPCSCReader::Result QPCSCReader::transfer( const char *cmd, int size ) const
 
 QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 {
-	static const SCARD_IO_REQUEST T0 = { 1, 8 };
-	static const SCARD_IO_REQUEST T1 = { 2, 8 };
+	static const SCARD_IO_REQUEST T0 = { SCARD_PROTOCOL_T0, sizeof(SCARD_IO_REQUEST) };
+	static const SCARD_IO_REQUEST T1 = { SCARD_PROTOCOL_T1, sizeof(SCARD_IO_REQUEST) };
 	QByteArray data( 1024, 0 );
-	DWORD size = data.size();
+	DWORD size = DWORD(data.size());
 
-	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
-		<< "> " << apdu.toHex().constData();
-	DWORD ret = SC(Transmit, d->card, d->proto == SCARD_PROTOCOL_T0 ? &T0 : &T1,
-		LPCBYTE(apdu.constData()), apdu.size(), nullptr, LPBYTE(data.data()), &size);
+	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "> " << apdu.toHex().constData();
+	LONG ret = SC(Transmit, d->card, d->proto == SCARD_PROTOCOL_T0 ? &T0 : &T1,
+		LPCBYTE(apdu.constData()), DWORD(apdu.size()), nullptr, LPBYTE(data.data()), &size);
 	if( ret != SCARD_S_SUCCESS )
-		return Result({ QByteArray(), QByteArray(), ret });
+		return { QByteArray(), QByteArray(), quint32(ret) };
 
-	Result result = { data.mid( size-2, 2 ), data.left( size - 2 ), ret };
-	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
-		<< "< " << result.SW.toHex().constData();
-	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(size).toHex().constData();
+	Result result = { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(ret) };
+	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "< " << result.SW.toHex().constData();
+	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(int(size)).toHex().constData();
 
 	switch(result.SW.at(0))
 	{
 	case 0x61: // Read more
 	{
 		QByteArray cmd( "\x00\xC0\x00\x00\x00", 5 );
-		cmd[4] = data.at( size-1 );
+		cmd[4] = data.at(int(size - 1));
 		Result result2 = transfer( cmd );
 		result2.data.prepend(result.data);
 		return result2;
@@ -365,7 +365,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	{
 		DWORD size = 0;
 		BYTE recv[256];
-		DWORD rv = SC(Control, d->card, ioctl, nullptr, 0, recv, DWORD(sizeof(recv)), &size);
+		LONG rv = SC(Control, d->card, ioctl, nullptr, 0u, recv, DWORD(sizeof(recv)), &size);
 		if( rv == SCARD_S_SUCCESS )
 		{
 			PIN_PROPERTIES_STRUCTURE *caps = (PIN_PROPERTIES_STRUCTURE *)recv;
@@ -426,23 +426,21 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	if( !ioctl )
 		ioctl = features.value( verify ? FEATURE_VERIFY_PIN_DIRECT : FEATURE_MODIFY_PIN_DIRECT );
 
-	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
-		<< "> " << apdu.toHex().constData();
+	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "> " << apdu.toHex().constData();
 	qCDebug(APDU).nospace() << "CTL" << "> " << cmd.toHex().constData();
 	QByteArray data( 255 + 3, 0 );
-	DWORD size = data.size();
-	DWORD err = SC(Control, d->card, ioctl, cmd.constData(), cmd.size(), LPVOID(data.data()), data.size(), &size);
+	DWORD size = DWORD(data.size());
+	LONG err = SC(Control, d->card, ioctl, cmd.constData(), DWORD(cmd.size()), LPVOID(data.data()), DWORD(data.size()), &size);
 
 	if( DWORD finish = features.value( verify ? FEATURE_VERIFY_PIN_FINISH : FEATURE_MODIFY_PIN_FINISH ) )
 	{
-		size = data.size();
-		err = SC(Control, d->card, finish, nullptr, 0, LPVOID(data.data()), data.size(), &size);
+		size = DWORD(data.size());
+		err = SC(Control, d->card, finish, nullptr, 0u, LPVOID(data.data()), DWORD(data.size()), &size);
 	}
 
-	Result result = { data.mid( size-2, 2 ), data.left( size - 2 ), err };
-	qCDebug(APDU).nospace() << "T" << qint8(d->proto == SCARD_PROTOCOL_RAW ? -1 : d->proto - 1)
-		<< "< " << result.SW.toHex().constData();
-	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(size).toHex().constData();
+	Result result = { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(err) };
+	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "< " << result.SW.toHex().constData();
+	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(int(size)).toHex().constData();
 	return result;
 }
 
@@ -451,7 +449,7 @@ bool QPCSCReader::updateState( quint32 msec )
 	if(!d->d->context)
 		return false;
 	d->state.dwCurrentState = d->state.dwEventState; //(currentReaderCount << 16)
-	DWORD err = SC(GetStatusChange, d->d->context, msec, &d->state, 1); //INFINITE
+	DWORD err = SC(GetStatusChange, d->d->context, msec, &d->state, 1u); //INFINITE
 	switch(err) {
 	case SCARD_S_SUCCESS: return true;
 	case SCARD_E_TIMEOUT: return msec == 0;
