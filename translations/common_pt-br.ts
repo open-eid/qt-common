@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>Diagnostics</source>
-        <translation>DiagnÛsticos</translation>
+        <translation>Diagn√≥sticos</translation>
     </message>
     <message>
         <source>Save as</source>
@@ -32,17 +32,17 @@
 Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>
-        &lt;p&gt;Estonian ID-software È distribuÌdo por Information Systems&apos;s Auhtority, desenvolvido por AS Sertifitseerimiskeskus&lt;br /&gt;
-Contato (em inglÍs) para assistÍncia por e-mail &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; ou pelo telefone 1777 (somente na EstÛnia), (+372) 677 3377 para outros paÌses.&lt;/p&gt;
-LicenÁas e componentes adicionais</translation>
+        &lt;p&gt;Estonian ID-software √© distribu√≠do por Information Systems&apos;s Auhtority, desenvolvido por AS Sertifitseerimiskeskus&lt;br /&gt;
+Contato (em ingl√™s) para assist√™ncia por e-mail &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; ou pelo telefone 1777 (somente na Est√≥nia), (+372) 677 3377 para outros pa√≠ses.&lt;/p&gt;
+Licen√ßas e componentes adicionais</translation>
     </message>
     <message>
         <source>Base version:</source>
-        <translation>Vers„o base:</translation>
+        <translation>Vers√£o base:</translation>
     </message>
     <message>
-        <source>%1 vers„o %2, released %3%4</source>
-        <translation>%1 vers„o %2, released %3%4</translation>
+        <source>%1 vers√£o %2, released %3%4</source>
+        <translation>%1 vers√£o %2, released %3%4</translation>
     </message>
 </context>
 <context>
@@ -57,15 +57,15 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Certificate Information</source>
-        <translation>InformaÁ„o do certificado</translation>
+        <translation>Informa√ß√£o do certificado</translation>
     </message>
     <message>
         <source>This certificate is intended for following purpose(s):</source>
-        <translation>Esse certificado serve para os seguintes propÛsitos:</translation>
+        <translation>Esse certificado serve para os seguintes prop√≥sitos:</translation>
     </message>
     <message>
         <source>Issued to:</source>
-        <translation>AtribuÌdo para:</translation>
+        <translation>Atribu√≠do para:</translation>
     </message>
     <message>
         <source>Issued by:</source>
@@ -73,7 +73,7 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Valid from</source>
-        <translation>V·lido de</translation>
+        <translation>V√°lido de</translation>
     </message>
     <message>
         <source>to</source>
@@ -81,11 +81,11 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Vers„o</translation>
+        <translation>Vers√£o</translation>
     </message>
     <message>
         <source>Serial number</source>
-        <translation>N˙mero serial</translation>
+        <translation>N√∫mero serial</translation>
     </message>
     <message>
         <source>Signature algorithm</source>
@@ -97,7 +97,7 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Valid to</source>
-        <translation>V·lido para</translation>
+        <translation>V√°lido para</translation>
     </message>
     <message>
         <source>Subject</source>
@@ -105,11 +105,11 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Public key</source>
-        <translation>Chave p˙blica</translation>
+        <translation>Chave p√∫blica</translation>
     </message>
     <message>
         <source>Certificate policies</source>
-        <translation>PolÌticas de certificado</translation>
+        <translation>Pol√≠ticas de certificado</translation>
     </message>
     <message>
         <source>Certificate</source>
@@ -117,7 +117,7 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>General</translation>
+        <translation>Geral</translation>
     </message>
     <message>
         <source>Details</source>
@@ -133,7 +133,7 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Certification Path</source>
-        <translation>Caminho da certificaÁ„o</translation>
+        <translation>Caminho da certifica√ß√£o</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -149,11 +149,11 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Authority key identifier</source>
-        <translation>Authority key identifier</translation>
+        <translation>Identificador da chave da autoridade</translation>
     </message>
     <message>
         <source>Subject key identifier</source>
-        <translation>Subject key identifier</translation>
+        <translation>Identificador da chave do assunto</translation>
     </message>
 </context>
 <context>
@@ -164,7 +164,7 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Browser plugins</source>
-        <translation>Extensıes de navegadores</translation>
+        <translation>Extens√µes de navegadores</translation>
     </message>
     <message>
         <source>Remind later</source>
@@ -176,49 +176,49 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>PLUGIN_WARNING</source>
-        <translation>Para assinar digitalmente online a extens„o precisa estar habilitada no seu navegador web.&lt;br/&gt;InstruÁıes de como habilitar a extens„o para uso do token pode ser acessado em &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
+        <translation>Para assinar digitalmente online a extens√£o precisa estar habilitada no seu navegador web.&lt;br/&gt;Instru√ß√µes de como habilitar a extens√£o para uso do token pode ser acessado em &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
     <name>Configuration</name>
     <message>
         <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>Seu ID-software expirou. Para baixar a ˙ltima vers„o do software, acesse a p·gina &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt;. Usu·rios Mac OS X podem baixar a ˙ltima vers„o em &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+        <translation>Seu ID-software expirou. Para baixar a √∫ltima vers√£o do software, acesse a p√°gina &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt;. Usu√°rios Mac OS X podem baixar a √∫ltima vers√£o em &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+        <translation>Uma atualiza√ß√£o do ID-software est√° dispon√≠vel. Para baixar a atualiza√ß√£o, acesse a p√°gina &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt;. Usu√°rios de Mac OS X podem fazer o download da atualiza√ß√£o na &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Request timed out</source>
-        <translation>Request timed out</translation>
+        <translation>Tempo de requesi√ß√£o expirada</translation>
     </message>
     <message>
         <source>The configuration file located on the server cannot be validated.</source>
-        <translation>The configuration file located on the server cannot be validated.</translation>
+        <translation>O arquivo de configura√ß√£o localizado no servidor n√£o pode ser validado.</translation>
     </message>
     <message>
         <source>Your computer&apos;s configuration file is later than the server has.</source>
-        <translation>Your computer&apos;s configuration file is later than the server has.</translation>
+        <translation>O arquivo de configura√ß√£o do seu computador est√° desatualizado em rela√ß√£o ao do servidor.</translation>
     </message>
     <message>
         <source>Update is available</source>
-        <translation>Update is available</translation>
+        <translation>Atualiza√ß√£o dispon√≠vel</translation>
     </message>
 </context>
 <context>
     <name>Diagnostics</name>
     <message>
         <source>Locale:</source>
-        <translation>Locale:</translation>
+        <translation>Localiza√ß√£o:</translation>
     </message>
     <message>
         <source>Base version:</source>
-        <translation>Base version:</translation>
+        <translation>Vers√£o base:</translation>
     </message>
     <message>
         <source>Application version:</source>
-        <translation>Vers„o da aplicaÁ„o:</translation>
+        <translation>Vers√£o da aplica√ß√£o:</translation>
     </message>
     <message>
         <source>OS:</source>
@@ -242,15 +242,15 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Libraries</source>
-        <translation>Libraries</translation>
+        <translation>Bibliotecas</translation>
     </message>
     <message>
         <source>Running</source>
-        <translation>Running</translation>
+        <translation>Executando</translation>
     </message>
     <message>
         <source>Not running</source>
-        <translation>Not running</translation>
+        <translation>N√£o executando</translation>
     </message>
     <message>
         <source>Smart Card readers</source>
@@ -258,51 +258,51 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Browsers:</source>
-        <translation>Browsers:</translation>
+        <translation>Navegadores:</translation>
     </message>
     <message>
         <source>USB info:</source>
-        <translation>USB info:</translation>
+        <translation>USB:</translation>
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation>Unknown - error %1</translation>
+        <translation>Desconhecido - erro %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>User</translation>
+        <translation>Usu√°rio</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation>Administrator</translation>
+        <translation>Administrador</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation>User rights: </translation>
+        <translation>Direitos de uso: </translation>
     </message>
     <message>
         <source>Smart Card service status: </source>
-        <translation>Smart Card service status: </translation>
+        <translation>Situa√ß√£o do servi√ßo Smart Card: </translation>
     </message>
     <message>
         <source>ATRfiltr service status: </source>
-        <translation>ATRfiltr service status: </translation>
+        <translation>Situa√ß√£o do servi√ßo ATRfiltr: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation>Not found</translation>
+        <translation>N√£o encontrado</translation>
     </message>
     <message>
         <source>Smart Card reader drivers</source>
-        <translation>Smart Card reader drivers</translation>
+        <translation>Drivers de leitor de Smart Card</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation>Certificate Propagation service status: </translation>
+        <translation>Situa√ß√£o do servi√ßo de propaga√ß√£o de certificado: </translation>
     </message>
     <message>
         <source>Central Configuration</source>
-        <translation>Central Configuration</translation>
+        <translation>Central de Configura√ß√µes</translation>
     </message>
 </context>
 <context>
@@ -321,105 +321,105 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>ConfiguraÁıes</translation>
+        <translation>Configura√ß√µes</translation>
     </message>
 </context>
 <context>
     <name>PinDialog</name>
     <message>
         <source>Selected action requires sign certificate.</source>
-        <translation>Selected action requires signing certificate.</translation>
+        <translation>A a√ß√£o selecionada requer assinatura com certificado.</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2</source>
-        <translation>For using signing certificate enter PIN2</translation>
+        <translation>Para usar a assinatura com cetificado digite o PIN2</translation>
     </message>
     <message>
         <source>PIN will be locked next failed attempt</source>
-        <translation>PIN will be locked next failed attempt</translation>
+        <translation>O PIN ser√° bloqueado na pr√≥xima tentativa com falha</translation>
     </message>
     <message>
         <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN has been entered incorrectly one time</translation>
+        <translation>PIN informado incorretamente (primeira tentativa)</translation>
     </message>
     <message>
         <source>Signing</source>
-        <translation>Signing</translation>
+        <translation>Assinando</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>For using signing certificate enter PIN2 at the reader</translation>
+        <translation>Para usar assinatura com certificado digital digite o PIN2 no leitor</translation>
     </message>
     <message>
         <source>Authentication</source>
-        <translation>Authentication</translation>
+        <translation>Autentica√ß√£o</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>For using authentication certificate enter PIN1 at the reader</translation>
+        <translation>Para usar assinatura com certificado digital digite o PIN1 no leitor</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1</source>
-        <translation>For using authentication certificate enter PIN1</translation>
+        <translation>Para autentica√ß√£o por certiifcado digital digite o PIN1</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>
-        <translation>Selected action requires authentication certificate.</translation>
+        <translation>A a√ß√£o selecionada exige a autentica√ß√£o com certificado digital.</translation>
     </message>
 </context>
 <context>
     <name>SslCertificate</name>
     <message>
         <source>All application policies</source>
-        <translation>All application policies</translation>
+        <translation>Todas as politicas da aplica√ß√£o</translation>
     </message>
     <message>
         <source>Proves your identity to a remote computer</source>
-        <translation>Proves your identity to a remote computer</translation>
+        <translation>Comprove a sua identidade para o computador remoto</translation>
     </message>
     <message>
         <source>Protects email messages</source>
-        <translation>Protects email messages</translation>
+        <translation>Proteja as mensagens de e-mail</translation>
     </message>
     <message>
         <source>OCSP signing</source>
-        <translation>OCSP signing</translation>
+        <translation>Assinatura OCSP</translation>
     </message>
     <message>
         <source>Digital signature</source>
-        <translation>Digital signature</translation>
+        <translation>Assinatura Digital</translation>
     </message>
     <message>
         <source>Non repudiation</source>
-        <translation>Non repudiation</translation>
+        <translation>N√£o rep√∫dio</translation>
     </message>
     <message>
         <source>Key encipherment</source>
-        <translation>Key encipherment</translation>
+        <translation>Codifica√ß√£o de chave</translation>
     </message>
     <message>
         <source>Data encipherment</source>
-        <translation>Data encipherment</translation>
+        <translation>Data de codifica√ß√£o</translation>
     </message>
     <message>
         <source>Key agreement</source>
-        <translation>Key agreement</translation>
+        <translation>Chave de confian√ßa</translation>
     </message>
     <message>
         <source>Key certificate sign</source>
-        <translation>Key certificate signature</translation>
+        <translation>Chave do certificado de assinatura</translation>
     </message>
     <message>
         <source>CRL sign</source>
-        <translation>CRL signature</translation>
+        <translation>Assinatura CRL</translation>
     </message>
     <message>
         <source>Encipher only</source>
-        <translation>Encipher only</translation>
+        <translation>Codificar somente</translation>
     </message>
     <message>
         <source>Decipher only</source>
-        <translation>Decipher only</translation>
+        <translation>Decodificar somente</translation>
     </message>
     <message>
         <source>ID-CARD</source>
@@ -427,15 +427,15 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Unknown</translation>
+        <translation>Desconhecido</translation>
     </message>
     <message>
         <source>Time Stamping</source>
-        <translation>Time Stamping</translation>
+        <translation>Carimbo de tempo</translation>
     </message>
     <message>
         <source>Ensures the identity of a remote computer</source>
-        <translation>Ensures the identity of a remote computer</translation>
+        <translation>Garanta a identifica√ß√£o do computar remoto</translation>
     </message>
 </context>
 <context>
@@ -446,7 +446,7 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Register code</source>
-        <translation>CÛdigo de registro</translation>
+        <translation>C√≥digo de registro</translation>
     </message>
     <message>
         <source>Name</source>
@@ -454,7 +454,7 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Given Names</source>
-        <translation>Given Names</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <source>Surname</source>
@@ -462,27 +462,27 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation>CÛdigo pessoal</translation>
+        <translation>C√≥digo pessoal</translation>
     </message>
     <message>
         <source>Card in reader</source>
-        <translation>N˙mero do card</translation>
+        <translation>N√∫mero do card</translation>
     </message>
     <message>
         <source>Sign certificate is</source>
-        <translation>Signing certificate is</translation>
+        <translation>Certificado de assinatura √©</translation>
     </message>
     <message>
         <source>Auth certificate is</source>
-        <translation>AutenticaÁ„o do certificado È</translation>
+        <translation>Autentica√ß√£o do certificado √©</translation>
     </message>
     <message>
         <source>valid</source>
-        <translation>v·lido</translation>
+        <translation>v√°lido</translation>
     </message>
     <message>
         <source>Your certificates will expire soon</source>
-        <translation>Seu certificado ir· expirar em breve</translation>
+        <translation>Seu certificado ir√° expirar em breve</translation>
     </message>
     <message>
         <source>expired</source>
@@ -490,15 +490,15 @@ LicenÁas e componentes adicionais</translation>
     </message>
     <message>
         <source>PIN is locked</source>
-        <translation>PIN est· bloqueado</translation>
+        <translation>PIN est√° bloqueado</translation>
     </message>
     <message>
         <source>Open utility</source>
-        <translation>Abrir utilit·rio</translation>
+        <translation>Abrir utilit√°rio</translation>
     </message>
     <message>
         <source>Please verify if your card requires update</source>
-        <translation>Por favor verifique se seu card precisa de atualizaÁ„o</translation>
+        <translation>Por favor verifique se seu card precisa de atualiza√ß√£o</translation>
     </message>
 </context>
 </TS>
