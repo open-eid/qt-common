@@ -357,7 +357,8 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	}
 }
 
-QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify, quint16 lang, quint8 minlen, quint8 newPINOffset, bool requestCurrentPIN) const
+QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify, quint16 lang,
+	quint8 minlen, quint8 newPINOffset, bool requestCurrentPIN, bool showPUKMessage) const
 {
 	bool display = false;
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
@@ -377,7 +378,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	#define SET() \
 		data->bTimerOut = 30; \
 		data->bTimerOut2 = 30; \
-		data->bmFormatString = FormatASCII|AlignLeft|PINFrameOffset << 4|PINFrameOffsetUnitBits; \
+		data->bmFormatString = FormatASCII|AlignLeft|quint8(PINFrameOffset << 4)|PINFrameOffsetUnitBits; \
 		data->bmPINBlockString = PINLengthNone << 5|PINFrameSizeAuto; \
 		data->bmPINLengthFormat = PINLengthOffsetUnitBits|PINLengthOffset; \
 		data->wPINMaxExtraDigit = quint16(minlen << 8) | 12; \
@@ -394,7 +395,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 		PIN_VERIFY_STRUCTURE *data = (PIN_VERIFY_STRUCTURE*)cmd.data();
 		SET();
 		data->bNumberMessage = display ? CCIDDefaultInvitationMessage : NoInvitationMessage;
-		data->bMsgIndex = 0x00;
+		data->bMsgIndex = NoInvitationMessage;
 		cmd.resize( sizeof(PIN_VERIFY_STRUCTURE) - 1 );
 	}
 	else
@@ -408,7 +409,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 		if(requestCurrentPIN)
 		{
 			data->bConfirmPIN |= RequestCurrentPin;
-			data->bMsgIndex1 = ThreeInvitationMessage;
+			data->bMsgIndex1 = showPUKMessage ? ThreeInvitationMessage : NoInvitationMessage;
 			data->bMsgIndex2 = OneInvitationMessage;
 			data->bMsgIndex3 = TwoInvitationMessage;
 		}
