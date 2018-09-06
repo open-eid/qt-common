@@ -357,8 +357,8 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	}
 }
 
-QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify, quint16 lang,
-	quint8 minlen, quint8 newPINOffset, bool requestCurrentPIN, bool showPUKMessage) const
+QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify,
+	quint16 lang, quint8 minlen, quint8 newPINOffset, bool requestCurrentPIN) const
 {
 	bool display = false;
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
@@ -409,7 +409,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 		if(requestCurrentPIN)
 		{
 			data->bConfirmPIN |= RequestCurrentPin;
-			data->bMsgIndex1 = showPUKMessage ? ThreeInvitationMessage : NoInvitationMessage;
+			data->bMsgIndex1 = NoInvitationMessage;
 			data->bMsgIndex2 = OneInvitationMessage;
 			data->bMsgIndex3 = TwoInvitationMessage;
 		}
