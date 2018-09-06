@@ -118,7 +118,8 @@ public:
 	bool endTransaction( Reset reset = LeaveCard );
 	Result transfer( const char *cmd, int size ) const;
 	Result transfer( const QByteArray &apdu ) const;
-	Result transferCTL(const QByteArray &apdu, bool verify, quint16 lang = 0, quint8 minlen = 4, quint8 newPINOffset = 0, bool requestCurrentPIN = true) const;
+	Result transferCTL(const QByteArray &apdu, bool verify, quint16 lang = 0, quint8 minlen = 4,
+		quint8 newPINOffset = 0, bool requestCurrentPIN = true, bool showPUKMessage = false) const;
 
 private:
 	Q_DISABLE_COPY(QPCSCReader)

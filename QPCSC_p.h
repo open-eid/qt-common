@@ -69,12 +69,12 @@ FEATURE_CCID_ESC_COMMAND         = 0x13
 #pragma pack(push, 1)
 #endif
 
-typedef struct
+using PCSC_TLV_STRUCTURE = struct
 {
 	quint8 tag;
 	quint8 length;
 	quint32 value;
-} PCSC_TLV_STRUCTURE;
+};
 
 enum bmFormatString : quint8
 {
@@ -122,7 +122,7 @@ enum bConfirmPIN : quint8
 	AdvancedModify = 1 << 2,
 };
 
-typedef struct
+using PIN_VERIFY_STRUCTURE = struct
 {
 	quint8 bTimerOut; // timeout in seconds (00 means use default timeout)
 	quint8 bTimerOut2; // timeout in seconds after first key stroke
@@ -137,9 +137,9 @@ typedef struct
 	quint8 bTeoPrologue[3]; // T=1 I-block prologue field to use (fill with 00)
 	quint32 ulDataLength; // length of Data to be sent to the ICC
 	quint8 abData[1]; // Data to send to the ICC
-} PIN_VERIFY_STRUCTURE;
+};
 
-typedef struct
+using PIN_MODIFY_STRUCTURE = struct
 {
 	quint8 bTimerOut; // timeout in seconds (00 means use default timeout)
 	quint8 bTimerOut2; // timeout in seconds after first key stroke
@@ -159,18 +159,18 @@ typedef struct
 	quint8 bTeoPrologue[3]; // T=1 I-block prologue field to use (fill with 00)
 	quint32 ulDataLength; // length of Data to be sent to the ICC
 	quint8 abData[1]; // Data to send to the ICC
-} PIN_MODIFY_STRUCTURE;
+};
 
-typedef struct {
+using PIN_PROPERTIES_STRUCTURE = struct {
 	quint16 wLcdLayout;
 	quint8 bEntryValidationCondition;
 	quint8 bTimeOut2;
-} PIN_PROPERTIES_STRUCTURE;
+};
 
-typedef struct {
+using DISPLAY_PROPERTIES_STRUCTURE = struct {
 	quint16 wLcdMaxCharacters;
 	quint16 wLcdMaxLines;
-} DISPLAY_PROPERTIES_STRUCTURE;
+};
 
 #ifdef Q_OS_MAC
 #pragma pack()
@@ -179,7 +179,7 @@ typedef struct {
 #endif
 
 #ifndef SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-#define SCARD_ATTR_VALUE(Class, Tag) ((((ULONG)(Class)) << 16) | ((ULONG)(Tag)))
+#define SCARD_ATTR_VALUE(Class, Tag) ((ULONG(Class) << 16) | ULONG(Tag))
 #define SCARD_CLASS_SYSTEM     0x7fff
 #define SCARD_ATTR_DEVICE_FRIENDLY_NAME_A SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0003)
 #define SCARD_ATTR_DEVICE_FRIENDLY_NAME SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
@@ -204,5 +204,5 @@ public:
 	SCARD_READERSTATE state;
 	QByteArray reader;
 
-    QHash<DRIVER_FEATURES,quint32> featuresList;
+	QHash<DRIVER_FEATURES,quint32> featuresList;
 };
