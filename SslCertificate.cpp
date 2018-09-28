@@ -397,7 +397,7 @@ QString SslCertificate::toString( const QString &format ) const
 	int pos = 0;
 	while( (pos = r.indexIn( ret, pos )) != -1 )
 	{
-		QString si = subjectInfo( r.cap(0).toLatin1() );
+		QString si = r.cap(0) == QStringLiteral("serialNumber") ? personalCode() : subjectInfo(r.cap(0).toLatin1());
 		ret.replace( pos, r.cap(0).size(), si );
 		pos += si.size();
 	}
