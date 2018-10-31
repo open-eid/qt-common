@@ -29,7 +29,7 @@
 
 static QString getUserRights()
 {
-	HANDLE hToken = 0;
+	HANDLE hToken = nullptr;
 	if ( !OpenThreadToken( GetCurrentThread(), TOKEN_QUERY, TRUE, &hToken ) )
 	{
 		if ( GetLastError() != ERROR_NO_TOKEN )
@@ -39,13 +39,13 @@ static QString getUserRights()
 	}
 
 	DWORD dwLength = 0;
-	if ( !GetTokenInformation( hToken, TokenGroups, 0, dwLength, &dwLength ) )
+	if(!GetTokenInformation(hToken, TokenGroups, nullptr, dwLength, &dwLength))
 	{
 		if( GetLastError() != ERROR_INSUFFICIENT_BUFFER )
 			return Diagnostics::tr( "Unknown - error %1" ).arg( GetLastError() );
 	}
 
-	PTOKEN_GROUPS pGroup = (PTOKEN_GROUPS)GlobalAlloc( GPTR, dwLength );
+	PTOKEN_GROUPS pGroup = PTOKEN_GROUPS(GlobalAlloc(GPTR, dwLength));
 	if ( !GetTokenInformation( hToken, TokenGroups, pGroup, dwLength, &dwLength ) )
 	{
 		if ( pGroup )
@@ -55,7 +55,7 @@ static QString getUserRights()
 
 	QString rights = Diagnostics::tr( "User" );
 	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
-	PSID AdministratorsGroup = 0;
+	PSID AdministratorsGroup = nullptr;
 	if( AllocateAndInitializeSid( &NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
 			DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &AdministratorsGroup ) )
 	{
@@ -87,7 +87,7 @@ void Diagnostics::run()
 	QString locale = (language == QLocale::C ? "English/United States" : QLocale::languageToString( language ) );
 	CPINFOEX CPInfoEx;
 	if( GetCPInfoEx( GetConsoleCP(), 0, &CPInfoEx ) != 0 )
-		locale.append( " / " ).append( QString( (QChar*)CPInfoEx.CodePageName ) );
+		locale.append(" / ").append(QString::fromWCharArray(CPInfoEx.CodePageName));
 	s << locale << "<br />";
 	emit update( info );
 	info.clear();
@@ -114,25 +114,27 @@ void Diagnostics::run()
 	qputenv("PATH", path
 		+ ";C:\\Program Files\\Open-EID"
 		+ ";C:\\Program Files\\TeRa Client"
+		+ ";C:\\Program Files\\EstIDMinidriver Minidriver"
 		+ ";C:\\Program Files (x86)\\Open-EID"
-		+ ";C:\\Program Files (x86)\\TeRa Client");
+		+ ";C:\\Program Files (x86)\\TeRa Client"
+		+ ";C:\\Program Files (x86)\\EstIDMinidriver Minidriver");
 	SetDllDirectory(LPCWSTR(qApp->applicationDirPath().utf16()));
 	static const QStringList packages{
-		"digidoc", "digidocpp", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "TeRa.exe", "qdigidoc_tera_gui.exe",
-		"esteidcm", "esteidcm64", "onepin-opensc-pkcs11", "opensc-pkcs11", "esteid-pkcs11", "EsteidShellExtension",
-		"esteid-plugin-ie", "esteid-plugin-ie64", "npesteid-firefox-plugin", "chrome-token-signing.exe",
+		"digidoc", "digidocpp", "qdigidoc4.exe", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "qdigidoc_tera_gui.exe",
+		"esteidcm", "esteidcm64", "EstIDMinidriver", "EstIDMinidriver64", "onepin-opensc-pkcs11", "EsteidShellExtension",
+		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe",
 		"zlib1", "libeay32", "ssleay32", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "libxml2",
 		"advapi32", "crypt32", "winscard"};
 	for(const QString &lib: packages)
 	{
 		DWORD infoHandle = 0;
-		LONG sz = GetFileVersionInfoSize( LPCWSTR(lib.utf16()), &infoHandle );
+		DWORD sz = GetFileVersionInfoSize(LPCWSTR(lib.utf16()), &infoHandle);
 		if( !sz )
 			continue;
-		QByteArray data( sz * 2, 0 );
+		QByteArray data(int(sz * 2), 0);
 		if( !GetFileVersionInfoW( LPCWSTR(lib.utf16()), 0, sz, data.data() ) )
 			continue;
-		VS_FIXEDFILEINFO *info = 0;
+		VS_FIXEDFILEINFO *info = nullptr;
 		UINT len = 0;
 		if( !VerQueryValueW( data.constData(), L"\\", (LPVOID*)&info, &len ) )
 			continue;
@@ -154,7 +156,7 @@ void Diagnostics::run()
 		Stopped,
 		NotFound
 	} atrfiltr = NotFound, certprop = NotFound;
-	if( SC_HANDLE h = OpenSCManager( 0, 0, SC_MANAGER_CONNECT ) )
+	if(SC_HANDLE h = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT))
 	{
 		if( SC_HANDLE s = OpenService( h, L"atrfiltr", SERVICE_QUERY_STATUS ) )
 		{
