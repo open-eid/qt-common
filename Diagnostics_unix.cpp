@@ -33,10 +33,10 @@ void Diagnostics::run()
 	QTextStream s( &info );
 
 	QLocale::Language language = QLocale::system().language();
-	QString ctype = QProcessEnvironment::systemEnvironment().value( "LC_CTYPE",
-		QProcessEnvironment::systemEnvironment().value( "LANG" ) );
+	QString ctype = QProcessEnvironment::systemEnvironment().value(QStringLiteral("LC_CTYPE"),
+		QProcessEnvironment::systemEnvironment().value(QStringLiteral("LANG")));
 	s << "<b>" << tr("Locale:") << "</b> "
-		<< (language == QLocale::C ? "English/United States" : QLocale::languageToString( language ));
+		<< (language == QLocale::C ? QStringLiteral("English/United States") : QLocale::languageToString(language));
 	if( !ctype.isEmpty() )
 	{
 		s << " / " << ctype;
@@ -75,13 +75,14 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	s << "<b>" << tr("Libraries") << ":</b><br />";
+	s << "<b>" << tr("Libraries") << ":</b><br />" << Common::packages({
 #ifdef Q_OS_MAC
-	s << Common::packages( { "libdigidoc", "digidocpp" } ).join( "<br />" ) << "<br />";
+		"libdigidoc", "digidocpp"
 #else
-	s << Common::packages( { "libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil", "qdigidoc-tera", "firefox-pkcs11-loader",
-		"chrome-token-signing", "openssl", "libpcsclite1", "pcsc-lite", "opensc" } ).join( "<br />" ) << "<br />";
+		"libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil", "qdigidoc-tera", "firefox-pkcs11-loader",
+		"chrome-token-signing", "openssl", "libpcsclite1", "pcsc-lite", "opensc", "awp"
 #endif
+	}).join(QStringLiteral("<br />")) << "<br />";
 	s << "QT (" << qVersion() << ")" << "<br /><br />";
 	emit update( info );
 	info.clear();
@@ -93,7 +94,7 @@ void Diagnostics::run()
 #ifndef Q_OS_MAC
 	QStringList browsers = Common::packages( { "chromium-browser", "firefox", "MozillaFirefox", "google-chrome-stable" } );
 	if( !browsers.isEmpty() )
-		s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join( "<br />" ) << "<br /><br />";
+		s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );
 	info.clear();
 
