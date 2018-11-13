@@ -192,7 +192,7 @@ public:
 	QHash<QString,QMutex*> lock;
 };
 
-class QPCSCReaderPrivate
+class QPCSCReader::Private
 {
 public:
 	QByteArray attrib( DWORD id ) const;
@@ -203,6 +203,7 @@ public:
 	DWORD proto = 0;
 	SCARD_READERSTATE state;
 	QByteArray reader;
+	bool isTransacted = false;
 
 	QHash<DRIVER_FEATURES,quint32> featuresList;
 };

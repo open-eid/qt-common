@@ -29,7 +29,7 @@ class QPCSC: public QObject
 {
 	Q_OBJECT
 public:
-	~QPCSC();
+	~QPCSC() final;
 
 	static QPCSC& instance();
 	QStringList drivers() const;
@@ -44,7 +44,6 @@ private:
 	friend class QPCSCReader;
 };
 
-class QPCSCReaderPrivate;
 class QPCSCReader: public QObject
 {
 	Q_OBJECT
@@ -97,7 +96,7 @@ public:
 	};
 
 	explicit QPCSCReader( const QString &reader, QPCSC *parent );
-	~QPCSCReader();
+	~QPCSCReader() final;
 
 	QByteArray atr() const;
 	QString friendlyName() const;
@@ -123,12 +122,6 @@ public:
 
 private:
 	Q_DISABLE_COPY(QPCSCReader)
-	QPCSCReaderPrivate *d;
-};
-
-struct QPCSCTransaction
-{
-	QPCSCTransaction( QPCSCReader *reader ): reader_(reader) { reader->beginTransaction(); }
-	~QPCSCTransaction() { reader_->endTransaction(); }
-	QPCSCReader *reader_;
+	class Private;
+	Private *d;
 };

@@ -46,7 +46,7 @@ LONG SCCall( const char *file, int line, const char *function, Func func, Args..
 }
 #define SC(API, ...) SCCall(__FILE__, __LINE__, "SCard"#API, SCard##API, __VA_ARGS__)
 
-QByteArray QPCSCReaderPrivate::attrib( DWORD id ) const
+QByteArray QPCSCReader::Private::attrib( DWORD id ) const
 {
 	if(!card)
 		return QByteArray();
@@ -61,7 +61,7 @@ QByteArray QPCSCReaderPrivate::attrib( DWORD id ) const
 	return data;
 }
 
-QHash<DRIVER_FEATURES,quint32> QPCSCReaderPrivate::features()
+QHash<DRIVER_FEATURES,quint32> QPCSCReader::Private::features()
 {
 	if(!featuresList.isEmpty())
 		return featuresList;
@@ -72,8 +72,8 @@ QHash<DRIVER_FEATURES,quint32> QPCSCReaderPrivate::features()
 		return featuresList;
 	for(unsigned char *p = feature; DWORD(p-feature) < size; )
 	{
-		int tag = *p++, len = *p++, value = 0;
-		for(int i = 0; i < len; ++i)
+		unsigned int tag = *p++, len = *p++, value = 0;
+		for(unsigned int i = 0; i < len; ++i)
 			value |= *p++ << 8 * i;
 		featuresList[DRIVER_FEATURES(tag)] = qFromBigEndian<quint32>(value);
 	}
@@ -177,7 +177,7 @@ bool QPCSC::serviceRunning() const
 
 
 QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
-	: d( new QPCSCReaderPrivate )
+	: d(new Private)
 {
 	if(!parent->d->lock.contains(reader))
 		parent->d->lock[reader] = new QMutex();
@@ -203,7 +203,7 @@ QByteArray QPCSCReader::atr() const
 
 bool QPCSCReader::beginTransaction()
 {
-	return SC(BeginTransaction, d->card) == SCARD_S_SUCCESS;
+	return d->isTransacted = SC(BeginTransaction, d->card) == SCARD_S_SUCCESS;
 }
 
 bool QPCSCReader::connect(Connect connect, Mode mode)
@@ -220,6 +220,8 @@ quint32 QPCSCReader::connectEx(Connect connect, Mode mode)
 
 void QPCSCReader::disconnect( Reset reset )
 {
+	if(d->isTransacted)
+		endTransaction();
 	if( d->card )
 		SC(Disconnect, d->card, reset);
 	d->proto = 0;
@@ -230,7 +232,10 @@ void QPCSCReader::disconnect( Reset reset )
 
 bool QPCSCReader::endTransaction( Reset reset )
 {
-	return SC(EndTransaction, d->card, reset) == SCARD_S_SUCCESS;
+	bool result = SC(EndTransaction, d->card, reset) == SCARD_S_SUCCESS;
+	if(result)
+		d->isTransacted = false;
+	return result;
 }
 
 QString QPCSCReader::friendlyName() const
