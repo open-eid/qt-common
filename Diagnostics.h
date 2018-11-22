@@ -29,16 +29,16 @@ class Diagnostics: public QObject, public QRunnable
 	Q_OBJECT
 public:
 	Diagnostics();
-	explicit Diagnostics( const QString &appInfo );
+	explicit Diagnostics(QString appInfo);
 
-	void run();
+	void run() override;
 
 signals:
 	void update( const QString &data );
 
 private:
-	bool hasAppInfo;
 	QString appInfoMsg;
+	bool hasAppInfo = true;
 
 	void generalInfo(QTextStream &s) const;
 	void appInfo(QTextStream &s) const;
