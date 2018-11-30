@@ -114,9 +114,9 @@ QString Common::applicationOs()
 {
 #if defined(Q_OS_LINUX)
 	QProcess p;
-	p.start("lsb_release", { "-s", "-d" });
+	p.start("bash", { "-c", "cat /etc/os-release | grep PRETTY | cut -d'\"' -f2" });
 	p.waitForFinished();
-	return QString::fromLocal8Bit( p.readAll().trimmed() );
+	return QString("Linux/") + QString::fromLocal8Bit(p.readAll().trimmed());
 #elif defined(Q_OS_MAC)
 	struct utsname unameData;
 	uname( &unameData );
