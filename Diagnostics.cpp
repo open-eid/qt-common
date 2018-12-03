@@ -30,12 +30,11 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
-Diagnostics::Diagnostics() : hasAppInfo( true )
-{
-}
+Diagnostics::Diagnostics() = default;
 
-Diagnostics::Diagnostics( const QString &appInfo )
-	: hasAppInfo( false ), appInfoMsg( appInfo )
+Diagnostics::Diagnostics(QString appInfo)
+	: appInfoMsg(std::move(appInfo))
+	, hasAppInfo(false)
 {
 }
 
@@ -54,8 +53,8 @@ void Diagnostics::appInfo(QTextStream &s) const
 void Diagnostics::generalInfo(QTextStream &s) const
 {
 	auto app = QCoreApplication::instance();
-	s << "<b>" << tr("Arguments:") << "</b> " << app->arguments().join(" ") << "<br />";
-	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join( ";" ) << "<br />";
+	s << "<b>" << tr("Arguments:") << "</b> " << app->arguments().join(' ') << "<br />";
+	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join(';') << "<br />";
 	s << "<b>" << "URLs:" << "</b>";
 #ifdef CONFIG_URL
 	s << "<br />CONFIG_URL: " << CONFIG_URL;
@@ -65,7 +64,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 
 #ifdef CONFIG_URL
 	s << "<b>" << tr("Central Configuration") << ":</b>";
-	QJsonObject metainf = Configuration::instance().object().value("META-INF").toObject();
+	QJsonObject metainf = Configuration::instance().object().value(QStringLiteral("META-INF")).toObject();
 	for(QJsonObject::const_iterator i = metainf.constBegin(), end = metainf.constEnd(); i != end; ++i)
 	{
 		switch(i.value().type())
@@ -96,7 +95,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		else
 			reader.connect();
 
-		if( readername.contains( "EZIO SHIELD", Qt::CaseInsensitive ) )
+		if(readername.contains(QStringLiteral("EZIO SHIELD"), Qt::CaseInsensitive))
 		{
 			s << " - Secure PinPad";
 			if( !reader.isPinPad() )
@@ -108,7 +107,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		QHash<QPCSCReader::Properties,int> prop = reader.properties();
 		if(prop.contains(QPCSCReader::dwMaxAPDUDataSize))
 			s << " max APDU size " << prop.value(QPCSCReader::dwMaxAPDUDataSize);
-		s << "<br />" << "Reader state: " << reader.state().join(", ") << "<br />";
+		s << "<br />" << "Reader state: " << reader.state().join(QStringLiteral(", ")) << "<br />";
 		if( !reader.isPresent() )
 			continue;
 
@@ -122,35 +121,40 @@ void Diagnostics::generalInfo(QTextStream &s) const
 
 		reader.beginTransaction();
 		#define APDU QByteArray::fromHex
-		const QByteArray AID34 = APDU("00A40400 0E F04573744549442076657220312E");
-		const QByteArray AID35 = APDU("00A40400 0F D23300000045737445494420763335");
-		const QByteArray UPDATER_AID =	APDU("00A40400 0A D2330000005550443101");
-		const QByteArray MASTER_FILE =	APDU("00A4000C");// 00"); // Compatibilty for some cards
-		const QByteArray ESTEIDDF =		APDU("00A4010C 02 EEEE");
-		const QByteArray PERSONALDATA =	APDU("00A4020C 02 5044");
-		const QByteArray READRECORD =	APDU("00B20004 00");
 		auto printAID = [&s, &reader](const QString &label, const QByteArray &apdu)
 		{
-			QByteArray SW = reader.transfer(apdu).SW;
-			s << label << ": " << SW.toHex();
-			if (SW == APDU("9000")) s << " (OK)";
-			if (SW == APDU("6A81")) s << " (Locked)";
-			if (SW == APDU("6A82")) s << " (Not found)";
+			QPCSCReader::Result r = reader.transfer(apdu);
+			s << label << ": " << r.SW.toHex();
+			if (r.SW == APDU("9000")) s << " (OK)";
+			if (r.SW == APDU("6A81")) s << " (Locked)";
+			if (r.SW == APDU("6A82")) s << " (Not found)";
 			s << "<br />";
+			return r.resultOk();
 		};
-		printAID("AID34", AID34);
-		printAID("AID35", AID35);
-		printAID("UPDATER_AID", UPDATER_AID);
-		reader.transfer(MASTER_FILE);
-		reader.transfer(ESTEIDDF);
-		reader.transfer(PERSONALDATA);
-		QByteArray row = READRECORD;
-		row[2] = 0x07; // read card id
-		s << "ID - " << reader.transfer(row).data << "<br />";
+		if(printAID(QStringLiteral("AID34"), APDU("00A40400 0E F04573744549442076657220312E")) ||
+			printAID(QStringLiteral("AID35"), APDU("00A40400 0F D23300000045737445494420763335")) ||
+			printAID(QStringLiteral("UPDATER_AID"), APDU("00A40400 0A D2330000005550443101")))
+		{
+			reader.transfer(APDU("00A4000C"));
+			reader.transfer(APDU("00A4010C 02 EEEE"));
+			reader.transfer(APDU("00A4020C 02 5044"));
+			QByteArray row = APDU("00B20004 00");
+			row[2] = 0x07; // read card id
+			s << "ID - " << reader.transfer(row).data << "<br />";
+		}
+		else if(printAID(QStringLiteral("AID_IDEMIA"), APDU("00A40400 10 A000000077010800070000FE00000100")) ||
+			printAID(QStringLiteral("AID_OT"), APDU("00A4040C 0D E828BD080FF2504F5420415750")) ||
+			printAID(QStringLiteral("AID_QSCD"), APDU("00A4040C 10 51534344204170706C69636174696F6E")))
+		{
+			reader.transfer(APDU("00A4000C"));
+			reader.transfer(APDU("00A4010C025000"));
+			reader.transfer(APDU("00A4010C025006"));
+			s << "ID - " << reader.transfer(APDU("00B00000 00")).data << "<br />";
+		}
 		reader.endTransaction();
 	}
 
 #ifdef Q_OS_WIN
-	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << QPCSC::instance().drivers().join( "<br />" );
+	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << QPCSC::instance().drivers().join(QStringLiteral("<br />"));
 #endif
 }
