@@ -81,7 +81,7 @@ public:
 #endif
 	QByteArray data, signature, tmpsignature;
 	QJsonObject dataobject;
-	QUrl rsaurl, url = QUrl(CONFIG_URL);
+	QUrl rsaurl, url = QUrl(QStringLiteral(CONFIG_URL));
 	RSA *rsa = nullptr;
 	QNetworkRequest req;
 	QNetworkAccessManager *net = nullptr;
@@ -100,7 +100,7 @@ void ConfigurationPrivate::initCache(bool clear)
 		f.remove();
 	if(!f.exists())
 	{
-		f.copy(":/config.rsa", f.fileName());
+		QFile::copy(QStringLiteral(":/config.rsa"), f.fileName());
 		f.setPermissions(QFile::Permissions(0x6444));
 	}
 	if(f.open(QFile::ReadOnly))
@@ -113,7 +113,7 @@ void ConfigurationPrivate::initCache(bool clear)
 		f.remove();
 	if(!f.exists())
 	{
-		f.copy(":/config.json", f.fileName());
+		QFile::copy(QStringLiteral(":/config.json"), f.fileName());
 		f.setPermissions(QFile::Permissions(0x6444));
 	}
 	if(f.open(QFile::ReadOnly))
@@ -121,13 +121,13 @@ void ConfigurationPrivate::initCache(bool clear)
 	f.close();
 #else
 	// Signature
-	QFile f(":/config.rsa");
+	QFile f(QStringLiteral(":/config.rsa"));
 	if(f.open(QFile::ReadOnly))
 		signature = QByteArray::fromBase64(f.readAll());
 	f.close();
 
 	// Config
-	f.setFileName(":/config.json");
+	f.setFileName(QStringLiteral(":/config.json"));
 	if(f.open(QFile::ReadOnly))
 		setData(f.readAll());
 	f.close();
@@ -201,8 +201,8 @@ bool ConfigurationPrivate::validate(const QByteArray &data, const QByteArray &si
 	else
 		return false;
 
-	QJsonObject obj = QJsonDocument::fromJson(data).object().value("META-INF").toObject();
-	return QDateTime::currentDateTimeUtc() > QDateTime::fromString(obj.value("DATE").toString(), "yyyyMMddHHmmss'Z'");
+	QJsonObject obj = QJsonDocument::fromJson(data).object().value(QStringLiteral("META-INF")).toObject();
+	return QDateTime::currentDateTimeUtc() > QDateTime::fromString(obj.value(QStringLiteral("DATE")).toString(), QStringLiteral("yyyyMMddHHmmss'Z'"));
 }
 
 
@@ -217,18 +217,18 @@ Configuration::Configuration(QObject *parent)
 	if(!QDir().exists(d->cache))
 		QDir().mkpath(d->cache);
 #endif
-	d->rsaurl = QString("%1%2.rsa")
-		.arg(d->url.adjusted(QUrl::RemoveFilename).toString())
-		.arg(QFileInfo(d->url.fileName()).baseName());
-	d->req.setRawHeader("User-Agent", QString("%1/%2 (%3) Lang: %4 Devices: %5")
+	d->rsaurl = QStringLiteral("%1%2.rsa").arg(
+		d->url.adjusted(QUrl::RemoveFilename).toString(),
+		QFileInfo(d->url.fileName()).baseName());
+	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(qApp->applicationName(), qApp->applicationVersion(),
-			 Common::applicationOs(), Settings().language(), QPCSC::instance().drivers().join("/")).toUtf8());
+			 Common::applicationOs(), Settings::language(), QPCSC::instance().drivers().join('/')).toUtf8());
 	d->net = new QNetworkAccessManager(this);
-	connect(d->net, &QNetworkAccessManager::sslErrors,
-			[=](QNetworkReply *reply, const QList<QSslError> &errors){
+	connect(d->net, &QNetworkAccessManager::sslErrors, this,
+			[](QNetworkReply *reply, const QList<QSslError> &errors){
 		reply->ignoreSslErrors(errors);
 	});
-	connect(d->net, &QNetworkAccessManager::finished, [=](QNetworkReply *reply){
+	connect(d->net, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply){
 		d->requestcache.removeAll(reply);
 		switch(reply->error())
 		{
@@ -239,13 +239,12 @@ Configuration::Configuration(QObject *parent)
 				if(d->validate(d->data, d->tmpsignature))
 				{
 #ifdef LAST_CHECK_DAYS
-					d->s.setValue("LastCheck", QDate::currentDate().toString("yyyyMMdd"));
+					d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 #endif
 					Q_EMIT finished(false, QString());
 					break;
 				}
-				else
-					qDebug() << "Remote signature does not match, downloading new configuration";
+				qDebug() << "Remote signature does not match, downloading new configuration";
 				sendRequest(d->url);
 			}
 			else if(reply->url() == d->url)
@@ -258,9 +257,9 @@ Configuration::Configuration(QObject *parent)
 					break;
 				}
 
-				QJsonObject obj = QJsonDocument::fromJson(data).object().value("META-INF").toObject();
-				QJsonObject old = object().value("META-INF").toObject();
-				if(old.value("SERIAL").toInt() > obj.value("SERIAL").toInt())
+				QJsonObject obj = QJsonDocument::fromJson(data).object().value(QStringLiteral("META-INF")).toObject();
+				QJsonObject old = object().value(QStringLiteral("META-INF")).toObject();
+				if(old.value(QStringLiteral("SERIAL")).toInt() > obj.value(QStringLiteral("SERIAL")).toInt())
 				{
 					qWarning() << "Remote serial is smaller than current";
 					Q_EMIT finished(false, tr("Your computer's configuration file is later than the server has."));
@@ -286,7 +285,7 @@ Configuration::Configuration(QObject *parent)
 				f.close();
 #endif
 #ifdef LAST_CHECK_DAYS
-				d->s.setValue("LastCheck", QDate::currentDate().toString("yyyyMMdd"));
+				d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 #endif
 				Q_EMIT finished(true, QString());
 			}
@@ -298,7 +297,7 @@ Configuration::Configuration(QObject *parent)
 		reply->deleteLater();
 	});
 
-	QFile f(":/config.pub");
+	QFile f(QStringLiteral(":/config.pub"));
 	if(!f.open(QFile::ReadOnly))
 	{
 		qWarning() << "Failed to read public key";
@@ -329,13 +328,13 @@ Configuration::Configuration(QObject *parent)
 	}
 	else
 	{
-		int serial = object().value("META-INF").toObject().value("SERIAL").toInt();
+		int serial = object().value(QStringLiteral("META-INF")).toObject().value(QStringLiteral("SERIAL")).toInt();
 		qDebug() << "Chache configuration serial:" << serial;
-		QFile embedConf(":/config.json");
+		QFile embedConf(QStringLiteral(":/config.json"));
 		if(embedConf.open(QFile::ReadOnly))
 		{
 			QJsonObject obj = QJsonDocument::fromJson(embedConf.readAll()).object();
-			int bundledSerial = obj.value("META-INF").toObject().value("SERIAL").toInt();
+			int bundledSerial = obj.value(QStringLiteral("META-INF")).toObject().value(QStringLiteral("SERIAL")).toInt();
 			qDebug() << "Bundled configuration serial:" << bundledSerial;
 			if(serial < bundledSerial)
 			{
@@ -348,9 +347,9 @@ Configuration::Configuration(QObject *parent)
 	Q_EMIT finished(true, QString());
 
 #ifdef LAST_CHECK_DAYS
-	if(d->s.value("LastCheck").isNull())
-		d->s.setValue("LastCheck", QDate::currentDate().toString("yyyyMMdd"));
-	QDate lastCheck = QDate::fromString(d->s.value("LastCheck").toString(), "yyyyMMdd");
+	if(d->s.value(QStringLiteral("LastCheck")).isNull())
+		d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
+	QDate lastCheck = QDate::fromString(d->s.value(QStringLiteral("LastCheck")).toString(), QStringLiteral("yyyyMMdd"));
 	if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS))
 		update();
 #endif
@@ -370,7 +369,7 @@ void Configuration::checkVersion(const QString &name)
 			tr("Your ID-software has expired. To download the latest software version, go to the "
 				"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
 				"Mac OS X users can download the latest ID-software version from the "
-				"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
+				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 
 	connect(this, &Configuration::finished, [=](bool changed, const QString &){
 		if(changed && ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
@@ -378,7 +377,7 @@ void Configuration::checkVersion(const QString &name)
 				tr("An ID-software update has been found. To download the update, go to the "
 					"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
 					"Mac OS X users can download the update from the "
-					"<a href=\"http://appstore.com/mac/ria\">Mac App Store</a>."));
+					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 	});
 }
 
@@ -400,7 +399,7 @@ void Configuration::sendRequest(const QUrl &url)
 	d->requestcache << reply;
 	QTimer *timer = new QTimer(this);
 	timer->setSingleShot(true);
-	connect(timer, &QTimer::timeout, [=]{
+	connect(timer, &QTimer::timeout, this, [=]{
 		timer->deleteLater();
 		if(!d->requestcache.contains(reply))
 			return;
