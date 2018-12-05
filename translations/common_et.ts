@@ -181,12 +181,12 @@ Täiendavad litsentsid ja komponendid</translation>
 <context>
     <name>Configuration</name>
     <message>
-        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>Sinu kasutatav ID-tarkvara on aegunud. Tarkvara viimase versiooni saad alla laadida veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uusima tarkvara &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
+        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Sinu kasutatav ID-tarkvara on aegunud. Tarkvara viimase versiooni saad alla laadida veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uusima tarkvara &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
     </message>
     <message>
-        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>Saadaval on ID-tarkvara uuendus, mille saad paigaldada veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uuenduse alla laadida &lt;a href=&quot;http://appstore.com/mac/ria&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
+        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Saadaval on ID-tarkvara uuendus, mille saad paigaldada veebilehelt &lt;a href=&quot;http://installer.id.ee/?lang=est&quot;&gt;id.ee&lt;/a&gt;, Mac OS X kasutajad saavad uuenduse alla laadida &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
     </message>
     <message>
         <source>Request timed out</source>
