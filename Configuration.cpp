@@ -40,13 +40,9 @@
 #include <openssl/err.h>
 #include <openssl/pem.h>
 
-class ConfigurationPrivate
+class Configuration::Private
 {
 public:
-#ifdef LAST_CHECK_DAYS
-	ConfigurationPrivate(): s(qApp->applicationName()) {}
-#endif
-
 	void initCache(bool clear);
 	static bool lessThanVersion( const QString &current, const QString &available );
 	void setData(const QByteArray &_data)
@@ -73,11 +69,7 @@ public:
 	bool validate(const QByteArray &data, const QByteArray &signature) const;
 
 #ifndef NO_CACHE
-#if QT_VERSION >= QT_VERSION_CHECK(5,4,0)
 	QString cache = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/";
-#else
-	QString cache = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/";
-#endif
 #endif
 	QByteArray data, signature, tmpsignature;
 	QJsonObject dataobject;
@@ -87,11 +79,11 @@ public:
 	QNetworkAccessManager *net = nullptr;
 	QList<QNetworkReply*> requestcache;
 #ifdef LAST_CHECK_DAYS
-	Settings s;
+	Settings s = {qApp->applicationName()};
 #endif
 };
 
-void ConfigurationPrivate::initCache(bool clear)
+void Configuration::Private::initCache(bool clear)
 {
 #ifndef NO_CACHE
 	// Signature
@@ -134,7 +126,7 @@ void ConfigurationPrivate::initCache(bool clear)
 #endif
 }
 
-bool ConfigurationPrivate::lessThanVersion( const QString &current, const QString &available )
+bool Configuration::Private::lessThanVersion( const QString &current, const QString &available )
 {
 	QStringList curList = current.split('.');
 	QStringList avaList = available.split('.');
@@ -158,7 +150,7 @@ bool ConfigurationPrivate::lessThanVersion( const QString &current, const QStrin
 	return false;
 }
 
-bool ConfigurationPrivate::validate(const QByteArray &data, const QByteArray &signature) const
+bool Configuration::Private::validate(const QByteArray &data, const QByteArray &signature) const
 {
 	if(!rsa || data.isEmpty())
 		return false;
@@ -209,7 +201,7 @@ bool ConfigurationPrivate::validate(const QByteArray &data, const QByteArray &si
 
 Configuration::Configuration(QObject *parent)
 	: QObject(parent)
-	, d(new ConfigurationPrivate)
+	, d(new Private)
 {
 	Q_INIT_RESOURCE(config);
 
@@ -364,7 +356,7 @@ Configuration::~Configuration()
 
 void Configuration::checkVersion(const QString &name)
 {
-	if(ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-SUPPORTED"].toString()))
+	if(Private::lessThanVersion(qApp->applicationVersion(), object()[name+"-SUPPORTED"].toString()))
 		QMessageBox::warning(qApp->activeWindow(), tr("Update is available"),
 			tr("Your ID-software has expired. To download the latest software version, go to the "
 				"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
@@ -372,7 +364,7 @@ void Configuration::checkVersion(const QString &name)
 				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 
 	connect(this, &Configuration::finished, [=](bool changed, const QString &){
-		if(changed && ConfigurationPrivate::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
+		if(changed && Private::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
 			QMessageBox::information(qApp->activeWindow(), tr("Update is available"),
 				tr("An ID-software update has been found. To download the update, go to the "
 					"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
@@ -411,7 +403,8 @@ void Configuration::sendRequest(const QUrl &url)
 	timer->start(30*1000);
 }
 
-void Configuration::update()
+void Configuration::update(bool force)
 {
+	d->initCache(force);
 	sendRequest(d->rsaurl);
 }
