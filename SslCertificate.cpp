@@ -37,7 +37,7 @@
 #include <openssl/pkcs12.h>
 #include <openssl/x509v3.h>
 
-#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
 {
 	if(n) *n = r->n;
@@ -54,8 +54,7 @@ void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGNUM **priv_key)
 
 uint qHash( const SslCertificate &cert ) { return qHash( cert.digest() ); }
 
-SslCertificate::SslCertificate()
-: QSslCertificate() {}
+SslCertificate::SslCertificate() = default;
 
 SslCertificate::SslCertificate( const QByteArray &data, QSsl::EncodingFormat format )
 : QSslCertificate( data, format ) {}
@@ -232,11 +231,11 @@ Qt::HANDLE SslCertificate::extension( int nid ) const
 
 QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 {
+	QHash<KeyUsage,QString> list;
 	ASN1_BIT_STRING *keyusage = (ASN1_BIT_STRING*)extension( NID_key_usage );
 	if( !keyusage )
-		return QHash<KeyUsage,QString>();
+		return list;
 
-	QHash<KeyUsage,QString> list;
 	for( int n = 0; n < 9; ++n )
 	{
 		if( !ASN1_BIT_STRING_get_bit( keyusage, n ) )
@@ -272,10 +271,10 @@ QString SslCertificate::personalCode() const
 QStringList SslCertificate::policies() const
 {
 	CERTIFICATEPOLICIES *cp = (CERTIFICATEPOLICIES*)extension( NID_certificate_policies );
-	if( !cp )
-		return QStringList();
-
 	QStringList list;
+	if( !cp )
+		return list;
+
 	for( int i = 0; i < sk_POLICYINFO_num( cp ); ++i )
 	{
 		POLICYINFO *pi = sk_POLICYINFO_value( cp, i );
@@ -287,21 +286,6 @@ QStringList SslCertificate::policies() const
 	}
 	sk_POLICYINFO_pop_free( cp, POLICYINFO_free );
 	return list;
-}
-
-QString SslCertificate::policyInfo( const QString & ) const
-{
-#if 0
-	for( int j = 0; j < sk_POLICYQUALINFO_num( pi->qualifiers ); ++j )
-	{
-		POLICYQUALINFO *pqi = sk_POLICYQUALINFO_value( pi->qualifiers, j );
-
-		memset( buf, 0, 50 );
-		int len = OBJ_obj2txt( buf, 50, pqi->pqualid, 1 );
-		qDebug() << buf;
-	}
-#endif
-	return QString();
 }
 
 QString SslCertificate::publicKeyHex() const
@@ -362,7 +346,7 @@ QString SslCertificate::signatureAlgorithm() const
 	char buf[50];
 	memset( buf, 0, 50 );
 
-#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 	i2t_ASN1_OBJECT( buf, 50, ((X509*)handle())->cert_info->signature->algorithm );
 #else
 	const X509_ALGOR *algo = nullptr;
@@ -442,16 +426,18 @@ SslCertificate::CertType SslCertificate::type() const
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.2.1")) )
 			return TempelType;
 
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.1")))
-			return EstEidType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.1")))
-			return EstEidTestType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.3")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.4")))
+			return DigiIDType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.3")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")))
+			return DigiIDTestType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")))
-			return DigiIDType;
+			return EstEidType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.2")))
-			return DigiIDTestType;
+			return EstEidTestType;
 	}
 
 #ifndef NO_LIBDIGIDOCPP
@@ -556,11 +542,26 @@ bool SslCertificate::validateEncoding() const
 
 
 
-class PKCS12CertificatePrivate: public QSharedData
+class PKCS12Certificate::Private: public QSharedData
 {
 public:
-	void init( const QByteArray &data, const QString &pin );
-	void setLastError();
+	void setLastError()
+	{
+		error = PKCS12Certificate::NullError;
+		errorString.clear();
+		while( ERR_peek_error() > ERR_LIB_NONE )
+		{
+			unsigned long err = ERR_get_error();
+			if( ERR_GET_LIB(err) == ERR_LIB_PKCS12 &&
+				ERR_GET_REASON(err) == PKCS12_R_MAC_VERIFY_FAILURE )
+			{
+				error = PKCS12Certificate::InvalidPasswordError;
+				return;
+			}
+			error = PKCS12Certificate::UnknownError;
+			errorString += ERR_error_string(err, nullptr);
+		}
+	}
 
 	QList<QSslCertificate> caCerts;
 	QSslCertificate cert;
@@ -569,61 +570,46 @@ public:
 	QString errorString;
 };
 
-void PKCS12CertificatePrivate::init( const QByteArray &data, const QString &pin )
+PKCS12Certificate::PKCS12Certificate( QIODevice *device, const QString &pin )
+	: PKCS12Certificate(device ? device->readAll() : QByteArray(), pin)
+{}
+
+PKCS12Certificate::PKCS12Certificate( const QByteArray &data, const QString &pin )
+	: d(new Private)
 {
+	if(data.isEmpty())
+		return;
 	const unsigned char *p = (const unsigned char*)data.constData();
 	PKCS12 *p12 = d2i_PKCS12(nullptr, &p, data.size());
-	if( !p12 )
-		return setLastError();
+	if(!p12)
+	{
+		d->setLastError();
+		return;
+	}
 
 	STACK_OF(X509) *ca = nullptr;
 	X509 *c = nullptr;
 	EVP_PKEY *k = nullptr;
 	QByteArray _pin = pin.toUtf8();
-	int ret = PKCS12_parse( p12, _pin.constData(), &k, &c, &ca );
-	PKCS12_free( p12 );
-	if( !ret )
-		return setLastError();
+	int ret = PKCS12_parse(p12, _pin.constData(), &k, &c, &ca);
+	PKCS12_free(p12);
+	if(!ret)
+	{
+		d->setLastError();
+		return;
+	}
 	// Hack: clear PKCS12_parse error ERROR: 185073780 - error:0B080074:x509 certificate routines:X509_check_private_key:key values mismatch
 	ERR_get_error();
 
-	cert = SslCertificate::fromX509( Qt::HANDLE(c) );
-	key = SslCertificate::keyFromEVP( Qt::HANDLE(k) );
+	d->cert = SslCertificate::fromX509(Qt::HANDLE(c));
+	d->key = SslCertificate::keyFromEVP(Qt::HANDLE(k));
 	for(int i = 0; i < sk_X509_num(ca); ++i)
-		caCerts << SslCertificate::fromX509(Qt::HANDLE(sk_X509_value(ca, i)));
+		d->caCerts << SslCertificate::fromX509(Qt::HANDLE(sk_X509_value(ca, i)));
 
-	X509_free( c );
-	EVP_PKEY_free( k );
-	sk_X509_free( ca );
+	X509_free(c);
+	EVP_PKEY_free(k);
+	sk_X509_free(ca);
 }
-
-void PKCS12CertificatePrivate::setLastError()
-{
-	error = PKCS12Certificate::NullError;
-	errorString.clear();
-	while( ERR_peek_error() > ERR_LIB_NONE )
-	{
-		unsigned long err = ERR_get_error();
-		if( ERR_GET_LIB(err) == ERR_LIB_PKCS12 &&
-			ERR_GET_REASON(err) == PKCS12_R_MAC_VERIFY_FAILURE )
-		{
-			error = PKCS12Certificate::InvalidPasswordError;
-			return;
-		}
-		error = PKCS12Certificate::UnknownError;
-		errorString += ERR_error_string(err, nullptr);
-	}
-}
-
-
-
-PKCS12Certificate::PKCS12Certificate( QIODevice *device, const QString &pin )
-:	d(new PKCS12CertificatePrivate)
-{ if( device ) d->init( device->readAll(), pin ); }
-
-PKCS12Certificate::PKCS12Certificate( const QByteArray &data, const QString &pin )
-:	d(new PKCS12CertificatePrivate)
-{ d->init( data, pin ); }
 
 PKCS12Certificate::PKCS12Certificate( const PKCS12Certificate &other ) = default;
 
@@ -642,7 +628,7 @@ PKCS12Certificate PKCS12Certificate::fromPath( const QString &path, const QStrin
 	else if( !f.open( QFile::ReadOnly ) )
 		p12.d->error = PKCS12Certificate::FailedToRead;
 	else
-		p12.d->init( f.readAll(), pin );
+		return PKCS12Certificate(&f, pin);
 	return p12;
 }
 
