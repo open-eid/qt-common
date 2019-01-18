@@ -93,7 +93,6 @@ public:
 	QHash<KeyUsage,QString> keyUsage() const;
 	QString		personalCode() const;
 	QStringList policies() const;
-	QString		policyInfo( const QString &oid ) const;
 	QString		publicKeyHex() const;
 	bool		showCN() const;
 	QByteArray	serialNumber( bool hex = false ) const;
@@ -113,7 +112,6 @@ private:
 
 uint qHash( const SslCertificate &cert );
 
-class PKCS12CertificatePrivate;
 class PKCS12Certificate
 {
 public:
@@ -140,5 +138,6 @@ public:
 	static PKCS12Certificate fromPath( const QString &path, const QString &pin );
 
 private:
-	QSharedDataPointer<PKCS12CertificatePrivate> d;
+	class Private;
+	QSharedDataPointer<Private> d;
 };
