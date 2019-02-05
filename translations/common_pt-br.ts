@@ -27,11 +27,11 @@
 <context>
     <name>Configuration</name>
     <message>
-        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Seu ID-software expirou. Para baixar a última versão do software, acesse a página &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt;. Usuários Mac OS X podem baixar a última versão em &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. Mac OS X users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Uma atualização do ID-software está disponível. Para baixar a atualização, acesse a página &lt;a href=&quot;http://installer.id.ee/?lang=eng&quot;&gt;id.ee&lt;/a&gt;. Usuários de Mac OS X podem fazer o download da atualização na &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
