@@ -2,49 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru">
 <context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About</source>
-        <translation>Информация</translation>
-    </message>
-    <message>
-        <source>Diagnostics</source>
-        <translation>Диагностика</translation>
-    </message>
-    <message>
-        <source>Save as</source>
-        <translation>Сохранить</translation>
-    </message>
-    <message>
-        <source>Text files (*.txt)</source>
-        <translation>Текстовые файлы (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Возникла ошибка</translation>
-    </message>
-    <message>
-        <source>Failed write to file!</source>
-        <translation>Запись файла неудачна!</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
-Additional licenses and components</source>
-        <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
-В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.&lt;/p&gt;
-Дополнительные лицензии и компоненты</translation>
-    </message>
-    <message>
-        <source>Base version:</source>
-        <translation>Базовая версия:</translation>
-    </message>
-    <message>
-        <source>%1 version %2, released %3%4</source>
-        <translation>%1, версия %2, выпуск %3%4</translation>
-    </message>
-</context>
-<context>
     <name>CertificateDialog</name>
     <message>
         <source>Save certificate</source>

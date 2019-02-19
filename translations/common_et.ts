@@ -2,49 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="et">
 <context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About</source>
-        <translation>Info</translation>
-    </message>
-    <message>
-        <source>Diagnostics</source>
-        <translation>Diagnostika</translation>
-    </message>
-    <message>
-        <source>Save as</source>
-        <translation>Salvesta</translation>
-    </message>
-    <message>
-        <source>Text files (*.txt)</source>
-        <translation>Teksti failid (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Tekkis viga</translation>
-    </message>
-    <message>
-        <source>Failed write to file!</source>
-        <translation>Faili kirjutamine ebaõnnestus!</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
-Additional licenses and components</source>
-        <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
-Küsimuste korral pöörduge ID-abiliini poole e-kirja teel &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helistage Eesti-siseselt lühinumbril 1777, välismaalt (+372) 677 3377.&lt;/p&gt;
-Täiendavad litsentsid ja komponendid</translation>
-    </message>
-    <message>
-        <source>Base version:</source>
-        <translation>Baastarkvara:</translation>
-    </message>
-    <message>
-        <source>%1 version %2, released %3%4</source>
-        <translation>%1 versioon %2, avaldatud %3%4</translation>
-    </message>
-</context>
-<context>
     <name>CertificateDialog</name>
     <message>
         <source>Save certificate</source>

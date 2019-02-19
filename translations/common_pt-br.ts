@@ -2,50 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About</source>
-        <translation>Sobre</translation>
-    </message>
-    <message>
-        <source>Diagnostics</source>
-        <translation>Diagnósticos</translation>
-    </message>
-    <message>
-        <source>Save as</source>
-        <translation>Salvar como</translation>
-    </message>
-    <message>
-        <source>Text files (*.txt)</source>
-        <translation>Arquivos de texto (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Ocorreu um erro</translation>
-    </message>
-    <message>
-        <source>Failed write to file!</source>
-        <translation>Falha ao escrever arquivo!</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Estonian ID-software is developed by The Information System Authority (RIA)&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
-Additional licenses and components</source>
-        <translation>
-        &lt;p&gt;Estonian ID-software é distribuído por Information Systems&apos;s Auhtority, desenvolvido por AS Sertifitseerimiskeskus&lt;br /&gt;
-Contato (em inglês) para assistência por e-mail &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; ou pelo telefone 1777 (somente na Estónia), (+372) 677 3377 para outros países.&lt;/p&gt;
-Licenças e componentes adicionais</translation>
-    </message>
-    <message>
-        <source>Base version:</source>
-        <translation>Versão base:</translation>
-    </message>
-    <message>
-        <source>%1 versão %2, released %3%4</source>
-        <translation>%1 versão %2, released %3%4</translation>
-    </message>
-</context>
-<context>
     <name>CertificateDialog</name>
     <message>
         <source>Save certificate</source>
