@@ -15,7 +15,6 @@ add_library( qdigidoccommon STATIC ${SOURCES}
 	Diagnostics.cpp
 	DiagnosticsTask.cpp
 	IKValidator.cpp
-	PinDialog.cpp
 	QPCSC.cpp
 	SOAPDocument.cpp
 	Settings.h
