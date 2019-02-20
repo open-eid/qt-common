@@ -2,49 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About</source>
-        <translation>About</translation>
-    </message>
-    <message>
-        <source>Diagnostics</source>
-        <translation>Diagnostics</translation>
-    </message>
-    <message>
-        <source>Save as</source>
-        <translation>Save as</translation>
-    </message>
-    <message>
-        <source>Text files (*.txt)</source>
-        <translation>Text files (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Error occurred</translation>
-    </message>
-    <message>
-        <source>Failed write to file!</source>
-        <translation>Failed write to file!</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Auhtority, developed by AS Sertifitseerimiskeskus&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
-Additional licenses and components</source>
-        <translation>&lt;p&gt;Estonian ID-software is developed by The Information System Authority (RIA)&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
-Additional licenses and components</translation>
-    </message>
-    <message>
-        <source>Base version:</source>
-        <translation>Base version:</translation>
-    </message>
-    <message>
-        <source>%1 version %2, released %3%4</source>
-        <translation>%1 version %2, released %3%4</translation>
-    </message>
-</context>
-<context>
     <name>CertificateDialog</name>
     <message>
         <source>Save certificate</source>
