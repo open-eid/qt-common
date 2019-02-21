@@ -38,7 +38,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QPushButton>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #if defined(Q_OS_WIN)
 #include <QtCore/QLibrary>
@@ -59,26 +59,25 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	: BaseApplication( argc, argv )
 {
 	setApplicationName( app );
-	setApplicationVersion( QString( "%1.%2.%3.%4" )
+	setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
 		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
-	setOrganizationDomain( "ria.ee" );
-	setOrganizationName("RIA");
+	setOrganizationDomain(QStringLiteral("ria.ee"));
+	setOrganizationName(QStringLiteral("RIA"));
 	setWindowIcon( QIcon( icon ) );
-	if( QFile::exists( QString("%1/%2.log").arg( QDir::tempPath(), app ) ) )
+	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), app)))
 		qInstallMessageHandler(msgHandler);
 #ifdef Q_OS_DARWIN
 	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
 #endif
 
-	Q_INIT_RESOURCE(common_images);
 	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
-	setLibraryPaths( QStringList() << applicationDirPath() );
+	setLibraryPaths({ applicationDirPath() });
 #elif defined(Q_OS_MAC)
-	setLibraryPaths( QStringList() << applicationDirPath() + "/../PlugIns" );
+	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
 #endif
-	setStyleSheet(
-		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n" );
+	setStyleSheet(QStringLiteral(
+		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
 	QPalette p = palette();
 	p.setBrush( QPalette::Link, QBrush( "#509B00" ) );
 	p.setBrush( QPalette::LinkVisited, QBrush( "#509B00" ) );
@@ -91,7 +90,7 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
 #elif defined(Q_OS_MAC)
-	if(!QSettings().value("plugins").isNull())
+	if(!QSettings().value(QStringLiteral("plugins")).isNull())
 		return;
 
 	QTimer *timer = new QTimer(this);
@@ -100,11 +99,11 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 		timer->deleteLater();
 		QMessageBox *b = new QMessageBox(QMessageBox::Information, tr("Browser plugins"),
 			tr("PLUGIN_WARNING"),
-			0, activeWindow());
+			nullptr, activeWindow());
 		b->addButton(tr("Remind later"), QMessageBox::RejectRole);
 		b->addButton(tr("Ignore forever"), QMessageBox::AcceptRole);
 		if(b->exec() == QDialog::Accepted)
-			QSettings().setValue("plugins", "ignore");
+			QSettings().setValue(QStringLiteral("plugins"), "ignore");
 	});
 	timer->start(1000);
 #endif
@@ -115,22 +114,22 @@ QString Common::applicationOs()
 {
 #if defined(Q_OS_LINUX)
 	QProcess p;
-	p.start( "lsb_release", QStringList() << "-s" << "-d" );
+	p.start("lsb_release", { "-s", "-d" });
 	p.waitForFinished();
 	return QString::fromLocal8Bit( p.readAll().trimmed() );
 #elif defined(Q_OS_MAC)
 	struct utsname unameData;
 	uname( &unameData );
-	QFile f( "/System/Library/CoreServices/SystemVersion.plist" );
+	QFile f(QStringLiteral("/System/Library/CoreServices/SystemVersion.plist"));
 	if( f.open( QFile::ReadOnly ) )
 	{
 		QXmlStreamReader xml( &f );
 		while( xml.readNext() != QXmlStreamReader::Invalid )
 		{
-			if( !xml.isStartElement() || xml.name() != "key" || xml.readElementText() != "ProductVersion" )
+			if( !xml.isStartElement() || xml.name() != "key" || xml.readElementText() != QStringLiteral("ProductVersion"))
 				continue;
 			xml.readNextStartElement();
-			return QString( "Mac OS %1 (%2/%3)" )
+			return QStringLiteral("Mac OS %1 (%2/%3)")
 				.arg( xml.readElementText() ).arg( QSysInfo::WordSize ).arg( unameData.machine );
 		}
 	}
@@ -190,24 +189,24 @@ QString Common::applicationOs()
 	return tr("Unknown OS");
 }
 
-void Common::diagnostics(QTextStream &)
+void Common::diagnostics(QTextStream & /*s*/)
 {}
 
 QUrl Common::helpUrl()
 {
 	QString lang = Settings::language();
-	QUrl u( "http://www.id.ee/index.php?id=10583" );
-	if( lang == "en" ) u = "http://www.id.ee/index.php?id=30466";
-	if( lang == "ru" ) u = "http://www.id.ee/index.php?id=30515";
+	QUrl u(QStringLiteral("http://www.id.ee/index.php?id=10583"));
+	if(lang == QStringLiteral("en")) u = QStringLiteral("http://www.id.ee/index.php?id=30466");
+	if(lang == QStringLiteral("ru")) u = QStringLiteral("http://www.id.ee/index.php?id=30515");
 	return u;
 }
 
 void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
 {
-	QFile f( QString("%1/%2.log").arg( QDir::tempPath(), applicationName() ) );
+	QFile f(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName()));
 	if(!f.open( QFile::Append ))
 		return;
-	f.write(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ").toUtf8());
+	f.write(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss ")).toUtf8());
 	switch(type)
 	{
 	case QtDebugMsg: f.write("D"); break;
@@ -216,10 +215,10 @@ void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QSt
 	case QtFatalMsg: f.write("F"); break;
 	default: f.write("I"); break;
 	}
-	f.write(QString(" %1 ").arg(ctx.category).toUtf8());
+	f.write(QStringLiteral(" %1 ").arg(ctx.category).toUtf8());
 	if(ctx.line > 0)
 	{
-		f.write(QString("%1:%2 \"%3\" ")
+		f.write(QStringLiteral("%1:%2 \"%3\" ")
 			.arg(QFileInfo(ctx.file).fileName())
 			.arg(ctx.line)
 			.arg(ctx.function).toUtf8());
@@ -353,19 +352,18 @@ QStringList Common::packages( const QStringList &names, bool withName )
 			continue;
 		CFStringRef ver = (CFStringRef)CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleShortVersionString"));
 		CFStringRef build = (CFStringRef)CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleVersion"));
-		packages << QString("%1 (%2.%3)").arg(name)
-			.arg(QString::fromCFString(ver))
-			.arg(QString::fromCFString(build));
+		packages << QStringLiteral("%1 (%2.%3)").arg(name)
+			.arg(QString::fromCFString(ver), QString::fromCFString(build));
 	}
 #elif defined(Q_OS_LINUX)
 	QProcess p;
 
 	for(const QString &name: names)
 	{
-		p.start( "dpkg-query", QStringList() << "-W" << "-f=${Version}" << name );
+		p.start("dpkg-query", { "-W", "-f=${Version}", name });
 		if( !p.waitForStarted() && p.error() == QProcess::FailedToStart )
 		{
-			p.start( "rpm", QStringList() << "-q" << "--qf" << "%{VERSION}" << name );
+			p.start("rpm", { "-q", "--qf", "%{VERSION}", name });
 			p.waitForStarted();
 		}
 		p.waitForFinished();

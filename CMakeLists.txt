@@ -7,7 +7,7 @@ endif()
 configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
 qt5_add_translation( SOURCES  translations/qtbase_et.ts translations/qtbase_ru.ts
 	translations/common_en.ts translations/common_et.ts translations/common_ru.ts )
-qt5_add_resources( SOURCES images/common_images.qrc ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
+qt5_add_resources( SOURCES ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
 add_library( qdigidoccommon STATIC ${SOURCES}
 	CliApplication.cpp
 	Common.cpp
