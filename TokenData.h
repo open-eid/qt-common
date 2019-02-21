@@ -19,14 +19,11 @@
 
 #pragma once
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QSharedDataPointer>
 
 class QSslCertificate;
-class TokenDataPrivate;
 class TokenData
 {
-	Q_DECLARE_TR_FUNCTIONS( TokenData )
 public:
 	enum TokenFlag
 	{
@@ -58,9 +55,6 @@ public:
 	QStringList readers() const;
 	void setReaders( const QStringList &readers );
 
-	QString toAccessible() const;
-	QString toHtml() const;
-
 	TokenData& operator =( const TokenData &other );
 	bool operator !=( const TokenData &other ) const;
 	bool operator ==( const TokenData &other ) const;
@@ -68,5 +62,6 @@ public:
 	static bool cardsOrder( const QString &s1, const QString &s2 );
 
 private:
-	QSharedDataPointer<TokenDataPrivate> d;
+	class Private;
+	QSharedDataPointer<Private> d;
 };
