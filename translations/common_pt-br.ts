@@ -170,49 +170,6 @@
     </message>
 </context>
 <context>
-    <name>PinDialog</name>
-    <message>
-        <source>Selected action requires sign certificate.</source>
-        <translation>A ação selecionada requer assinatura com certificado.</translation>
-    </message>
-    <message>
-        <source>For using sign certificate enter PIN2</source>
-        <translation>Para usar a assinatura com cetificado digite o PIN2</translation>
-    </message>
-    <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>O PIN será bloqueado na próxima tentativa com falha</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN informado incorretamente (primeira tentativa)</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Assinando</translation>
-    </message>
-    <message>
-        <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Para usar assinatura com certificado digital digite o PIN2 no leitor</translation>
-    </message>
-    <message>
-        <source>Authentication</source>
-        <translation>Autenticação</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Para usar assinatura com certificado digital digite o PIN1 no leitor</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1</source>
-        <translation>Para autenticação por certiifcado digital digite o PIN1</translation>
-    </message>
-    <message>
-        <source>Selected action requires authentication certificate.</source>
-        <translation>A ação selecionada exige a autenticação com certificado digital.</translation>
-    </message>
-</context>
-<context>
     <name>SslCertificate</name>
     <message>
         <source>All application policies</source>
