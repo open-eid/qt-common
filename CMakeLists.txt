@@ -10,7 +10,6 @@ qt5_add_translation( SOURCES  translations/qtbase_et.ts translations/qtbase_ru.t
 qt5_add_resources( SOURCES images/common_images.qrc ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
 add_library( qdigidoccommon STATIC ${SOURCES}
 	CliApplication.cpp
-	ComboBox.cpp
 	Common.cpp
 	DateTime.cpp
 	Diagnostics.cpp
