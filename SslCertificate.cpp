@@ -118,11 +118,18 @@ QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage
 
 QString SslCertificate::friendlyName() const
 {
-	QString cn = subjectInfo( QSslCertificate::CommonName );
-	QString o = subjectInfo( QSslCertificate::Organization );
+	QString cn = subjectInfo(QSslCertificate::CommonName);
+	QString o = subjectInfo(QSslCertificate::Organization);
 	QRegExp rx("ESTEID \\((.*)\\)");
-	if( rx.indexIn(o) != -1 ) return QString( "%1,%2" ).arg( cn, rx.cap(1) );
-	if( o == "ESTEID" ) return QString( "%1,%2" ).arg( cn, tr("ID-CARD") );
+	if(rx.indexIn(o) != -1)
+		return QStringLiteral("%1,%2").arg(cn, rx.cap(1));
+	if(o == QStringLiteral("ESTEID"))
+		return QStringLiteral("%1,%2").arg(cn, tr("ID-CARD"));
+	int certType = type();
+	if(certType & SslCertificate::DigiIDType)
+		return QStringLiteral("%1,%2").arg(cn, tr("Digi-ID"));
+	if(certType & SslCertificate::EstEidType)
+		return QStringLiteral("%1,%2").arg(cn, tr("ID-CARD"));
 	return cn;
 }
 
