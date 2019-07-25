@@ -13,7 +13,6 @@ add_library( qdigidoccommon STATIC ${SOURCES}
 	DateTime.cpp
 	IKValidator.cpp
 	QPCSC.cpp
-	SOAPDocument.cpp
 	Settings.h
 	TokenData.cpp
 )
