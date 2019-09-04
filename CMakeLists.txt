@@ -18,9 +18,7 @@ add_library( qdigidoccommon STATIC ${SOURCES}
 	QPCSC.cpp
 	SOAPDocument.cpp
 	Settings.h
-	SslCertificate.cpp
 	TokenData.cpp
-	qasn1element.cpp
 )
 target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} PRIVATE ${PCSCLITE_INCLUDE_DIR})
 target_link_libraries(qdigidoccommon Qt5::Network Qt5::Widgets OpenSSL::SSL ${PCSCLITE_LIBRARY})
