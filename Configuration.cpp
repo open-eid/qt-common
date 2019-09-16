@@ -339,10 +339,20 @@ Configuration::Configuration(QObject *parent)
 	Q_EMIT finished(true, QString());
 
 #ifdef LAST_CHECK_DAYS
-	if(d->s.value(QStringLiteral("LastCheck")).isNull())
+	// Clean computer
+	if(d->s.value(QStringLiteral("LastCheck")).isNull()) {
 		d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
+		update();
+	}
+
 	QDate lastCheck = QDate::fromString(d->s.value(QStringLiteral("LastCheck")).toString(), QStringLiteral("yyyyMMdd"));
-	if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS))
+	
+	// Scheduled update
+	if (lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS))
+		update();
+
+	// DigiDoc4 updated
+	if (Private::lessThanVersion(QSettings().value(QStringLiteral("LastVersion")).toString(), qApp->applicationVersion()))
 		update();
 #endif
 }
@@ -407,4 +417,5 @@ void Configuration::update(bool force)
 {
 	d->initCache(force);
 	sendRequest(d->rsaurl);
+	QSettings().setValue(QStringLiteral("LastVersion"), qApp->applicationVersion());
 }
