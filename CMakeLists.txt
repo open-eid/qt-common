@@ -13,7 +13,6 @@ add_library( qdigidoccommon STATIC ${SOURCES}
 	DateTime.cpp
 	IKValidator.cpp
 	QPCSC.cpp
-	Settings.h
 	TokenData.cpp
 )
 target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} PRIVATE ${PCSCLITE_INCLUDE_DIR})

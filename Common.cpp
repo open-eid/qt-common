@@ -20,7 +20,6 @@
 #include "Common.h"
 
 #include "TokenData.h"
-#include "Settings.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
@@ -30,6 +29,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
+#include <QtCore/QSettings>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QPalette>
 #include <QtGui/QTextDocument>
@@ -177,7 +177,7 @@ void Common::diagnostics(QTextStream & /*s*/)
 
 QUrl Common::helpUrl()
 {
-	QString lang = Settings::language();
+	QString lang = language();
 	QUrl u(QStringLiteral("http://www.id.ee/index.php?id=10583"));
 	if(lang == QStringLiteral("en")) u = QStringLiteral("http://www.id.ee/index.php?id=30466");
 	if(lang == QStringLiteral("ru")) u = QStringLiteral("http://www.id.ee/index.php?id=30515");
@@ -366,4 +366,25 @@ void Common::setAccessibleName( QLabel *widget )
 	QTextDocument doc;
 	doc.setHtml( widget->text() );
 	widget->setAccessibleName( doc.toPlainText() );
+}
+
+QString Common::language()
+{
+	QString deflang;
+	switch( QLocale().language() )
+	{
+	case QLocale::Russian: deflang = "ru"; break;
+	case QLocale::Estonian: deflang = "et"; break;
+	case QLocale::English:
+	default: deflang = "en"; break;
+	}
+	return QSettings().value( "Language", deflang ).toString();
+}
+
+void Common::setValueEx( const QString &key, const QVariant &value, const QVariant &def )
+{
+	if( value == def )
+		QSettings().remove( key );
+	else
+		QSettings().setValue( key, value );
 }
