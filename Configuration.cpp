@@ -357,15 +357,14 @@ Configuration::~Configuration()
 void Configuration::checkVersion(const QString &name)
 {
 	if(Private::lessThanVersion(qApp->applicationVersion(), object()[name+"-SUPPORTED"].toString()))
-		QMessageBox::warning(qApp->activeWindow(), tr("Update is available"),
-			tr("Your ID-software has expired. To download the latest software version, go to the "
+		Q_EMIT updateReminder(true, tr("Update is available"), tr("Your ID-software has expired. To download the latest software version, go to the "
 				"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
 				"macOS users can download the latest ID-software version from the "
 				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 
 	connect(this, &Configuration::finished, [=](bool changed, const QString &){
 		if(changed && Private::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
-			QMessageBox::information(qApp->activeWindow(), tr("Update is available"),
+			Q_EMIT updateReminder(false, tr("Update is available"),
 				tr("An ID-software update has been found. To download the update, go to the "
 					"<a href=\"http://installer.id.ee/?lang=eng\">id.ee</a> website. "
 					"macOS users can download the update from the "

@@ -7,22 +7,6 @@
         <source>Unknown OS</source>
         <translation>SO desconhecida</translation>
     </message>
-    <message>
-        <source>Browser plugins</source>
-        <translation>Extensões de navegadores</translation>
-    </message>
-    <message>
-        <source>Remind later</source>
-        <translation>Lembre-me mais tarde</translation>
-    </message>
-    <message>
-        <source>Ignore forever</source>
-        <translation>Ignorar permanentemente</translation>
-    </message>
-    <message>
-        <source>PLUGIN_WARNING</source>
-        <translation>Para assinar digitalmente online a extensão precisa estar habilitada no seu navegador web.&lt;br/&gt;Instruções de como habilitar a extensão para uso do token pode ser acessado em &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
-    </message>
 </context>
 <context>
     <name>Configuration</name>

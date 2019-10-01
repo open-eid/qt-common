@@ -89,23 +89,6 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
-#elif defined(Q_OS_MAC)
-	if(!QSettings().value(QStringLiteral("plugins")).isNull())
-		return;
-
-	QTimer *timer = new QTimer(this);
-	timer->setSingleShot(true);
-	connect(timer, &QTimer::timeout, this, [=]{
-		timer->deleteLater();
-		QMessageBox *b = new QMessageBox(QMessageBox::Information, tr("Browser plugins"),
-			tr("PLUGIN_WARNING"),
-			nullptr, activeWindow());
-		b->addButton(tr("Remind later"), QMessageBox::RejectRole);
-		b->addButton(tr("Ignore forever"), QMessageBox::AcceptRole);
-		if(b->exec() == QDialog::Accepted)
-			QSettings().setValue(QStringLiteral("plugins"), "ignore");
-	});
-	timer->start(1000);
 #endif
 }
 #endif

@@ -7,22 +7,6 @@
         <source>Unknown OS</source>
         <translation>Неизвестный OS</translation>
     </message>
-    <message>
-        <source>Browser plugins</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remind later</source>
-        <translation>Напомнить позже</translation>
-    </message>
-    <message>
-        <source>Ignore forever</source>
-        <translation>Не устанавливать</translation>
-    </message>
-    <message>
-        <source>PLUGIN_WARNING</source>
-        <translation>Чтобы использовать ID-кару для подписи в Э-услугах , вам также необходимо активировать подключаемый модуль для браузера.&lt;br/&gt;Руководство по активации можно найти &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=36641&quot;&gt;здесь&lt;/a&gt;.</translation>
-    </message>
 </context>
 <context>
     <name>Configuration</name>

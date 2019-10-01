@@ -7,22 +7,6 @@
         <source>Unknown OS</source>
         <translation>Unknown OS</translation>
     </message>
-    <message>
-        <source>Browser plugins</source>
-        <translation>Browser plugins</translation>
-    </message>
-    <message>
-        <source>Remind later</source>
-        <translation>Remind later</translation>
-    </message>
-    <message>
-        <source>Ignore forever</source>
-        <translation>Ignore forever</translation>
-    </message>
-    <message>
-        <source>PLUGIN_WARNING</source>
-        <translation>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
-    </message>
 </context>
 <context>
     <name>Configuration</name>
