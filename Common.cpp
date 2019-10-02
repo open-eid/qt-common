@@ -19,10 +19,10 @@
 
 #include "Common.h"
 
-#include "SslCertificate.h"
 #include "TokenData.h"
 #include "Settings.h"
 
+#include <QtCore/QDateTime>
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>

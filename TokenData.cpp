@@ -19,9 +19,8 @@
 
 #include "TokenData.h"
 
-#include "SslCertificate.h"
-
 #include <QtCore/QStringList>
+#include <QtNetwork/QSslCertificate>
 
 class TokenData::Private: public QSharedData
 {

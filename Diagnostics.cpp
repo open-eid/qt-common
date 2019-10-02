@@ -19,7 +19,6 @@
 #include "Diagnostics.h"
 
 #include "QPCSC.h"
-#include "SslCertificate.h"
 #include "Common.h"
 
 #ifdef CONFIG_URL
