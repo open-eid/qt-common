@@ -9,11 +9,8 @@ qt5_add_translation( SOURCES  translations/qtbase_et.ts translations/qtbase_ru.t
 	translations/common_en.ts translations/common_et.ts translations/common_ru.ts )
 qt5_add_resources( SOURCES ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
 add_library( qdigidoccommon STATIC ${SOURCES}
-	CliApplication.cpp
 	Common.cpp
 	DateTime.cpp
-	Diagnostics.cpp
-	DiagnosticsTask.cpp
 	IKValidator.cpp
 	QPCSC.cpp
 	SOAPDocument.cpp
@@ -24,10 +21,7 @@ target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} PRI
 target_link_libraries(qdigidoccommon Qt5::Network Qt5::Widgets OpenSSL::SSL ${PCSCLITE_LIBRARY})
 if(WIN32)
 	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
-	target_sources(qdigidoccommon PRIVATE Diagnostics_win.cpp)
 	target_link_libraries(qdigidoccommon Version SetupApi winscard)
-else()
-	target_sources(qdigidoccommon PRIVATE Diagnostics_unix.cpp)
 endif()
 
 if(APPLE)
