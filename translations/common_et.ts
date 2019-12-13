@@ -7,22 +7,6 @@
         <source>Unknown OS</source>
         <translation>Tundmatu operatsioonisüsteem</translation>
     </message>
-    <message>
-        <source>Browser plugins</source>
-        <translation>Brauseri toe pakk</translation>
-    </message>
-    <message>
-        <source>Remind later</source>
-        <translation>Mitte praegu</translation>
-    </message>
-    <message>
-        <source>Ignore forever</source>
-        <translation>Mitte kunagi</translation>
-    </message>
-    <message>
-        <source>PLUGIN_WARNING</source>
-        <translation>E-teenustes ID-kaardiga allkirjastamiseks on Teil vajalik veel aktiveerida veebilehitsejas allkirjastamise plugin.&lt;br/&gt;Juhend aktiveerimiseks on leitav &lt;a href=&quot;http://id.ee/?lang=et&amp;id=36636&quot;&gt;siit&lt;/a&gt;.</translation>
-    </message>
 </context>
 <context>
     <name>Configuration</name>

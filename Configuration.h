@@ -32,6 +32,7 @@ public:
 
 Q_SIGNALS:
 	void finished(bool changed, const QString &error);
+	void updateReminder(bool expired, const QString &title, const QString &message);
 
 private:
 	explicit Configuration(QObject *parent = nullptr);
