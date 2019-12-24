@@ -1568,7 +1568,7 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Proxy denied connection</source>
-        <translation>Proxy keeldus ühendus</translation>
+        <translation>Proksi-server keeldus ühendusest.</translation>
     </message>
     <message>
         <source>Error communicating with HTTP proxy</source>
