@@ -21,7 +21,6 @@
 
 #include "Common.h"
 #include "QPCSC.h"
-#include "Settings.h"
 
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QDir>
@@ -32,6 +31,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTimer>
+#include <QtCore/QSettings>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -49,7 +49,8 @@ public:
 	{
 		data = _data;
 		dataobject = QJsonDocument::fromJson(data).object();
-		Settings s2(QSettings::SystemScope);
+		QSettings s2(QSettings::SystemScope, nullptr);
+
 		for(const QString &key: s2.childKeys())
 		{
 			if(dataobject.contains(key))
@@ -79,7 +80,7 @@ public:
 	QNetworkAccessManager *net = nullptr;
 	QList<QNetworkReply*> requestcache;
 #ifdef LAST_CHECK_DAYS
-	Settings s = {qApp->applicationName()};
+	QSettings s;
 #endif
 };
 
@@ -214,7 +215,7 @@ Configuration::Configuration(QObject *parent)
 		QFileInfo(d->url.fileName()).baseName());
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(qApp->applicationName(), qApp->applicationVersion(),
-			 Common::applicationOs(), Settings::language(), QPCSC::instance().drivers().join('/')).toUtf8());
+			Common::applicationOs(), Common::language(), QPCSC::instance().drivers().join('/')).toUtf8());
 	d->net = new QNetworkAccessManager(this);
 	connect(d->net, &QNetworkAccessManager::sslErrors, this,
 			[](QNetworkReply *reply, const QList<QSslError> &errors){
