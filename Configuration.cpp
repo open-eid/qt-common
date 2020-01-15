@@ -49,7 +49,11 @@ public:
 	{
 		data = _data;
 		dataobject = QJsonDocument::fromJson(data).object();
+#ifdef Q_OS_MAC
 		QSettings s2(QSettings::SystemScope, nullptr);
+#else
+		QSettings s2(QSettings::SystemScope, qApp->organizationName(), qApp->applicationName());
+#endif
 
 		for(const QString &key: s2.childKeys())
 		{
