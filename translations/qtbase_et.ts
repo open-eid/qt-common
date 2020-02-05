@@ -1580,7 +1580,7 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Proxy connection refused</source>
-        <translation type="unfinished"></translation>
+        <translation>Proksi-server keeldus ühendusest.</translation>
     </message>
     <message>
         <source>Proxy server connection timed out</source>
