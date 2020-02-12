@@ -19,8 +19,6 @@
 
 #include "Common.h"
 
-#include "TokenData.h"
-
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
@@ -82,8 +80,6 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	p.setBrush( QPalette::Link, QBrush( "#509B00" ) );
 	p.setBrush( QPalette::LinkVisited, QBrush( "#509B00" ) );
 	setPalette( p );
-
-	qRegisterMetaType<TokenData>("TokenData");
 
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
