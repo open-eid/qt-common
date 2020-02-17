@@ -1,7 +1,8 @@
 set_env( CONFIG_URL "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
 find_package( OpenSSL REQUIRED )
-if( UNIX AND NOT APPLE )
-	find_package(PCSCLite REQUIRED)
+if(UNIX AND NOT APPLE)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(PCSCLITE REQUIRED libpcsclite)
 endif()
 
 configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
@@ -14,19 +15,19 @@ add_library( qdigidoccommon STATIC ${SOURCES}
 	IKValidator.cpp
 	QPCSC.cpp
 )
-target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} PRIVATE ${PCSCLITE_INCLUDE_DIR})
-target_link_libraries(qdigidoccommon Qt5::Network Qt5::Widgets OpenSSL::SSL ${PCSCLITE_LIBRARY})
+target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} PRIVATE ${PCSCLITE_INCLUDE_DIRS})
+target_link_libraries(qdigidoccommon PUBLIC Qt5::Network Qt5::Widgets OpenSSL::SSL PRIVATE ${PCSCLITE_LIBRARIES})
 if(WIN32)
 	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
-	target_link_libraries(qdigidoccommon Version SetupApi winscard)
+	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi winscard)
 endif()
 
 if(APPLE)
 	target_sources(qdigidoccommon PRIVATE MacMenuBar.cpp)
-	target_link_libraries(qdigidoccommon "-framework Cocoa" "-framework PCSC" "-fobjc-arc")
+	target_link_libraries(qdigidoccommon PRIVATE "-framework PCSC")
 else()
 	add_subdirectory(qtsingleapplication)
-	target_link_libraries(qdigidoccommon qtsingleapplication)
+	target_link_libraries(qdigidoccommon PUBLIC qtsingleapplication)
 endif()
 
 if( CONFIG_URL )
