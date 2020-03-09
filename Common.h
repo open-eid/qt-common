@@ -48,8 +48,6 @@ public:
 	Common( int &argc, char **argv, const QString &app, const QString &icon );
 #endif
 
-	virtual void diagnostics(QTextStream &s);
-
 	static QString applicationOs();
 	static QUrl helpUrl();
 	static QStringList packages( const QStringList &names, bool withName = true );

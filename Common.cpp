@@ -168,9 +168,6 @@ QString Common::applicationOs()
 	return tr("Unknown OS");
 }
 
-void Common::diagnostics(QTextStream & /*s*/)
-{}
-
 QUrl Common::helpUrl()
 {
 	QString lang = language();
