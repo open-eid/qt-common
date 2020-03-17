@@ -50,7 +50,6 @@ public:
 
 	static QString applicationOs();
 	static QUrl helpUrl();
-	static QStringList packages( const QStringList &names, bool withName = true );
 	static void setAccessibleName( QLabel *widget );
 	static QString language();
 	static void setValueEx( const QString &key, const QVariant &value, const QVariant &def );
