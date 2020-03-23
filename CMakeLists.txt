@@ -23,7 +23,6 @@ if(WIN32)
 endif()
 
 if(APPLE)
-	target_sources(qdigidoccommon PRIVATE MacMenuBar.cpp)
 	target_link_libraries(qdigidoccommon PRIVATE "-framework PCSC")
 else()
 	add_subdirectory(qtsingleapplication)

@@ -35,23 +35,4 @@
         <translation>ID-kaardi baastarkvarast on saadaval uus versioon</translation>
     </message>
 </context>
-<context>
-    <name>MacMenuBar</name>
-    <message>
-        <source>&amp;File</source>
-        <translation>&amp;Fail</translation>
-    </message>
-    <message>
-        <source>Info</source>
-        <translation>Info</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Sulge</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Seaded</translation>
-    </message>
-</context>
 </TS>
