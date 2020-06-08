@@ -24,6 +24,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
+#include <QtCore/QSysInfo>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
@@ -86,10 +87,7 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 QString Common::applicationOs()
 {
 #if defined(Q_OS_LINUX)
-	QProcess p;
-	p.start("lsb_release", { "-s", "-d" });
-	p.waitForFinished();
-	return QString::fromLocal8Bit( p.readAll().trimmed() );
+	return QStringLiteral("Linux/") + QSysInfo::prettyProductName();
 #elif defined(Q_OS_MAC)
 	struct utsname unameData;
 	uname( &unameData );
