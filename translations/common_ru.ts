@@ -35,23 +35,4 @@
         <translation>Доступна обновлённая версия</translation>
     </message>
 </context>
-<context>
-    <name>MacMenuBar</name>
-    <message>
-        <source>&amp;File</source>
-        <translation>&amp;Файл</translation>
-    </message>
-    <message>
-        <source>Info</source>
-        <translation>Информация</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Закрыть</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-</context>
 </TS>

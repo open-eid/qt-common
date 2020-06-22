@@ -35,23 +35,4 @@
         <translation>Update is available</translation>
     </message>
 </context>
-<context>
-    <name>MacMenuBar</name>
-    <message>
-        <source>&amp;File</source>
-        <translation>&amp;File</translation>
-    </message>
-    <message>
-        <source>Info</source>
-        <translation>About</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Close</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Settings</translation>
-    </message>
-</context>
 </TS>
