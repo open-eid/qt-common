@@ -49,7 +49,6 @@ public:
 #endif
 
 	static QString applicationOs();
-	static QUrl helpUrl();
 	static void setAccessibleName( QLabel *widget );
 	static QString language();
 	static void setValueEx( const QString &key, const QVariant &value, const QVariant &def );

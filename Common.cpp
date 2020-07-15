@@ -162,15 +162,6 @@ QString Common::applicationOs()
 	return tr("Unknown OS");
 }
 
-QUrl Common::helpUrl()
-{
-	QString lang = language();
-	QUrl u(QStringLiteral("http://www.id.ee/index.php?id=10583"));
-	if(lang == QStringLiteral("en")) u = QStringLiteral("http://www.id.ee/index.php?id=30466");
-	if(lang == QStringLiteral("ru")) u = QStringLiteral("http://www.id.ee/index.php?id=30515");
-	return u;
-}
-
 void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
 {
 	QFile f(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName()));
