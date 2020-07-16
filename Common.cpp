@@ -24,17 +24,13 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
-#include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 #include <QtCore/QSettings>
-#include <QtGui/QDesktopServices>
-#include <QtGui/QPalette>
+#include <QtGui/QIcon>
 #include <QtGui/QTextDocument>
 #include <QtNetwork/QNetworkProxyFactory>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QPushButton>
 
 #include <cstdlib>
 
@@ -58,22 +54,16 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	setWindowIcon( QIcon( icon ) );
 	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), app)))
 		qInstallMessageHandler(msgHandler);
-#ifdef Q_OS_DARWIN
-	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
-#endif
 
 	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
 	setLibraryPaths({ applicationDirPath() });
 #elif defined(Q_OS_MAC)
+	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
 	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
 #endif
 	setStyleSheet(QStringLiteral(
 		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
-	QPalette p = palette();
-	p.setBrush( QPalette::Link, QBrush( "#509B00" ) );
-	p.setBrush( QPalette::LinkVisited, QBrush( "#509B00" ) );
-	setPalette( p );
 
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
@@ -206,12 +196,4 @@ QString Common::language()
 	default: deflang = "en"; break;
 	}
 	return QSettings().value( "Language", deflang ).toString();
-}
-
-void Common::setValueEx( const QString &key, const QVariant &value, const QVariant &def )
-{
-	if( value == def )
-		QSettings().remove( key );
-	else
-		QSettings().setValue( key, value );
 }

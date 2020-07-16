@@ -29,14 +29,6 @@ typedef QApplication BaseApplication;
 typedef QtSingleApplication BaseApplication;
 #endif
 
-#include <QtCore/QEvent>
-
-
-#if defined(qApp)
-#undef qApp
-#endif
-#define qApp (static_cast<Common*>(QCoreApplication::instance()))
-
 class QLabel;
 class QUrl;
 
@@ -51,7 +43,6 @@ public:
 	static QString applicationOs();
 	static void setAccessibleName( QLabel *widget );
 	static QString language();
-	static void setValueEx( const QString &key, const QVariant &value, const QVariant &def );
 
 private:
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
