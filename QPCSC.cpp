@@ -17,7 +17,6 @@
  *
  */
 
-#include "QPCSC.h"
 #include "QPCSC_p.h"
 
 #include <QtCore/QDateTime>
@@ -40,6 +39,23 @@ namespace Qt {
 
 Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
 Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
+
+static QStringList stateToString(DWORD state)
+{
+	QStringList result;
+	#define STATE(X) if(state & SCARD_STATE_##X) result << QStringLiteral(#X)
+	STATE(IGNORE);
+	STATE(CHANGED);
+	STATE(UNKNOWN);
+	STATE(UNAVAILABLE);
+	STATE(EMPTY);
+	STATE(PRESENT);
+	STATE(ATRMATCH);
+	STATE(EXCLUSIVE);
+	STATE(INUSE);
+	STATE(MUTE);
+	return result;
+}
 
 template < typename Func, typename... Args>
 LONG SCCall( const char *file, int line, const char *function, Func func, Args... args)
@@ -89,7 +105,7 @@ QHash<DRIVER_FEATURES,quint32> QPCSCReader::Private::features()
 
 
 QPCSC::QPCSC()
-	: d( new QPCSCPrivate )
+	: d(new Private)
 {
 	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
 	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
@@ -98,6 +114,8 @@ QPCSC::QPCSC()
 
 QPCSC::~QPCSC()
 {
+	requestInterruption();
+	wait();
 	if( d->context )
 		SC(ReleaseContext, d->context);
 	qDeleteAll(d->lock);
@@ -152,24 +170,75 @@ QPCSC& QPCSC::instance()
 	return pcsc;
 }
 
-QStringList QPCSC::readers() const
+QByteArray QPCSC::rawReaders() const
 {
 	if( !serviceRunning() )
 		return {};
 
 	DWORD size = 0;
 	LONG err = SC(ListReaders, d->context, nullptr, nullptr, &size);
-	if( err != SCARD_S_SUCCESS || !size )
+	if(err != SCARD_S_SUCCESS || !size)
 		return {};
 
 	QByteArray data(int(size), 0);
 	err = SC(ListReaders, d->context, nullptr, data.data(), &size);
-	if( err != SCARD_S_SUCCESS )
-		return {};
+	if(err != SCARD_S_SUCCESS)
+		data.clear();
+	return data;
+}
 
-	QStringList readers = QString::fromLocal8Bit(data, int(size)).split(QChar(0));
-	readers.removeAll(QString());
+QStringList QPCSC::readers() const
+{
+	QByteArray tmp = rawReaders();
+	QStringList readers = QString::fromLocal8Bit(tmp.data(), tmp.size()).split(QChar(0));
+	readers.removeAll({});
 	return readers;
+}
+
+void QPCSC::run()
+{
+	QPCSC pcsc;
+	std::vector<SCARD_READERSTATE> list;
+	while(!isInterruptionRequested())
+	{
+		if(!pcsc.serviceRunning())
+		{
+			sleep(5);
+			continue;
+		}
+		// "\\?PnP?\Notification" does not work on macOS
+		QByteArray data = pcsc.rawReaders();
+		if(data.isEmpty())
+		{
+			sleep(5);
+			continue;
+		}
+		for(const char *name = data.constData(); *name; name += strlen(name) + 1)
+		{
+			if(std::none_of(list.cbegin(), list.cend(), [&name](const SCARD_READERSTATE &state) { return strcmp(state.szReader, name) == 0; }))
+				list.push_back({ strdup(name), nullptr, 0, 0, 0, {} });
+		}
+		if(SC(GetStatusChange, pcsc.d->context, 5*1000, list.data(), DWORD(list.size())) != SCARD_S_SUCCESS)
+			continue;
+		for(std::vector<SCARD_READERSTATE>::iterator i = list.begin(); i != list.end(); )
+		{
+			if((i->dwEventState & SCARD_STATE_CHANGED) == 0)
+			{
+				++i;
+				continue;
+			}
+			i->dwCurrentState = i->dwEventState;
+			qCDebug(SCard) << "New state: " << QString::fromLocal8Bit(i->szReader) << stateToString(i->dwCurrentState);
+			Q_EMIT statusChanged(QString::fromLocal8Bit(i->szReader), stateToString(i->dwCurrentState));
+			if((i->dwCurrentState & (SCARD_STATE_UNKNOWN|SCARD_STATE_IGNORE)) > 0)
+			{
+				free((void*)i->szReader);
+				i = list.erase(i);
+			}
+			else
+				++i;
+		}
+	}
 }
 
 bool QPCSC::serviceRunning() const
@@ -310,19 +379,7 @@ bool QPCSCReader::reconnect( Reset reset, Mode mode )
 
 QStringList QPCSCReader::state() const
 {
-	QStringList result;
-#define STATE(X) if( d->state.dwEventState & SCARD_STATE_##X ) result << QStringLiteral(#X)
-	STATE(IGNORE);
-	STATE(CHANGED);
-	STATE(UNKNOWN);
-	STATE(UNAVAILABLE);
-	STATE(EMPTY);
-	STATE(PRESENT);
-	STATE(ATRMATCH);
-	STATE(EXCLUSIVE);
-	STATE(INUSE);
-	STATE(MUTE);
-	return result;
+	return stateToString(d->state.dwEventState);
 }
 
 QPCSCReader::Result QPCSCReader::transfer( const char *cmd, int size ) const
@@ -457,7 +514,7 @@ bool QPCSCReader::updateState( quint32 msec )
 {
 	if(!d->d->context)
 		return false;
-	d->state.dwCurrentState = d->state.dwEventState; //(currentReaderCount << 16)
+	d->state.dwCurrentState = d->state.dwEventState;
 	DWORD err = SC(GetStatusChange, d->d->context, msec, &d->state, 1u); //INFINITE
 	switch(err) {
 	case SCARD_S_SUCCESS: return true;

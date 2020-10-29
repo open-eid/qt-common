@@ -19,13 +19,12 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include <QtCore/QThread>
 
 template<typename Key, typename T> class QHash;
 
 class QPCSCReader;
-class QPCSCPrivate;
-class QPCSC: public QObject
+class QPCSC final: public QThread
 {
 	Q_OBJECT
 public:
@@ -36,15 +35,23 @@ public:
 	QStringList readers() const;
 	bool serviceRunning() const;
 
+Q_SIGNALS:
+	void statusChanged(const QString &reader, const QStringList &state);
+
 private:
 	QPCSC();
 	Q_DISABLE_COPY(QPCSC);
-	QPCSCPrivate *d;
+
+	QByteArray rawReaders() const;
+	void run() final;
+
+	class Private;
+	Private *d;
 
 	friend class QPCSCReader;
 };
 
-class QPCSCReader: public QObject
+class QPCSCReader final: public QObject
 {
 	Q_OBJECT
 public:
