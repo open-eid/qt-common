@@ -200,8 +200,8 @@ public:
 
 	QPCSCPrivate *d = nullptr;
 	SCARDHANDLE card = 0;
-	DWORD proto = 0;
-	SCARD_READERSTATE state;
+	SCARD_IO_REQUEST io = {SCARD_PROTOCOL_UNDEFINED, sizeof(SCARD_IO_REQUEST)};
+	SCARD_READERSTATE state = {};
 	QByteArray reader;
 	bool isTransacted = false;
 

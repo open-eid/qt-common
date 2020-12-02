@@ -49,15 +49,15 @@ LONG SCCall( const char *file, int line, const char *function, Func func, Args..
 QByteArray QPCSCReader::Private::attrib( DWORD id ) const
 {
 	if(!card)
-		return QByteArray();
+		return {};
 	DWORD size = 0;
 	LONG err = SC(GetAttrib, card, id, nullptr, &size);
 	if( err != SCARD_S_SUCCESS || !size )
-		return QByteArray();
+		return {};
 	QByteArray data(int(size), 0);
 	err = SC(GetAttrib, card, id, LPBYTE(data.data()), &size);
 	if( err != SCARD_S_SUCCESS || !size )
-		return QByteArray();
+		return {};
 	return data;
 }
 
@@ -103,7 +103,7 @@ QStringList QPCSC::drivers() const
 #ifdef Q_OS_WIN
 	HDEVINFO h = SetupDiGetClassDevs( 0, 0, 0, DIGCF_ALLCLASSES | DIGCF_PRESENT );
 	if( !h )
-		return QStringList();
+		return {};
 
 	SP_DEVINFO_DATA info = { sizeof(SP_DEVINFO_DATA) };
 	QStringList list;
@@ -125,12 +125,12 @@ QStringList QPCSC::drivers() const
 
 		SetupDiGetDeviceRegistryPropertyW( h, &info,
 			SPDRP_DEVICEDESC, 0, LPBYTE(data), sizeof(data), &size );
-		QString name( (QChar*)data );
+		QString name = QString::fromWCharArray(data);
 
 		SetupDiGetDeviceRegistryPropertyW( h, &info,
 			SPDRP_HARDWAREID, 0, LPBYTE(data), sizeof(data), &size );
 
-		list << QString( "%1 (%2)").arg( name, QString( (QChar*)data ) );
+		list << QStringLiteral("%1 (%2)").arg(name, QString::fromWCharArray(data));
 	}
 	SetupDiDestroyDeviceInfoList( h );
 
@@ -149,17 +149,17 @@ QPCSC& QPCSC::instance()
 QStringList QPCSC::readers() const
 {
 	if( !serviceRunning() )
-		return QStringList();
+		return {};
 
 	DWORD size = 0;
 	LONG err = SC(ListReaders, d->context, nullptr, nullptr, &size);
 	if( err != SCARD_S_SUCCESS || !size )
-		return QStringList();
+		return {};
 
 	QByteArray data(int(size), 0);
 	err = SC(ListReaders, d->context, nullptr, data.data(), &size);
 	if( err != SCARD_S_SUCCESS )
-		return QStringList();
+		return {};
 
 	QStringList readers = QString::fromLocal8Bit(data, int(size)).split(QChar(0));
 	readers.removeAll(QString());
@@ -168,7 +168,7 @@ QStringList QPCSC::readers() const
 
 bool QPCSC::serviceRunning() const
 {
-	if(d->context)
+	if(d->context && SC(IsValidContext, d->context) == SCARD_S_SUCCESS)
 		return true;
 	SC(EstablishContext, DWORD(SCARD_SCOPE_USER), nullptr, nullptr, &d->context);
 	return d->context;
@@ -182,7 +182,6 @@ QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 	if(!parent->d->lock.contains(reader))
 		parent->d->lock[reader] = new QMutex();
 	parent->d->lock[reader]->lock();
-	std::memset( &d->state, 0, sizeof(d->state) );
 	d->d = parent->d;
 	d->reader = reader.toUtf8();
 	d->state.szReader = d->reader.constData();
@@ -213,7 +212,7 @@ bool QPCSCReader::connect(Connect connect, Mode mode)
 
 quint32 QPCSCReader::connectEx(Connect connect, Mode mode)
 {
-	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->proto);
+	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->io.dwProtocol);
 	updateState();
 	return quint32(err);
 }
@@ -224,7 +223,7 @@ void QPCSCReader::disconnect( Reset reset )
 		endTransaction();
 	if( d->card )
 		SC(Disconnect, d->card, reset);
-	d->proto = 0;
+	d->io.dwProtocol = SCARD_PROTOCOL_UNDEFINED;
 	d->card = 0;
 	d->featuresList.clear();
 	updateState();
@@ -291,14 +290,14 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 
 int QPCSCReader::protocol() const
 {
-	return int(d->proto);
+	return int(d->io.dwProtocol);
 }
 
 bool QPCSCReader::reconnect( Reset reset, Mode mode )
 {
 	if( !d->card )
 		return false;
-	LONG err = SC(Reconnect, d->card, DWORD(SCARD_SHARE_SHARED), mode, reset, &d->proto);
+	LONG err = SC(Reconnect, d->card, DWORD(SCARD_SHARE_SHARED), mode, reset, &d->io.dwProtocol);
 	updateState();
 	return err == SCARD_S_SUCCESS;
 }
@@ -327,19 +326,17 @@ QPCSCReader::Result QPCSCReader::transfer( const char *cmd, int size ) const
 
 QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 {
-	static const SCARD_IO_REQUEST T0 = { SCARD_PROTOCOL_T0, sizeof(SCARD_IO_REQUEST) };
-	static const SCARD_IO_REQUEST T1 = { SCARD_PROTOCOL_T1, sizeof(SCARD_IO_REQUEST) };
 	QByteArray data( 1024, 0 );
 	DWORD size = DWORD(data.size());
 
-	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "> " << apdu.toHex().constData();
-	LONG ret = SC(Transmit, d->card, d->proto == SCARD_PROTOCOL_T0 ? &T0 : &T1,
+	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex().constData();
+	LONG ret = SC(Transmit, d->card, &d->io,
 		LPCBYTE(apdu.constData()), DWORD(apdu.size()), nullptr, LPBYTE(data.data()), &size);
 	if( ret != SCARD_S_SUCCESS )
-		return { QByteArray(), QByteArray(), quint32(ret) };
+		return { {}, {}, quint32(ret) };
 
 	Result result = { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(ret) };
-	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "< " << result.SW.toHex().constData();
+	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "< " << result.SW.toHex().constData();
 	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(int(size)).toHex().constData();
 
 	switch(result.SW.at(0))
@@ -432,7 +429,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	if( !ioctl )
 		ioctl = features.value( verify ? FEATURE_VERIFY_PIN_DIRECT : FEATURE_MODIFY_PIN_DIRECT );
 
-	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "> " << apdu.toHex().constData();
+	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex().constData();
 	qCDebug(APDU).nospace() << "CTL" << "> " << cmd.toHex().constData();
 	QByteArray data( 255 + 3, 0 );
 	DWORD size = DWORD(data.size());
@@ -445,7 +442,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	}
 
 	Result result = { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(err) };
-	qCDebug(APDU).nospace() << 'T' << d->proto - 1 << "< " << result.SW.toHex().constData();
+	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "< " << result.SW.toHex().constData();
 	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(int(size)).toHex().constData();
 	return result;
 }
