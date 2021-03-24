@@ -1,9 +1,5 @@
 set_env( CONFIG_URL "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
 find_package( OpenSSL REQUIRED )
-if(UNIX AND NOT APPLE)
-	find_package(PkgConfig REQUIRED)
-	pkg_check_modules(PCSCLITE REQUIRED libpcsclite)
-endif()
 
 configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
 qt5_add_translation( SOURCES  translations/qtbase_et.ts translations/qtbase_ru.ts
@@ -15,8 +11,15 @@ add_library( qdigidoccommon STATIC ${SOURCES}
 	IKValidator.cpp
 	QPCSC.cpp
 )
-target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} PRIVATE ${PCSCLITE_INCLUDE_DIRS})
-target_link_libraries(qdigidoccommon PUBLIC Qt5::Network Qt5::Widgets OpenSSL::SSL PRIVATE ${PCSCLITE_LIBRARIES})
+target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(qdigidoccommon PUBLIC Qt5::Network Qt5::Widgets OpenSSL::SSL)
+
+if(UNIX AND NOT APPLE)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(PCSCLITE REQUIRED libpcsclite IMPORTED_TARGET)
+	target_link_libraries(qdigidoccommon PRIVATE PkgConfig::PCSCLITE)
+endif()
+
 if(WIN32)
 	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
 	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi winscard)
@@ -30,7 +33,7 @@ else()
 endif()
 
 if( CONFIG_URL )
-	set_env( LAST_CHECK_DAYS 7 CACHE STRING "How often check configuration changes" )
+	set_env( LAST_CHECK_DAYS 4 CACHE STRING "How often check configuration changes" )
 	if( LAST_CHECK_DAYS )
 		set_source_files_properties( Configuration.cpp PROPERTIES COMPILE_DEFINITIONS "LAST_CHECK_DAYS=${LAST_CHECK_DAYS}" )
 	endif()
