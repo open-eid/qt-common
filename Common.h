@@ -30,7 +30,6 @@ typedef QtSingleApplication BaseApplication;
 #endif
 
 class QLabel;
-class QUrl;
 
 class Common: public BaseApplication
 {
