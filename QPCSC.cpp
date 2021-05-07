@@ -32,6 +32,13 @@
 #include <Setupapi.h>
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define QT_HEX Qt::hex
+#else
+#define QT_HEX hex
+#endif
+
+
 Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
 Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 
@@ -41,7 +48,7 @@ LONG SCCall( const char *file, int line, const char *function, Func func, Args..
 	LONG err = func(args...);
 	if(SCard().isDebugEnabled())
 		QMessageLogger(file, line, function, SCard().categoryName()).debug()
-			<< function << hex << (unsigned long)err;
+			<< function << QT_HEX << (unsigned long)err;
 	return err;
 }
 #define SC(API, ...) SCCall(__FILE__, __LINE__, "SCard"#API, SCard##API, __VA_ARGS__)
