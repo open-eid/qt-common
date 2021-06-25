@@ -178,13 +178,6 @@ void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QSt
 	f.write("\n");
 }
 
-void Common::setAccessibleName( QLabel *widget )
-{
-	QTextDocument doc;
-	doc.setHtml( widget->text() );
-	widget->setAccessibleName( doc.toPlainText() );
-}
-
 QString Common::language()
 {
 	QString deflang;
