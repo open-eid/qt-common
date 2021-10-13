@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "QPCSC.h"
+
 #include <QtCore/QHash>
 #include <QtCore/QMutex>
 
@@ -185,7 +187,7 @@ using DISPLAY_PROPERTIES_STRUCTURE = struct {
 #define SCARD_ATTR_DEVICE_FRIENDLY_NAME SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
 #endif
 
-class QPCSCPrivate
+class QPCSC::Private
 {
 public:
 	SCARDCONTEXT context = 0;
@@ -198,7 +200,7 @@ public:
 	QByteArray attrib( DWORD id ) const;
 	QHash<DRIVER_FEATURES,quint32> features();
 
-	QPCSCPrivate *d = nullptr;
+	QPCSC::Private *d = nullptr;
 	SCARDHANDLE card = 0;
 	SCARD_IO_REQUEST io = {SCARD_PROTOCOL_UNDEFINED, sizeof(SCARD_IO_REQUEST)};
 	SCARD_READERSTATE state = {};
