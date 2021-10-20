@@ -89,8 +89,7 @@ QHash<DRIVER_FEATURES,quint32> QPCSCReader::Private::features()
 		return featuresList;
 	DWORD size = 0;
 	BYTE feature[256];
-	LONG rv = SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0u, feature, DWORD(sizeof(feature)), &size);
-	if(rv != SCARD_S_SUCCESS)
+	if(SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0U, feature, DWORD(sizeof(feature)), &size))
 		return featuresList;
 	for(unsigned char *p = feature; DWORD(p-feature) < size; )
 	{
@@ -109,7 +108,7 @@ QPCSC::QPCSC()
 {
 	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
 	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
-	serviceRunning();
+	void(serviceRunning());
 }
 
 QPCSC::~QPCSC()
@@ -350,7 +349,7 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 	{
 		DWORD size = 0;
 		BYTE recv[256];
-		if(SC(Control, d->card, ioctl, nullptr, 0u, recv, DWORD(sizeof(recv)), &size) != SCARD_S_SUCCESS)
+		if(SC(Control, d->card, ioctl, nullptr, 0U, recv, DWORD(sizeof(recv)), &size))
 			return properties;
 		for(unsigned char *p = recv; DWORD(p-recv) < size; )
 		{
@@ -431,8 +430,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	{
 		DWORD size = 0;
 		BYTE recv[256];
-		LONG rv = SC(Control, d->card, ioctl, nullptr, 0u, recv, DWORD(sizeof(recv)), &size);
-		if( rv == SCARD_S_SUCCESS )
+		if(!SC(Control, d->card, ioctl, nullptr, 0U, recv, DWORD(sizeof(recv)), &size))
 		{
 			PIN_PROPERTIES_STRUCTURE *caps = (PIN_PROPERTIES_STRUCTURE *)recv;
 			display = caps->wLcdLayout > 0;
@@ -501,7 +499,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	if( DWORD finish = features.value( verify ? FEATURE_VERIFY_PIN_FINISH : FEATURE_MODIFY_PIN_FINISH ) )
 	{
 		size = DWORD(data.size());
-		err = SC(Control, d->card, finish, nullptr, 0u, LPVOID(data.data()), DWORD(data.size()), &size);
+		err = SC(Control, d->card, finish, nullptr, 0U, LPVOID(data.data()), DWORD(data.size()), &size);
 	}
 
 	Result result = { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(err) };
@@ -515,8 +513,8 @@ bool QPCSCReader::updateState( quint32 msec )
 	if(!d->d->context)
 		return false;
 	d->state.dwCurrentState = d->state.dwEventState;
-	DWORD err = SC(GetStatusChange, d->d->context, msec, &d->state, 1u); //INFINITE
-	switch(err) {
+	switch(DWORD(SC(GetStatusChange, d->d->context, msec, &d->state, 1U))) //INFINITE
+	{
 	case SCARD_S_SUCCESS: return true;
 	case SCARD_E_TIMEOUT: return msec == 0;
 	default: return false;
