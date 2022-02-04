@@ -5,29 +5,22 @@ configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
 qt5_add_translation( SOURCES  translations/qtbase_et.ts translations/qtbase_ru.ts
 	translations/common_en.ts translations/common_et.ts translations/common_ru.ts )
 qt5_add_resources( SOURCES ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc )
-add_library( qdigidoccommon STATIC ${SOURCES}
-	Common.cpp
-	DateTime.cpp
-	IKValidator.cpp
-	QPCSC.cpp
-)
+add_library(qdigidoccommon STATIC ${SOURCES} Common.cpp IKValidator.cpp QPCSC.cpp)
 target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(qdigidoccommon PUBLIC Qt5::Network Qt5::Widgets OpenSSL::SSL)
 
-if(UNIX AND NOT APPLE)
+if(WIN32)
+	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
+	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi winscard)
+elseif(APPLE)
+	target_link_libraries(qdigidoccommon PRIVATE "-framework PCSC")
+else()
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(PCSCLITE REQUIRED libpcsclite IMPORTED_TARGET)
 	target_link_libraries(qdigidoccommon PRIVATE PkgConfig::PCSCLITE)
 endif()
 
-if(WIN32)
-	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
-	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi winscard)
-endif()
-
-if(APPLE)
-	target_link_libraries(qdigidoccommon PRIVATE "-framework PCSC")
-else()
+if(NOT APPLE)
 	add_subdirectory(qtsingleapplication)
 	target_link_libraries(qdigidoccommon PUBLIC qtsingleapplication)
 endif()
