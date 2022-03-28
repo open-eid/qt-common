@@ -1,5 +1,5 @@
 set_env( CONFIG_URL "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
-find_package( OpenSSL REQUIRED )
+find_package(OpenSSL 1.1.1 REQUIRED)
 
 configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
 qt5_add_translation( SOURCES  translations/qtbase_et.ts translations/qtbase_ru.ts
