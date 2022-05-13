@@ -58,7 +58,7 @@ public:
 	struct Result {
 		QByteArray SW;
 		QByteArray data;
-		quint32 err;
+		quint32 err = 0;
 		inline bool operator!() const { return !resultOk(); }
 		inline bool resultOk() const
 		{
