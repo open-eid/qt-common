@@ -76,13 +76,12 @@ public:
 #ifndef NO_CACHE
 	QString cache = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/";
 #endif
-	QByteArray data, signature, tmpsignature;
+	QByteArray data, signature;
 	QJsonObject dataobject;
 	QUrl rsaurl, url = QUrl(QStringLiteral(CONFIG_URL));
 	RSA *rsa = nullptr;
 	QNetworkRequest req;
 	QNetworkAccessManager *net = nullptr;
-	QList<QNetworkReply*> requestcache;
 #ifdef LAST_CHECK_DAYS
 	QSettings s;
 #endif
@@ -170,32 +169,11 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 	static const QByteArray SHA256_OID = QByteArray::fromHex("3031300d060960864801650304020105000420");
 	static const QByteArray SHA384_OID = QByteArray::fromHex("3041300d060960864801650304020205000430");
 	static const QByteArray SHA512_OID = QByteArray::fromHex("3051300d060960864801650304020305000440");
-	if(digest.startsWith(SHA1_OID))
-	{
-		if(!digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha1)))
-			return false;
-	}
-	else if(digest.startsWith(SHA224_OID))
-	{
-		if(!digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha224)))
-			return false;
-	}
-	else if(digest.startsWith(SHA256_OID))
-	{
-		if(!digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha256)))
-			return false;
-	}
-	else if(digest.startsWith(SHA384_OID))
-	{
-		if(!digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha384)))
-			return false;
-	}
-	else if(digest.startsWith(SHA512_OID))
-	{
-		if(!digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha512)))
-			return false;
-	}
-	else
+	if(!(digest.startsWith(SHA1_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha1))) &&
+		!(digest.startsWith(SHA224_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha224))) &&
+		!(digest.startsWith(SHA256_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha256))) &&
+		!(digest.startsWith(SHA384_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha384))) &&
+		!(digest.startsWith(SHA512_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha512))))
 		return false;
 
 	QJsonObject obj = QJsonDocument::fromJson(data).object().value(QStringLiteral("META-INF")).toObject();
@@ -211,8 +189,7 @@ Configuration::Configuration(QObject *parent)
 	Q_INIT_RESOURCE(config);
 
 #ifndef NO_CACHE
-	if(!QDir().exists(d->cache))
-		QDir().mkpath(d->cache);
+	QDir().mkpath(d->cache);
 #endif
 	d->rsaurl = QStringLiteral("%1%2.rsa").arg(
 		d->url.adjusted(QUrl::RemoveFilename).toString(),
@@ -220,34 +197,37 @@ Configuration::Configuration(QObject *parent)
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(qApp->applicationName(), qApp->applicationVersion(),
 			Common::applicationOs(), Common::language(), QPCSC::instance().drivers().join('/')).toUtf8());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+	d->req.setTransferTimeout();
+#endif
 	d->net = new QNetworkAccessManager(this);
 	connect(d->net, &QNetworkAccessManager::sslErrors, this,
 			[](QNetworkReply *reply, const QList<QSslError> &errors){
 		reply->ignoreSslErrors(errors);
 	});
 	connect(d->net, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply){
-		d->requestcache.removeAll(reply);
 		switch(reply->error())
 		{
 		case QNetworkReply::NoError:
 			if(reply->url() == d->rsaurl)
 			{
-				d->tmpsignature = QByteArray::fromBase64(reply->readAll());
-				if(d->validate(d->data, d->tmpsignature))
+				QByteArray signature = QByteArray::fromBase64(reply->readAll());
+				if(d->validate(d->data, signature))
 				{
 #ifdef LAST_CHECK_DAYS
 					d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 #endif
-					Q_EMIT finished(false, QString());
+					Q_EMIT finished(false, {});
 					break;
 				}
 				qDebug() << "Remote signature does not match, downloading new configuration";
-				sendRequest(d->url);
+				sendRequest(d->url)->setProperty("signature", signature);
 			}
 			else if(reply->url() == d->url)
 			{
 				QByteArray data = reply->readAll();
-				if(!d->validate(data, d->tmpsignature))
+				QByteArray signature = reply->property("signature").toByteArray();
+				if(!d->validate(data, signature))
 				{
 					qWarning() << "Remote configuration is invalid";
 					Q_EMIT finished(false, tr("The configuration file located on the server cannot be validated."));
@@ -265,7 +245,7 @@ Configuration::Configuration(QObject *parent)
 
 				qDebug() << "Writing new configuration";
 				d->setData(data);
-				d->signature = d->tmpsignature.toBase64();
+				d->signature = signature.toBase64();
 #ifndef NO_CACHE
 				QFile f(d->cache + d->url.fileName());
 				if(f.exists())
@@ -284,7 +264,7 @@ Configuration::Configuration(QObject *parent)
 #ifdef LAST_CHECK_DAYS
 				d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 #endif
-				Q_EMIT finished(true, QString());
+				Q_EMIT finished(true, {});
 			}
 			break;
 		default:
@@ -341,23 +321,20 @@ Configuration::Configuration(QObject *parent)
 		}
 	}
 
-	Q_EMIT finished(true, QString());
+	Q_EMIT finished(true, {});
 
 #ifdef LAST_CHECK_DAYS
+	QDate lastCheck = QDate::fromString(d->s.value(QStringLiteral("LastCheck")).toString(), QStringLiteral("yyyyMMdd"));
 	// Clean computer
-	if(d->s.value(QStringLiteral("LastCheck")).isNull()) {
+	if(lastCheck.isNull()) {
 		d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 		update();
 	}
-
-	QDate lastCheck = QDate::fromString(d->s.value(QStringLiteral("LastCheck")).toString(), QStringLiteral("yyyyMMdd"));
-	
 	// Scheduled update
-	if (lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS))
+	else if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS))
 		update();
-
 	// DigiDoc4 updated
-	if (Private::lessThanVersion(QSettings().value(QStringLiteral("LastVersion")).toString(), qApp->applicationVersion()))
+	else if(Private::lessThanVersion(QSettings().value(QStringLiteral("LastVersion")).toString(), qApp->applicationVersion()))
 		update();
 #endif
 }
@@ -398,23 +375,28 @@ QJsonObject Configuration::object() const
 	return d->dataobject;
 }
 
-void Configuration::sendRequest(const QUrl &url)
+QNetworkReply* Configuration::sendRequest(const QUrl &url)
 {
 	d->req.setUrl(url);
 	QNetworkReply *reply = d->net->get(d->req);
-	d->requestcache << reply;
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	if(!reply->isRunning())
+		return reply;
 	QTimer *timer = new QTimer(this);
 	timer->setSingleShot(true);
+	connect(reply, &QNetworkReply::finished, timer, [=]{
+		timer->stop();
+		timer->deleteLater();
+	});
 	connect(timer, &QTimer::timeout, this, [=]{
 		timer->deleteLater();
-		if(!d->requestcache.contains(reply))
-			return;
-		d->requestcache.removeAll(reply);
-		reply->deleteLater();
+		reply->abort();
 		qDebug() << "Request timed out";
 		Q_EMIT finished(false, tr("Request timed out"));
 	});
 	timer->start(30*1000);
+#endif
+	return reply;
 }
 
 void Configuration::update(bool force)
