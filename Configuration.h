@@ -21,7 +21,9 @@
 
 #include <QObject>
 
-class Configuration : public QObject
+class QNetworkReply;
+
+class Configuration final : public QObject
 {
 	Q_OBJECT
 public:
@@ -37,7 +39,7 @@ Q_SIGNALS:
 private:
 	explicit Configuration(QObject *parent = nullptr);
 	~Configuration() final;
-	void sendRequest(const QUrl &url);
+	QNetworkReply *sendRequest(const QUrl &url);
 
 	Q_DISABLE_COPY(Configuration)
 
