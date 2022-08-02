@@ -513,7 +513,7 @@ bool QPCSCReader::updateState( quint32 msec )
 	if(!d->d->context)
 		return false;
 	d->state.dwCurrentState = d->state.dwEventState;
-	switch(DWORD(SC(GetStatusChange, d->d->context, msec, &d->state, 1U))) //INFINITE
+	switch(SC(GetStatusChange, d->d->context, msec, &d->state, 1U))
 	{
 	case SCARD_S_SUCCESS: return true;
 	case SCARD_E_TIMEOUT: return msec == 0;
