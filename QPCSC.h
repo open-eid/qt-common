@@ -59,7 +59,7 @@ public:
 		QByteArray SW;
 		QByteArray data;
 		quint32 err = 0;
-		inline bool operator!() const { return !resultOk(); }
+		inline operator bool() const { return resultOk(); }
 		inline bool resultOk() const
 		{
 			static const QByteArray OK("\x90\x00", 2);
@@ -122,7 +122,6 @@ public:
 	bool reconnect( Reset reset = LeaveCard, Mode mode = Mode(T0|T1) );
 	bool beginTransaction();
 	bool endTransaction( Reset reset = LeaveCard );
-	Result transfer( const char *cmd, int size ) const;
 	Result transfer( const QByteArray &apdu ) const;
 	Result transferCTL(const QByteArray &apdu, bool verify, quint16 lang = 0,
 		quint8 minlen = 4, quint8 newPINOffset = 0, bool requestCurrentPIN = true) const;

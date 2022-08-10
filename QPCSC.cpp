@@ -108,7 +108,7 @@ QPCSC::QPCSC()
 {
 	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
 	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
-	void(serviceRunning());
+	Q_UNUSED(serviceRunning());
 }
 
 QPCSC::~QPCSC()
@@ -381,11 +381,6 @@ QStringList QPCSCReader::state() const
 	return stateToString(d->state.dwEventState);
 }
 
-QPCSCReader::Result QPCSCReader::transfer( const char *cmd, int size ) const
-{
-	return transfer( QByteArray::fromRawData( cmd, size ) );
-}
-
 QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 {
 	QByteArray data( 1024, 0 );
@@ -515,8 +510,8 @@ bool QPCSCReader::updateState( quint32 msec )
 	d->state.dwCurrentState = d->state.dwEventState;
 	switch(SC(GetStatusChange, d->d->context, msec, &d->state, 1U))
 	{
-	case SCARD_S_SUCCESS: return true;
-	case SCARD_E_TIMEOUT: return msec == 0;
+	case LONG(SCARD_S_SUCCESS): return true;
+	case LONG(SCARD_E_TIMEOUT): return msec == 0;
 	default: return false;
 	}
 }
