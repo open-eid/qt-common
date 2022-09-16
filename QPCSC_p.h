@@ -29,7 +29,7 @@
 #define NOMINMAX
 #include <winsock2.h>
 #include <winscard.h>
-#elif Q_OS_MAC
+#elif defined(Q_OS_MAC)
 #include <PCSC/wintypes.h>
 #include <PCSC/winscard.h>
 #include <arpa/inet.h>
