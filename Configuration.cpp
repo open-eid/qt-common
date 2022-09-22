@@ -35,42 +35,37 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include <QtWidgets/QMessageBox>
 
 #include <openssl/err.h>
+#include <openssl/evp.h>
 #include <openssl/pem.h>
+
+#include <memory>
+
+#define SCOPE(TYPE, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)>(static_cast<TYPE*>(DATA), TYPE##_free)
+
+static QVariant headerValue(const QJsonObject &obj, QLatin1String key) {
+	return obj.value(QLatin1String("META-INF")).toObject().value(key);
+}
+
+static QJsonObject toObject(const QByteArray &data) {
+	return QJsonDocument::fromJson(data).object();
+}
+
+static QByteArray readFile(const QString &file) {
+	QFile f(file);
+	if(f.open(QFile::ReadOnly))
+		return f.readAll();
+	qWarning() << "Failed to read file" << file;
+	return {};
+}
 
 class Configuration::Private
 {
 public:
 	void initCache(bool clear);
 	static bool lessThanVersion( const QString &current, const QString &available );
-	void setData(const QByteArray &_data)
-	{
-		data = _data;
-		dataobject = QJsonDocument::fromJson(data).object();
-#ifdef Q_OS_MAC
-		QSettings s2(QSettings::SystemScope, nullptr);
-#else
-		QSettings s2(QSettings::SystemScope, qApp->organizationName(), qApp->applicationName());
-#endif
-
-		for(const QString &key: s2.childKeys())
-		{
-			if(dataobject.contains(key))
-			{
-				QVariant value = s2.value(key);
-				switch(value.type())
-				{
-				case QVariant::String:
-					dataobject[key] = QJsonValue(value.toString()); break;
-				case QVariant::StringList:
-					dataobject[key] = QJsonValue(QJsonArray::fromStringList(value.toStringList())); break;
-				default: break;
-				}
-			}
-		}
-	}
+	void setData(const QByteArray &data, const QByteArray &signature);
 	bool validate(const QByteArray &data, const QByteArray &signature) const;
 
 #ifndef NO_CACHE
@@ -79,7 +74,7 @@ public:
 	QByteArray data, signature;
 	QJsonObject dataobject;
 	QUrl rsaurl, url = QUrl(QStringLiteral(CONFIG_URL));
-	RSA *rsa = nullptr;
+	EVP_PKEY *publicKey = nullptr;
 	QNetworkRequest req;
 	QNetworkAccessManager *net = nullptr;
 #ifdef LAST_CHECK_DAYS
@@ -90,43 +85,22 @@ public:
 void Configuration::Private::initCache(bool clear)
 {
 #ifndef NO_CACHE
-	// Signature
-	QFile f(cache + rsaurl.fileName());
-	if(clear && f.exists())
-		f.remove();
-	if(!f.exists())
-	{
-		QFile::copy(QStringLiteral(":/config.rsa"), f.fileName());
-		f.setPermissions(QFile::Permissions(0x6444));
-	}
-	if(f.open(QFile::ReadOnly))
-		signature = QByteArray::fromBase64(f.readAll());
-	f.close();
-
-	// Config
-	f.setFileName(cache + url.fileName());
-	if(clear && f.exists())
-		f.remove();
-	if(!f.exists())
-	{
-		QFile::copy(QStringLiteral(":/config.json"), f.fileName());
-		f.setPermissions(QFile::Permissions(0x6444));
-	}
-	if(f.open(QFile::ReadOnly))
-		setData(f.readAll());
-	f.close();
+	auto readAll = [clear, this](const QString &fileName, const QString &copy) {
+		QFile f(cache + fileName);
+		if(clear && f.exists())
+			f.remove();
+		if(!f.exists())
+		{
+			QFile::copy(copy, f.fileName());
+			f.setPermissions(QFile::Permissions(0x6444));
+		}
+		return f.open(QFile::ReadOnly) ? f.readAll() : QByteArray();
+	};
+	setData(readAll(url.fileName(), QStringLiteral(":/config.json")),
+			readAll(rsaurl.fileName(), QStringLiteral(":/config.rsa")));
 #else
-	// Signature
-	QFile f(QStringLiteral(":/config.rsa"));
-	if(f.open(QFile::ReadOnly))
-		signature = QByteArray::fromBase64(f.readAll());
-	f.close();
-
-	// Config
-	f.setFileName(QStringLiteral(":/config.json"));
-	if(f.open(QFile::ReadOnly))
-		setData(f.readAll());
-	f.close();
+	setData(readFile(QStringLiteral(":/config.json")),
+			readFile(QStringLiteral(":/config.rsa")));
 #endif
 }
 
@@ -154,15 +128,51 @@ bool Configuration::Private::lessThanVersion( const QString &current, const QStr
 	return false;
 }
 
+void Configuration::Private::setData(const QByteArray &_data, const QByteArray &_signature)
+{
+	data = _data;
+	signature = _signature;
+	dataobject = toObject(data);
+#ifdef Q_OS_MAC
+	QSettings s2(QSettings::SystemScope, nullptr);
+#else
+	QSettings s2(QSettings::SystemScope, qApp->organizationName(), qApp->applicationName());
+#endif
+
+	for(const QString &key: s2.childKeys())
+	{
+		if(dataobject.contains(key))
+		{
+			QVariant value = s2.value(key);
+			switch(value.type())
+			{
+			case QVariant::String:
+				dataobject[key] = QJsonValue(value.toString()); break;
+			case QVariant::StringList:
+				dataobject[key] = QJsonValue(QJsonArray::fromStringList(value.toStringList())); break;
+			default: break;
+			}
+		}
+	}
+}
+
 bool Configuration::Private::validate(const QByteArray &data, const QByteArray &signature) const
 {
-	if(!rsa || data.isEmpty())
+	if(!publicKey || data.isEmpty())
 		return false;
 
-	QByteArray digest(RSA_size(rsa), 0);
-	int size = RSA_public_decrypt(signature.size(), (const unsigned char*)signature.constData(),
-		(unsigned char*)digest.data(), rsa, RSA_PKCS1_PADDING);
-	digest.resize(std::max(size, 0));
+	QByteArray sig = QByteArray::fromBase64(signature);
+	size_t size = 0;
+	auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(publicKey, nullptr));
+	if(!ctx || EVP_PKEY_verify_recover_init(ctx.get()) < 1 ||
+		EVP_PKEY_verify_recover(ctx.get(), nullptr, &size,
+			(const unsigned char*)sig.constData(), size_t(sig.size())) < 1)
+		return false;
+	QByteArray digest(int(size), '\0');
+	if(EVP_PKEY_verify_recover(ctx.get(), (unsigned char*)digest.data(), &size,
+			(const unsigned char*)sig.constData(), size_t(sig.size())) < 1)
+		return false;
+	digest.resize(int(size));
 
 	static const QByteArray SHA1_OID = QByteArray::fromHex("3021300906052b0e03021a05000414");
 	static const QByteArray SHA224_OID = QByteArray::fromHex("302d300d06096086480165030402040500041c");
@@ -175,9 +185,8 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 		!(digest.startsWith(SHA384_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha384))) &&
 		!(digest.startsWith(SHA512_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha512))))
 		return false;
-
-	QJsonObject obj = QJsonDocument::fromJson(data).object().value(QStringLiteral("META-INF")).toObject();
-	return QDateTime::currentDateTimeUtc() > QDateTime::fromString(obj.value(QStringLiteral("DATE")).toString(), QStringLiteral("yyyyMMddHHmmss'Z'"));
+	QString date = headerValue(toObject(data), QLatin1String("DATE")).toString();
+	return QDateTime::currentDateTimeUtc() > QDateTime::fromString(date, QStringLiteral("yyyyMMddHHmmss'Z'"));
 }
 
 
@@ -211,7 +220,7 @@ Configuration::Configuration(QObject *parent)
 		case QNetworkReply::NoError:
 			if(reply->url() == d->rsaurl)
 			{
-				QByteArray signature = QByteArray::fromBase64(reply->readAll());
+				QByteArray signature = reply->readAll();
 				if(d->validate(d->data, signature))
 				{
 #ifdef LAST_CHECK_DAYS
@@ -234,9 +243,9 @@ Configuration::Configuration(QObject *parent)
 					break;
 				}
 
-				QJsonObject obj = QJsonDocument::fromJson(data).object().value(QStringLiteral("META-INF")).toObject();
-				QJsonObject old = object().value(QStringLiteral("META-INF")).toObject();
-				if(old.value(QStringLiteral("SERIAL")).toInt() > obj.value(QStringLiteral("SERIAL")).toInt())
+				int newSerial = headerValue(toObject(data), QLatin1String("SERIAL")).toInt();
+				int oldSerial = headerValue(object(), QLatin1String("SERIAL")).toInt();
+				if(oldSerial > newSerial)
 				{
 					qWarning() << "Remote serial is smaller than current";
 					Q_EMIT finished(false, tr("Your computer's configuration file is later than the server has."));
@@ -244,22 +253,15 @@ Configuration::Configuration(QObject *parent)
 				}
 
 				qDebug() << "Writing new configuration";
-				d->setData(data);
-				d->signature = signature.toBase64();
+				d->setData(data, signature);
 #ifndef NO_CACHE
-				QFile f(d->cache + d->url.fileName());
-				if(f.exists())
-					f.remove();
-				if(f.open(QFile::WriteOnly))
-					f.write(d->data);
-				f.close();
-
-				f.setFileName(d->cache + d->rsaurl.fileName());
-				if(f.exists())
-					f.remove();
-				if(f.open(QFile::WriteOnly))
-					f.write(d->signature);
-				f.close();
+				auto writeAll = [this](const QString &fileName, const QByteArray &data) {
+					QFile f(d->cache + fileName);
+					if(f.open(QFile::WriteOnly|QFile::Truncate))
+						f.write(data);
+				};
+				writeAll(d->url.fileName(), d->data);
+				writeAll(d->rsaurl.fileName(), d->signature);
 #endif
 #ifdef LAST_CHECK_DAYS
 				d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
@@ -274,24 +276,24 @@ Configuration::Configuration(QObject *parent)
 		reply->deleteLater();
 	});
 
-	QFile f(QStringLiteral(":/config.pub"));
-	if(!f.open(QFile::ReadOnly))
-	{
-		qWarning() << "Failed to read public key";
-		return;
-	}
-
-	QByteArray key = f.readAll();
-	BIO *bio = BIO_new_mem_buf((void*)key.constData(), key.size());
+	QByteArray key = readFile(QStringLiteral(":/config.pub"));
+	BIO *bio = BIO_new_mem_buf(key.constData(), key.size());
 	if(!bio)
 	{
 		qWarning() << "Failed to parse public key";
 		return;
 	}
 
-	d->rsa = PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
+#if OPENSSL_VERSION < 0x30000000L
+	RSA *rsa = PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
+	d->publicKey = EVP_PKEY_new();
+	EVP_PKEY_set1_RSA(d->publicKey, rsa);
+	RSA_free(rsa);
+#else
+	d->publicKey = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
+#endif
 	BIO_free(bio);
-	if(!d->rsa)
+	if(!d->publicKey)
 	{
 		qWarning() << "Failed to parse public key";
 		return;
@@ -305,19 +307,14 @@ Configuration::Configuration(QObject *parent)
 	}
 	else
 	{
-		int serial = object().value(QStringLiteral("META-INF")).toObject().value(QStringLiteral("SERIAL")).toInt();
+		int serial = headerValue(object(), QLatin1String("SERIAL")).toInt();
 		qDebug() << "Chache configuration serial:" << serial;
-		QFile embedConf(QStringLiteral(":/config.json"));
-		if(embedConf.open(QFile::ReadOnly))
+		int bundledSerial = headerValue(toObject(readFile(QStringLiteral(":/config.json"))), QLatin1String("SERIAL")).toInt();
+		qDebug() << "Bundled configuration serial:" << bundledSerial;
+		if(serial < bundledSerial)
 		{
-			QJsonObject obj = QJsonDocument::fromJson(embedConf.readAll()).object();
-			int bundledSerial = obj.value(QStringLiteral("META-INF")).toObject().value(QStringLiteral("SERIAL")).toInt();
-			qDebug() << "Bundled configuration serial:" << bundledSerial;
-			if(serial < bundledSerial)
-			{
-				qWarning() << "Bundled configuration is recent than cache, resetting cache";
-				d->initCache(true);
-			}
+			qWarning() << "Bundled configuration is recent than cache, resetting cache";
+			d->initCache(true);
 		}
 	}
 
@@ -341,8 +338,8 @@ Configuration::Configuration(QObject *parent)
 
 Configuration::~Configuration()
 {
-	if(d->rsa)
-		RSA_free(d->rsa);
+	if(d->publicKey)
+		EVP_PKEY_free(d->publicKey);
 	delete d;
 }
 
@@ -354,7 +351,7 @@ void Configuration::checkVersion(const QString &name)
 				"macOS users can download the latest ID-software version from the "
 				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 
-	connect(this, &Configuration::finished, [=](bool changed, const QString &){
+	connect(this, &Configuration::finished, this, [=](bool changed, const QString &){
 		if(changed && Private::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
 			Q_EMIT updateReminder(false, tr("Update is available"),
 				tr("An ID-software update has been found. To download the update, go to the "
