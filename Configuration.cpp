@@ -42,8 +42,6 @@
 
 #include <memory>
 
-#define SCOPE(TYPE, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)>(static_cast<TYPE*>(DATA), TYPE##_free)
-
 static QVariant headerValue(const QJsonObject &obj, QLatin1String key) {
 	return obj.value(QLatin1String("META-INF")).toObject().value(key);
 }
@@ -163,7 +161,7 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 
 	QByteArray sig = QByteArray::fromBase64(signature);
 	size_t size = 0;
-	auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(publicKey, nullptr));
+	auto ctx = std::unique_ptr<EVP_PKEY_CTX,decltype(&EVP_PKEY_CTX_free)>(EVP_PKEY_CTX_new(publicKey, nullptr), EVP_PKEY_CTX_free);
 	if(!ctx || EVP_PKEY_verify_recover_init(ctx.get()) < 1 ||
 		EVP_PKEY_verify_recover(ctx.get(), nullptr, &size,
 			(const unsigned char*)sig.constData(), size_t(sig.size())) < 1)
@@ -215,65 +213,62 @@ Configuration::Configuration(QObject *parent)
 		reply->ignoreSslErrors(errors);
 	});
 	connect(d->net, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply){
-		switch(reply->error())
+		QScopedPointer<QNetworkReply, QScopedPointerDeleteLater> replyScoped(reply);
+		if(reply->error() != QNetworkReply::NoError)
 		{
-		case QNetworkReply::NoError:
-			if(reply->url() == d->rsaurl)
+			Q_EMIT finished(false, reply->errorString());
+			return;
+		}
+		if(reply->url() == d->rsaurl)
+		{
+			QByteArray signature = reply->readAll();
+			if(d->validate(d->data, signature))
 			{
-				QByteArray signature = reply->readAll();
-				if(d->validate(d->data, signature))
-				{
-#ifdef LAST_CHECK_DAYS
-					d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
-#endif
-					Q_EMIT finished(false, {});
-					break;
-				}
-				qDebug() << "Remote signature does not match, downloading new configuration";
-				sendRequest(d->url)->setProperty("signature", signature);
-			}
-			else if(reply->url() == d->url)
-			{
-				QByteArray data = reply->readAll();
-				QByteArray signature = reply->property("signature").toByteArray();
-				if(!d->validate(data, signature))
-				{
-					qWarning() << "Remote configuration is invalid";
-					Q_EMIT finished(false, tr("The configuration file located on the server cannot be validated."));
-					break;
-				}
-
-				int newSerial = headerValue(toObject(data), QLatin1String("SERIAL")).toInt();
-				int oldSerial = headerValue(object(), QLatin1String("SERIAL")).toInt();
-				if(oldSerial > newSerial)
-				{
-					qWarning() << "Remote serial is smaller than current";
-					Q_EMIT finished(false, tr("Your computer's configuration file is later than the server has."));
-					break;
-				}
-
-				qDebug() << "Writing new configuration";
-				d->setData(data, signature);
-#ifndef NO_CACHE
-				auto writeAll = [this](const QString &fileName, const QByteArray &data) {
-					QFile f(d->cache + fileName);
-					if(f.open(QFile::WriteOnly|QFile::Truncate))
-						f.write(data);
-				};
-				writeAll(d->url.fileName(), d->data);
-				writeAll(d->rsaurl.fileName(), d->signature);
-#endif
 #ifdef LAST_CHECK_DAYS
 				d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 #endif
-				Q_EMIT finished(true, {});
+				Q_EMIT finished(false, {});
+				return;
 			}
-			break;
-		default:
-			Q_EMIT finished(false, reply->errorString());
-			break;
+			qDebug() << "Remote signature does not match, downloading new configuration";
+			sendRequest(d->url)->setProperty("signature", signature);
 		}
-		reply->deleteLater();
+		else if(reply->url() == d->url)
+		{
+			QByteArray data = reply->readAll();
+			QByteArray signature = reply->property("signature").toByteArray();
+			if(!d->validate(data, signature))
+			{
+				qWarning() << "Remote configuration is invalid";
+				Q_EMIT finished(false, tr("The configuration file located on the server cannot be validated."));
+				return;
+			}
+
+			int newSerial = headerValue(toObject(data), QLatin1String("SERIAL")).toInt();
+			int oldSerial = headerValue(object(), QLatin1String("SERIAL")).toInt();
+			if(oldSerial > newSerial)
+			{
+				qWarning() << "Remote serial is smaller than current";
+				Q_EMIT finished(false, tr("Your computer's configuration file is later than the server has."));
+				return;
+			}
+
+			qDebug() << "Writing new configuration";
+			d->setData(data, signature);
+#ifndef NO_CACHE
+			auto writeAll = [this](const QString &fileName, const QByteArray &data) {
+				QFile f(d->cache + fileName);
+				if(f.open(QFile::WriteOnly|QFile::Truncate))
+					f.write(data);
+			};
+			writeAll(d->url.fileName(), d->data);
+			writeAll(d->rsaurl.fileName(), d->signature);
+#endif
+#ifdef LAST_CHECK_DAYS
+			d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
+#endif
+			Q_EMIT finished(true, {});
+		}
 	});
 
 	QByteArray key = readFile(QStringLiteral(":/config.pub"));
@@ -359,12 +354,6 @@ void Configuration::checkVersion(const QString &name)
 					"macOS users can download the update from the "
 					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 	});
-}
-
-Configuration& Configuration::instance()
-{
-	static Configuration conf;
-	return conf;
 }
 
 QJsonObject Configuration::object() const
