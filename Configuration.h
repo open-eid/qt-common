@@ -27,8 +27,9 @@ class Configuration final : public QObject
 {
 	Q_OBJECT
 public:
+	explicit Configuration(QObject *parent = nullptr);
+	~Configuration() final;
 	void checkVersion(const QString &name);
-	static Configuration& instance();
 	QJsonObject object() const;
 	void update(bool force = false);
 
@@ -37,8 +38,6 @@ Q_SIGNALS:
 	void updateReminder(bool expired, const QString &title, const QString &message);
 
 private:
-	explicit Configuration(QObject *parent = nullptr);
-	~Configuration() final;
 	QNetworkReply *sendRequest(const QUrl &url);
 
 	Q_DISABLE_COPY(Configuration)
