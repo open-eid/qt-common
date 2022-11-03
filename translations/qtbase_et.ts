@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="et">
+<TS version="2.1" language="et_EE">
 <context>
     <name>CloseButton</name>
     <message>
@@ -10,6 +10,14 @@
 </context>
 <context>
     <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>About %1</source>
+        <translation>Teave %1 kohta</translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation>Seaded...</translation>
+    </message>
     <message>
         <source>Services</source>
         <translation>Teenused</translation>
@@ -27,16 +35,22 @@
         <translation>Kuva kõik</translation>
     </message>
     <message>
-        <source>Preferences...</source>
-        <translation>Seaded</translation>
-    </message>
-    <message>
         <source>Quit %1</source>
         <translation>Välju rakendusest %1</translation>
     </message>
+</context>
+<context>
+    <name>Print Device Input Slot</name>
     <message>
-        <source>About %1</source>
-        <translation>Teave %1 kohta</translation>
+        <source>Automatic</source>
+        <translation>Automaatne</translation>
+    </message>
+</context>
+<context>
+    <name>Print Device Output Bin</name>
+    <message>
+        <source>Automatic</source>
+        <translation>Automaatne</translation>
     </message>
 </context>
 <context>
@@ -116,30 +130,6 @@
         <translation>Lülita</translation>
     </message>
     <message>
-        <source>Triggers the action</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Increase the value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Decrease the value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shows the menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sets the focus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Toggles the state</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Scroll Left</source>
         <translation>Keri vasakule</translation>
     </message>
@@ -161,6 +151,30 @@
     </message>
     <message>
         <source>Next Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Triggers the action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Increase the value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decrease the value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shows the menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the focus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggles the state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -196,15 +210,15 @@
     </message>
     <message>
         <source>Yes to All</source>
-        <translation type="unfinished"></translation>
+        <translation>Jah kõigile</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei</translation>
     </message>
     <message>
         <source>No to All</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei kõigile</translation>
     </message>
 </context>
 <context>
@@ -220,10 +234,6 @@
 </context>
 <context>
     <name>QCocoaMenuItem</name>
-    <message>
-        <source>About Qt</source>
-        <translation>Qt info</translation>
-    </message>
     <message>
         <source>About</source>
         <translation>Info</translation>
@@ -250,7 +260,7 @@
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Välju</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -258,19 +268,23 @@
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Lõika</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Aseta</translation>
     </message>
     <message>
         <source>Select All</source>
         <translation>Vali kõik</translation>
+    </message>
+    <message>
+        <source>About Qt</source>
+        <translation>Qt info</translation>
     </message>
 </context>
 <context>
@@ -315,6 +329,11 @@
         <translation>&amp;HTML:</translation>
     </message>
     <message>
+        <source>Cursor at %1, %2
+Press ESC to cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Select Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -331,11 +350,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cursor at %1, %2
-Press ESC to cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Pick Screen Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -343,16 +357,16 @@ Press ESC to cancel</source>
 <context>
     <name>QComboBox</name>
     <message>
+        <source>Open the combo box selection popup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>False</source>
         <translation>Väär</translation>
     </message>
     <message>
         <source>True</source>
         <translation>Tõene</translation>
-    </message>
-    <message>
-        <source>Open the combo box selection popup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -362,7 +376,11 @@ Press ESC to cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Displays this help.</source>
+        <source>Displays help on commandline options.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays help including Qt specific options.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -593,7 +611,7 @@ Press ESC to cancel</source>
     <name>QDBusTrayIcon</name>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -663,6 +681,10 @@ Press ESC to cancel</source>
 </context>
 <context>
     <name>QDnsLookupRunnable</name>
+    <message>
+        <source>IPv6 addresses for nameservers are currently not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Invalid domain name</source>
         <translation type="unfinished"></translation>
@@ -748,10 +770,6 @@ Press ESC to cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>IPv6 addresses for nameservers are currently not supported</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host %1 could not be found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -778,6 +796,69 @@ Press ESC to cancel</source>
     </message>
     <message>
         <source>Closes the dock widget</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QDomParser</name>
+    <message>
+        <source>Error occurred while processing XML declaration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multiple DTD sections are not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing document type declaration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing a processing instruction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing a start element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected end element &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing an end element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing the element content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing an entity reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected token</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tag mismatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing entity declaration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred while processing notation declaration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -916,11 +997,19 @@ Press ESC to cancel</source>
     </message>
     <message>
         <source>Warning:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoiatus:</translation>
+    </message>
+    <message>
+        <source>Critical Error:</source>
+        <translation>Kriitiline viga:</translation>
     </message>
     <message>
         <source>Fatal Error:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information:</source>
+        <translation>Informatsioon:</translation>
     </message>
     <message>
         <source>&amp;Show this message again</source>
@@ -929,14 +1018,6 @@ Press ESC to cancel</source>
     <message>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
-    </message>
-    <message>
-        <source>Critical Error:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Information:</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -954,6 +1035,10 @@ Press ESC to cancel</source>
         <translation>Sihtfail on olemas</translation>
     </message>
     <message>
+        <source>Error while renaming: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unable to restore from %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -966,12 +1051,16 @@ Press ESC to cancel</source>
         <translation>Ei suuda eemaldada vaike faili</translation>
     </message>
     <message>
+        <source>Cannot open destination file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Cannot open %1 for input</source>
         <translation>%1 avamine sisendiks nurjus</translation>
     </message>
     <message>
-        <source>Cannot open for output</source>
-        <translation>Avamine väljundiks nurjus</translation>
+        <source>Cannot open for output: %1</source>
+        <translation>Avamine väljundiks nurjus: %1</translation>
     </message>
     <message>
         <source>Failure to write block</source>
@@ -980,14 +1069,6 @@ Press ESC to cancel</source>
     <message>
         <source>Cannot create %1 for output</source>
         <translation>%1 loomine väljundiks nurjus</translation>
-    </message>
-    <message>
-        <source>Error while renaming: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot open destination file: %1</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1004,6 +1085,10 @@ Press ESC to cancel</source>
 <context>
     <name>QFileDialog</name>
     <message>
+        <source>All Files (*)</source>
+        <translation>Kõik failid (*)</translation>
+    </message>
+    <message>
         <source>Look in:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1013,15 +1098,23 @@ Press ESC to cancel</source>
     </message>
     <message>
         <source>Go back</source>
-        <translation type="unfinished"></translation>
+        <translation>Mine tagasi</translation>
+    </message>
+    <message>
+        <source>Alt+Left</source>
+        <translation>Alt+Left</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Edasi</translation>
     </message>
     <message>
         <source>Go forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Mine edasi</translation>
+    </message>
+    <message>
+        <source>Alt+Right</source>
+        <translation>Alt+Right</translation>
     </message>
     <message>
         <source>Parent Directory</source>
@@ -1030,6 +1123,10 @@ Press ESC to cancel</source>
     <message>
         <source>Go to the parent directory</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+Up</source>
+        <translation>Alt+Up</translation>
     </message>
     <message>
         <source>Create New Folder</source>
@@ -1053,6 +1150,18 @@ Press ESC to cancel</source>
     </message>
     <message>
         <source>Change to detail view mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List of places and bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1090,10 +1199,6 @@ Press ESC to cancel</source>
     <message>
         <source>&amp;Save</source>
         <translation>&amp;Salvesta</translation>
-    </message>
-    <message>
-        <source>All Files (*)</source>
-        <translation>Kõik failid (*)</translation>
     </message>
     <message>
         <source>Show </source>
@@ -1181,6 +1286,11 @@ Do you want to delete it anyway?</source>
         <translation>Ketas</translation>
     </message>
     <message>
+        <source>%1 File</source>
+        <extracomment>%1 is a file name suffix, for example txt</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>File</source>
         <translation>Fail</translation>
     </message>
@@ -1195,6 +1305,11 @@ Do you want to delete it anyway?</source>
         <translation>Kataloog</translation>
     </message>
     <message>
+        <source>Alias</source>
+        <comment>OS X Finder</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Shortcut</source>
         <comment>All other platforms</comment>
         <translation type="unfinished"></translation>
@@ -1203,43 +1318,13 @@ Do you want to delete it anyway?</source>
         <source>Unknown</source>
         <translation>Tundmatu</translation>
     </message>
-    <message>
-        <source>Sidebar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>List of places and bookmarks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+Left</source>
-        <translation>Alt+Left</translation>
-    </message>
-    <message>
-        <source>Alt+Right</source>
-        <translation>Alt+Right</translation>
-    </message>
-    <message>
-        <source>Alt+Up</source>
-        <translation>Alt+Up</translation>
-    </message>
-    <message>
-        <source>%1 File</source>
-        <extracomment>%1 is a file name suffix, for example txt</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alias</source>
-        <comment>OS X Finder</comment>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QFileSystemModel</name>
+    <message>
+        <source>&lt;b&gt;The name &quot;%1&quot; cannot be used.&lt;/b&gt;&lt;p&gt;Try using another name, with fewer characters or no punctuation marks.</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Invalid filename</source>
         <translation>Vigane failinimi</translation>
@@ -1274,13 +1359,14 @@ Do you want to delete it anyway?</source>
         <source>Computer</source>
         <translation>Arvuti</translation>
     </message>
-    <message>
-        <source>&lt;b&gt;The name &quot;%1&quot; cannot be used.&lt;/b&gt;&lt;p&gt;Try using another name, with fewer characters or no punctuation marks.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QFontDatabase</name>
+    <message>
+        <source>Normal</source>
+        <comment>The Normal or Regular font weight</comment>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Bold</source>
         <translation type="unfinished"></translation>
@@ -1290,16 +1376,38 @@ Do you want to delete it anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Medium</source>
+        <comment>The Medium font weight</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra</source>
+        <extracomment>The word for &quot;Extra&quot; as in &quot;Extra Bold, Extra Thin&quot; used as a pattern for string searches</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Demi</source>
         <extracomment>The word for &quot;Demi&quot; as in &quot;Demi Bold&quot; used as a pattern for string searches</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1444,33 +1552,6 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>N&apos;Ko</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Normal</source>
-        <comment>The Normal or Regular font weight</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Medium</source>
-        <comment>The Medium font weight</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Thin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Extra Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Extra Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Extra</source>
-        <extracomment>The word for &quot;Extra&quot; as in &quot;Extra Bold, Extra Thin&quot; used as a pattern for string searches</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1623,6 +1704,74 @@ Do you want to delete it anyway?</source>
         <comment>Translate this string to the string &apos;LTR&apos; in left-to-right languages or to &apos;RTL&apos; in right-to-left languages (such as Hebrew and Arabic) to get proper widget layout.</comment>
         <translation>LTR</translation>
     </message>
+    <message>
+        <source>QPA plugin. See QGuiApplication documentation for available options for each plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path to the platform plugins.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Platform theme.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Additional plugins to load, can be specified multiple times.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window geometry for the main window, using the X11-syntax, like 100x100+50+50.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default window icon.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title of the first window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the application&apos;s layout direction to Qt::RightToLeft (debugging helper).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restores the application from an earlier session.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display name, overrides $DISPLAY.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Instance name according to ICCCM 4.1.2.5.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable mouse grabbing (useful in debuggers).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force mouse grabbing (even when running in a debugger).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID of the X11 Visual to use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias for --windowgeometry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias for --windowicon.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias for --windowtitle.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QHostInfo</name>
@@ -1653,13 +1802,13 @@ Do you want to delete it anyway?</source>
         <source>Host not found</source>
         <translation>Masinat ei leitud</translation>
     </message>
-    <message>
-        <source>Unknown error (%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QHttp</name>
+    <message>
+        <source>Connection closed</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Host %1 not found</source>
         <translation>Masinat %1 ei leitud</translation>
@@ -1667,10 +1816,6 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Connection refused</source>
         <translation>Ühendusest keelduti</translation>
-    </message>
-    <message>
-        <source>Connection closed</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Proxy requires authentication</source>
@@ -1833,6 +1978,14 @@ Do you want to delete it anyway?</source>
 <context>
     <name>QIODevice</name>
     <message>
+        <source>file to open is a directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Tundmatu viga</translation>
+    </message>
+    <message>
         <source>Permission denied</source>
         <translation>Õigustest ei piisa</translation>
     </message>
@@ -1847,14 +2000,6 @@ Do you want to delete it anyway?</source>
     <message>
         <source>No space left on device</source>
         <translation>Seadmel pole enam vaba ruumi</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Tundmatu viga</translation>
-    </message>
-    <message>
-        <source>file to open is a directory</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1996,75 +2141,15 @@ Do you want to delete it anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>file too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&apos;%1&apos; is not an ELF object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&apos;%1&apos; is an invalid ELF object (%2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The shared library was not found.</source>
-        <translation>Jagatud teeki ei leitud.</translation>
-    </message>
-    <message>
-        <source>The file &apos;%1&apos; is not a valid Qt plugin.</source>
-        <translation>Fail &apos;%1&apos; ei ole korrektne Qt plugin.</translation>
-    </message>
-    <message>
-        <source>The plugin &apos;%1&apos; uses incompatible Qt library. (%2.%3.%4) [%5]</source>
-        <translation>Plugin &apos;%1&apos; kasutab ühildumatut Qt teeki. (%2.%3.%4) [%5]</translation>
-    </message>
-    <message>
-        <source>The plugin &apos;%1&apos; uses incompatible Qt library. (Cannot mix debug and release libraries.)</source>
-        <translation>Plugin &apos;%1&apos; kasutab ühildumatut Qt teeki. (Ei tohi segada silumis- ja väljalasteteeke.)</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Tundmatu viga</translation>
-    </message>
-    <message>
-        <source>Cannot load library %1: %2</source>
-        <translation>Teegi %1 laadimine nurjus: %2</translation>
-    </message>
-    <message>
-        <source>Cannot unload library %1: %2</source>
-        <translation>Teegi %1 töö lõpetamine nurjus: %2</translation>
-    </message>
-    <message>
-        <source>Cannot resolve symbol &quot;%1&quot; in %2: %3</source>
-        <translation>Sümboli \&quot;%1\&quot; lahendamine asukohas %2 nurjus: %3</translation>
-    </message>
-    <message>
-        <source>&apos;%1&apos; is not a valid Mach-O binary (%2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>file is corrupt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>file too small</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>no suitable architecture in fat binary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>invalid magic %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>wrong architecture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>not a dynamic library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&apos;%1&apos; is not a Qt plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2116,6 +2201,62 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Failed to extract plugin meta data from &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The shared library was not found.</source>
+        <translation>Jagatud teeki ei leitud.</translation>
+    </message>
+    <message>
+        <source>The file &apos;%1&apos; is not a valid Qt plugin.</source>
+        <translation>Fail &apos;%1&apos; ei ole korrektne Qt plugin.</translation>
+    </message>
+    <message>
+        <source>The plugin &apos;%1&apos; uses incompatible Qt library. (%2.%3.%4) [%5]</source>
+        <translation>Plugin &apos;%1&apos; kasutab ühildumatut Qt teeki. (%2.%3.%4) [%5]</translation>
+    </message>
+    <message>
+        <source>The plugin &apos;%1&apos; uses incompatible Qt library. (Cannot mix debug and release libraries.)</source>
+        <translation>Plugin &apos;%1&apos; kasutab ühildumatut Qt teeki. (Ei tohi segada silumis- ja väljalasteteeke.)</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Tundmatu viga</translation>
+    </message>
+    <message>
+        <source>Cannot load library %1: %2</source>
+        <translation>Teegi %1 laadimine nurjus: %2</translation>
+    </message>
+    <message>
+        <source>Cannot unload library %1: %2</source>
+        <translation>Teegi %1 töö lõpetamine nurjus: %2</translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is not a valid Mach-O binary (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file is corrupt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no suitable architecture in fat binary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid magic %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>wrong architecture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>not a dynamic library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is not a Qt plugin</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2216,6 +2357,10 @@ Do you want to delete it anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Trying to connect while connection is in progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>%1: Unknown error %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2224,12 +2369,16 @@ Do you want to delete it anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trying to connect while connection is in progress</source>
+        <source>Socket is not connected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QMYSQLDriver</name>
+    <message>
+        <source>Unable to allocate a MYSQL object</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Unable to open database &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
@@ -2248,10 +2397,6 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Unable to rollback transaction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate a MYSQL object</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2399,13 +2544,13 @@ Do you want to delete it anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About Qt</source>
-        <translation>Qt info</translation>
-    </message>
-    <message>
         <source>&lt;p&gt;Qt is a C++ toolkit for cross-platform application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across all major desktop operating systems. It is also available for embedded Linux and other embedded and mobile operating systems.&lt;/p&gt;&lt;p&gt;Qt is available under multiple licensing options designed to accommodate the needs of our various users.&lt;/p&gt;&lt;p&gt;Qt licensed under our commercial license agreement is appropriate for development of proprietary/commercial software where you do not want to share any source code with third parties or otherwise cannot comply with the terms of GNU (L)GPL.&lt;/p&gt;&lt;p&gt;Qt licensed under GNU (L)GPL is appropriate for the development of Qt&amp;nbsp;applications provided you can comply with the terms and conditions of the respective licenses.&lt;/p&gt;&lt;p&gt;Please see &lt;a href=&quot;http://%2/&quot;&gt;%2&lt;/a&gt; for an overview of Qt licensing.&lt;/p&gt;&lt;p&gt;Copyright (C) %1 The Qt Company Ltd and other contributors.&lt;/p&gt;&lt;p&gt;Qt and the Qt logo are trademarks of The Qt Company Ltd.&lt;/p&gt;&lt;p&gt;Qt is The Qt Company Ltd product developed as an open source project. See &lt;a href=&quot;http://%3/&quot;&gt;%3&lt;/a&gt; for more information.&lt;/p&gt;</source>
         <extracomment>Leave this text untranslated or include a verbatim copy of it below and note that it is the authoritative version in case of doubt.</extracomment>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About Qt</source>
+        <translation>Qt info</translation>
     </message>
 </context>
 <context>
@@ -2515,16 +2660,16 @@ Do you want to delete it anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown error</source>
-        <translation>Tundmatu viga</translation>
-    </message>
-    <message>
         <source>Network dropped connection on reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Connection reset by peer</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Tundmatu viga</translation>
     </message>
 </context>
 <context>
@@ -2603,20 +2748,17 @@ Do you want to delete it anyway?</source>
     </message>
 </context>
 <context>
-    <name>QNetworkAccessManager</name>
-    <message>
-        <source>Network access is disabled.</source>
-        <translation>Võrguühendus on keelatud.</translation>
-    </message>
-</context>
-<context>
     <name>QNetworkReply</name>
     <message>
-        <source>Background request not allowed.</source>
+        <source>Error transferring %1 - server replied: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Network session error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background request not allowed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2629,10 +2771,6 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Protocol &quot;%1&quot; is unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error transferring %1 - server replied: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2773,10 +2911,6 @@ Do you want to delete it anyway?</source>
 <context>
     <name>QODBCResult</name>
     <message>
-        <source>Unable to fetch last</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>QODBCResult::reset: Unable to set &apos;SQL_CURSOR_STATIC&apos; as statement attribute. Please check your ODBC driver configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2798,6 +2932,10 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Unable to fetch previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to fetch last</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2839,15 +2977,11 @@ Do you want to delete it anyway?</source>
 <context>
     <name>QPSQLResult</name>
     <message>
-        <source>Unable to create query</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to prepare statement</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Query results lost - probably discarded on executing another SQL query.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create query</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2856,6 +2990,10 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Unable to send query</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to prepare statement</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2926,6 +3064,18 @@ Do you want to delete it anyway?</source>
         <translation>alaveeris</translation>
     </message>
     <message>
+        <source>Page Layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page order:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pages per sheet:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Millimeters (mm)</source>
         <translation>Millimeetrid (mm)</translation>
     </message>
@@ -2982,18 +3132,6 @@ Do you want to delete it anyway?</source>
         <source>CC</source>
         <extracomment>Unit &apos;Cicero&apos;</extracomment>
         <translation>CC</translation>
-    </message>
-    <message>
-        <source>Page Layout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Page order:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pages per sheet:</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3478,7 +3616,7 @@ Do you want to delete it anyway?</source>
     <name>QPlatformTheme</name>
     <message>
         <source>OK</source>
-        <translation>ОК</translation>
+        <translation>ОK</translation>
     </message>
     <message>
         <source>Save</source>
@@ -3647,6 +3785,22 @@ Do you want to delete it anyway?</source>
         <translation>&amp;Valikud &lt;&lt;</translation>
     </message>
     <message>
+        <source>Invalid Pages Definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 does not follow the correct syntax. Please use &apos;,&apos; to separate ranges and pages, &apos;-&apos; to define ranges and make sure ranges do not intersect with each other.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplex Settings Conflicts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are conflicts in duplex settings. Do you want to fix them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Print to File (PDF)</source>
         <translation>Trükkimine faili (PDF)</translation>
     </message>
@@ -3692,26 +3846,6 @@ Please turn one of those options off.</source>
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-    <message>
-        <source>Automatic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid Pages Definition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 does not follow the correct syntax. Please use &apos;,&apos; to separate ranges and pages, &apos;-&apos; to define ranges and make sure ranges do not intersect with each other.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplex Settings Conflicts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There are conflicts in duplex settings. Do you want to fix them?</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3796,11 +3930,11 @@ Please turn one of those options off.</source>
 <context>
     <name>QPrintPropertiesDialog</name>
     <message>
-        <source>Job Options</source>
+        <source>Printer Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Printer Properties</source>
+        <source>Job Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3866,12 +4000,24 @@ Please turn one of those options off.</source>
         <translation>kuni</translation>
     </message>
     <message>
+        <source>Pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specify pages or ranges separated by commas. Ranges are specified by two numbers separated by a hyphen. E.g: 3,5-7,9 prints pages 3, 5, 6, 7 and 9.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Current Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Selection</source>
         <translation>Valik</translation>
+    </message>
+    <message>
+        <source>Page Set:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Output Settings</source>
@@ -3906,32 +4052,20 @@ Please turn one of those options off.</source>
         <translation>Halltoon</translation>
     </message>
     <message>
-        <source>Duplex Printing</source>
+        <source>Double Sided Printing</source>
         <translation>Duplekstrükk</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Puudub</translation>
+        <source>Off</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Long side</source>
+        <source>Long side binding</source>
         <translation>Pikem külg</translation>
     </message>
     <message>
-        <source>Short side</source>
+        <source>Short side binding</source>
         <translation>Lühem külg</translation>
-    </message>
-    <message>
-        <source>Page Set:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Specify pages or ranges separated by commas. Ranges are specified by two numbers separated by a hyphen. E.g: 3,5-7,9 prints pages 3, 5, 6, 7 and 9.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3976,16 +4110,24 @@ Please turn one of those options off.</source>
 <context>
     <name>QProcess</name>
     <message>
+        <source>Process failed to start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process crashed</source>
+        <translation>Protsessi tabas krahh</translation>
+    </message>
+    <message>
+        <source>Process operation timed out</source>
+        <translation>Protsessi toiming aegus</translation>
+    </message>
+    <message>
         <source>Error reading from process</source>
         <translation>Viga protsessist lugemisel</translation>
     </message>
     <message>
         <source>Error writing to process</source>
         <translation>Viga protsessi kirjutamisel</translation>
-    </message>
-    <message>
-        <source>Process crashed</source>
-        <translation>Protsessi tabas krahh</translation>
     </message>
     <message>
         <source>No program defined</source>
@@ -3996,23 +4138,15 @@ Please turn one of those options off.</source>
         <translation>Sisendi ümbersuunamise avamine lugemiseks nurjus</translation>
     </message>
     <message>
-        <source>Could not open output redirection for writing</source>
-        <translation>Väljundi ümbersuunamise avamine lugemiseks nurjus</translation>
-    </message>
-    <message>
         <source>Resource error (fork failure): %1</source>
         <translation>Ressursi viga (hargmiku viga): %1</translation>
     </message>
     <message>
-        <source>Process operation timed out</source>
-        <translation>Protsessi toiming aegus</translation>
+        <source>Could not open output redirection for writing</source>
+        <translation>Väljundi ümbersuunamise avamine lugemiseks nurjus</translation>
     </message>
     <message>
         <source>Process failed to start: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Process failed to start</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4105,11 +4239,15 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>invalid escape sequence in character class</source>
+        <source>escape sequence is invalid in character class</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>range out of order in character class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>quantifier does not follow a repeatable item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4125,135 +4263,15 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>reference to non-existent subpattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>regular expression is too large</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>internal error: code overflow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>lookbehind assertion is not fixed length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>malformed number or name after (?(</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>conditional group contains more than two branches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>(?R or (?[+-]digits must be followed by )</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown POSIX class name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>POSIX collating elements are not supported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>invalid condition (?(0)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PCRE does not support \L, \l, \N{name}, \U, or \u</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unrecognized character after (?P</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>syntax error in subpattern name (missing terminator)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>malformed \P or \p sequence</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown property name after \P or \p</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>internal error: overran compiling workspace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>internal error: previously-checked referenced subpattern not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DEFINE group contains more than one branch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>\g is not followed by a braced, angle-bracketed, or quoted name/number or by a plain number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>a numbered reference must not be zero</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>number is too big</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>subpattern name expected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>digit expected after (?+</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>different names for subpatterns of the same number are not allowed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>(*MARK) must have an argument</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>\k is not followed by a braced, angle-bracketed, or quoted name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>internal error: unknown opcode in find_fixedlength()</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>\N is not supported in a class</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>disallowed Unicode code point (&gt;= 0xd800 &amp;&amp; &lt;= 0xdfff)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>quantifier does not follow a repeatable item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>missing closing parenthesis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>reference to non-existent subpattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4273,6 +4291,10 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>regular expression is too large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>failed to allocate heap memory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4281,11 +4303,35 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>letter or underscore expected after (?&lt; or (?&apos;</source>
+        <source>internal error: code overflow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>missing closing parenthesis for condition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>lookbehind assertion is not fixed length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a relative value of zero is not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>conditional subpattern contains more than two branches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>assertion expected after (?( or (?(?C)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>digit expected after (?+ or (?-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown POSIX class name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4305,7 +4351,15 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>\C is not allowed in a lookbehind assertion</source>
+        <source>lookbehind is too complicated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>\C is not allowed in a lookbehind assertion in UTF-16 mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4321,11 +4375,19 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>unrecognized character after (?P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>syntax error in subpattern name (missing terminator?)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>two named subpatterns have the same name (PCRE2_DUPNAMES not set)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>group name must start with a non-digit</source>
+        <source>subpattern name must start with a non-digit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4333,11 +4395,19 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>subpattern name is too long (maximum 10000 characters)</source>
+        <source>malformed \P or \p sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>too many named subpatterns (maximum 256)</source>
+        <source>unknown property name after \P or \p</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>subpattern name is too long (maximum 32 code units)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>too many named subpatterns (maximum 10000)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4349,6 +4419,18 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>internal error: overran compiling workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>internal error: previously-checked referenced subpattern not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DEFINE subpattern contains more than one branch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>missing opening brace after \o</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4357,11 +4439,43 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>\g is not followed by a braced, angle-bracketed, or quoted name/number or by a plain number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(?R (recursive pattern call) must be followed by a closing parenthesis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>obsolete error (should not occur)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>(*VERB) not recognized or malformed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>subpattern number is too big</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>subpattern name expected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>internal error: parsed pattern overflow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>non-octal character in \o{} (closing brace missing?)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>different names for subpatterns of the same number are not allowed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(*MARK) must have an argument</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4377,7 +4491,23 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SPARE ERROR</source>
+        <source>\k is not followed by a braced, angle-bracketed, or quoted name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>internal error: unknown meta code in check_lookbehinds()</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>\N is not supported in a class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>callout string is too long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>disallowed Unicode code point (&gt;= 0xd800 &amp;&amp; &lt;= 0xdfff)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4389,15 +4519,19 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>character code point value in \u.... sequence is too large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>digits missing in \x{} or \o{}</source>
+        <source>digits missing in \x{} or \o{} or \N{U+}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>syntax error in (?(VERSION condition</source>
+        <source>syntax error or number too big in (?(VERSION condition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4434,6 +4568,46 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>pattern string is longer than the limit set by the application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>internal error: unknown code in parsed pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>internal error: bad code value in parsed_skip()</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCRE2_EXTRA_ALLOW_SURROGATE_ESCAPES is not allowed in UTF-16 mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid option bits with PCRE2_LITERAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>\N{U+dddd} is supported only in Unicode (UTF) mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid hyphen in option setting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(*alpha_assertion) not recognized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>script runs require Unicode support, which this version of PCRE2 does not have</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>too many capturing groups (maximum 65535)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>atomic assertion expected after (?( or (?(?C)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4645,7 +4819,7 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>recursion limit exceeded</source>
+        <source>matching depth limit exceeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4673,11 +4847,31 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>match with end before start is not supported</source>
+        <source>match with end before start or start moved backwards is not supported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>too many replacements (more than INT_MAX)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bad serialized data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>heap limit exceeded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>internal error - duplicate substitution match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCRE2_MATCH_INVALID_UTF is not supported for DFA matching</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4772,15 +4966,15 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Writing canceled by application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Filename refers to a directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>QSaveFile cannot open &apos;%1&apos; without direct write fallback enabled: path contains an Alternate Data Stream specifier</source>
+        <source>QSaveFile cannot open &apos;%1&apos; without direct write fallback enabled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Writing canceled by application</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4865,6 +5059,34 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>%1: key is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: bad name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: UNIX key file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: ftok failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: unable to make key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: system-imposed size restrictions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: not attached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>%1: permission denied</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4885,30 +5107,6 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1: key is empty</source>
-        <translation>%1: võti on tühi</translation>
-    </message>
-    <message>
-        <source>%1: UNIX key file doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1: ftok failed</source>
-        <translation>%1: ftok nurjus&quot;</translation>
-    </message>
-    <message>
-        <source>%1: unable to make key</source>
-        <translation>%1: võtme loomine nurjus</translation>
-    </message>
-    <message>
-        <source>%1: system-imposed size restrictions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1: not attached</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1: invalid size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4918,10 +5116,6 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>%1: size query failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1: bad name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5199,6 +5393,14 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Launch (G)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Launch (H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Monitor Brightness Up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5275,6 +5477,10 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Media Rewind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Back Forward</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5299,6 +5505,10 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Calendar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5309,6 +5519,10 @@ Please turn one of those options off.</source>
     <message>
         <source>Close</source>
         <translation>Sulge</translation>
+    </message>
+    <message>
+        <source>Adjust contrast</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy</source>
@@ -5360,6 +5574,10 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>Meeting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Memo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5443,6 +5661,10 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>To-do list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5511,6 +5733,10 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Media Fast Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Audio Repeat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5531,7 +5757,7 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select</source>
+        <source>Hibernate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5543,11 +5769,79 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Power Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Suspend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hibernate</source>
+        <source>Microphone Mute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Guide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microphone Volume Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Microphone Volume Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5592,6 +5886,10 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>System Request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5798,6 +6096,22 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Touchpad Toggle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Touchpad On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Touchpad Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Ctrl</source>
         <translation>Ctrl</translation>
     </message>
@@ -5819,131 +6133,12 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>+</source>
+        <extracomment>Key separator in shortcut string</extracomment>
         <translation>+</translation>
     </message>
     <message>
         <source>F%1</source>
         <translation>F%1</translation>
-    </message>
-    <message>
-        <source>Media Rewind</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Media Fast Forward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Power Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Microphone Mute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Channel Up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Channel Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Guide</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Microphone Volume Up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Microphone Volume Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation>Ava</translation>
-    </message>
-    <message>
-        <source>Find</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation>Võta tagasi</translation>
-    </message>
-    <message>
-        <source>Redo</source>
-        <translation>Tee uuesti</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Touchpad Toggle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Touchpad On</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Touchpad Off</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Launch (G)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Launch (H)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Calendar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Adjust contrast</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Memo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>To-do list</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6053,6 +6248,13 @@ Please turn one of those options off.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>frame</source>
+        <extracomment>Role of an accessible object: a window with frame and title
+----------
+Role of an accessible object</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>filler</source>
         <extracomment>Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
@@ -6095,13 +6297,6 @@ Please turn one of those options off.</source>
     <message>
         <source>dialog</source>
         <extracomment>Role of an accessible object</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>frame</source>
-        <extracomment>Role of an accessible object: a window with frame and title
-----------
-Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6315,11 +6510,6 @@ Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unknown</source>
-        <extracomment>Role of an accessible object</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>web document</source>
         <extracomment>Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
@@ -6379,6 +6569,11 @@ Role of an accessible object</extracomment>
         <extracomment>Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>unknown</source>
+        <extracomment>Role of an accessible object</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QSslDiffieHellmanParameter</name>
@@ -6397,6 +6592,82 @@ Role of an accessible object</extracomment>
 </context>
 <context>
     <name>QSslSocket</name>
+    <message>
+        <source>Error when setting the OpenSSL configuration (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error when setting the elliptic curves (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error creating SSL context (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unsupported protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error while setting the minimal protocol version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error while setting the maximum protocol version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid or empty cipher list (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot provide a certificate with no key, %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error loading local certificate, %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error loading private key, %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private key does not certify public key, %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Diffie-Hellman parameters are not valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSSL version with disabled elliptic curves</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expecting QByteArray for %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error occurred attempting to set %1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong value for %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unrecognized command %1 = %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SSL_CONF_finish() failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SSL_CONF_CTX_new() failed</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>No error</source>
         <translation type="unfinished"></translation>
@@ -6490,31 +6761,63 @@ Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>No OCSP status response found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The OCSP status request had invalid syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OCSP response contains an unexpected number of SingleResponse structures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OCSP responder reached an inconsistent internal state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OCSP responder was unable to return a status for the requested certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The server requires the client to sign the OCSP request in order to construct a response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The client is not authorized to request OCSP status from this server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OCSP responder&apos;s identity cannot be verified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The identity of a certificate in an OCSP response cannot be established</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The certificate status response has expired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The certificate&apos;s status is unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unknown error</source>
-        <translation>Tundmatu viga</translation>
-    </message>
-    <message>
-        <source>Error creating SSL context (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid or empty cipher list (%1)</source>
+        <source>TLS initialization failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot provide a certificate with no key, %1</source>
+        <source>Attempted to use an unsupported protocol.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error loading local certificate, %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error loading private key, %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Private key does not certify public key, %1</source>
+        <source>The TLS/SSL connection has been closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6523,6 +6826,18 @@ Role of an accessible object</extracomment>
     </message>
     <message>
         <source>Error creating SSL session: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server-side QSslSocket does not support OCSP stapling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to enable OCSP stapling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client-side sockets do not send OCSP responses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6538,10 +6853,6 @@ Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The TLS/SSL connection has been closed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Error while reading: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6550,67 +6861,143 @@ Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error when setting the elliptic curves (%1)</source>
+        <source>Failed to decode OCSP response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unsupported protocol</source>
+        <source>Failed to extract basic OCSP response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Diffie-Hellman parameters are not valid</source>
+        <source>No certificate verification store, cannot verify OCSP response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OpenSSL version too old, need at least v1.0.2</source>
+        <source>Failed to decode a SingleResponse from OCSP status response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error when setting the OpenSSL configuration (%1)</source>
+        <source>Failed to extract &apos;this update time&apos; from the SingleResponse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Expecting QByteArray for %1</source>
+        <source>Insufficient memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>An error occurred attempting to set %1 to %2</source>
+        <source>Internal error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Wrong value for %1 (%2)</source>
+        <source>An internal handle was invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unrecognized command %1 = %2</source>
+        <source>An internal token was invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SSL_CONF_finish() failed</source>
+        <source>Access denied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SSL_CONF_CTX_new() failed</source>
+        <source>No authority could be contacted for authorization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error while setting the minimal protocol version</source>
+        <source>No credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error while setting the maximum protocol version</source>
+        <source>The target is unknown or unreachable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OpenSSL version with disabled elliptic curves</source>
+        <source>An unsupported function was requested</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DTLS server requires a &apos;VerifyNone&apos; mode with your version of OpenSSL</source>
+        <source>The hostname provided does not match the one received from the peer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TLS initialization failed</source>
+        <source>No common protocol exists between the client and the server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected or badly-formatted message received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The data could not be encrypted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No cipher suites in common</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The credentials were not recognized / Invalid argument</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The message was tampered with, damaged or out of sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A message was received out of sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error occurred: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid protocol chosen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The certificate provided cannot be used for a client.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The certificate provided cannot be used for a server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server did not accept any certificate we could present.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Algorithm mismatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Handshake failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to query the TLS context: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Did not get the required attributes for the connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unwanted protocol was negotiated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Renegotiation was unsuccessful: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Schannel failed to encrypt data: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot provide a certificate with no key</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6653,10 +7040,6 @@ Role of an accessible object</extracomment>
         <translation>Kodu</translation>
     </message>
     <message>
-        <source>Application Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cache</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6685,11 +7068,11 @@ Role of an accessible object</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Application Configuration</source>
+        <source>Application Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Temporary Items</source>
+        <source>Application Configuration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6705,6 +7088,10 @@ Role of an accessible object</extracomment>
     </message>
     <message>
         <source>No common ancestor for targets and source of transition from state &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Child mode of state machine &apos;%1&apos; is not &apos;ExclusiveStates&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6762,6 +7149,53 @@ Role of an accessible object</extracomment>
     <message>
         <source>Operation on socket is not supported</source>
         <translation>Sokli toiming ei ole toetatud</translation>
+    </message>
+</context>
+<context>
+    <name>QTgaFile</name>
+    <message>
+        <source>Could not read image data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sequential device (eg socket) for image read not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seek file/device for image read failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image header read failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image type not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image depth not valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image size exceeds limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not seek to image read footer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not read footer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image type (non-TrueVision 2.0) not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not reset to read data</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7122,6 +7556,10 @@ The minimum Direct2D version required is %1. The Direct2D version on this system
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Attribute &apos;%1&apos; redefined.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unexpected character &apos;%1&apos; in public id literal.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7162,7 +7600,47 @@ The minimum Direct2D version required is %1. The Direct2D version on this system
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>&apos;%1&apos;</source>
+        <comment>expected</comment>
+        <extracomment>&apos;&lt;first option&gt;&apos;</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 or &apos;%2&apos;</source>
+        <comment>expected</comment>
+        <extracomment>&lt;first option&gt;, &apos;&lt;second option&gt;&apos;</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1, &apos;%2&apos;</source>
+        <comment>expected</comment>
+        <extracomment>&lt;options so far&gt;, &apos;&lt;next option&gt;&apos;</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1, or &apos;%2&apos;</source>
+        <comment>expected</comment>
+        <extracomment>&lt;options so far&gt;, or &apos;&lt;final option&gt;&apos;</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected %1, but got &apos;%2&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected &apos;%1&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Expected character data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Self-referencing entity detected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Entity expands to more characters than the entity expansion limit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7211,50 +7689,6 @@ The minimum Direct2D version required is %1. The Direct2D version on this system
     </message>
     <message>
         <source>Invalid character reference.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Attribute &apos;%1&apos; redefined.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&apos;%1&apos;</source>
-        <comment>expected</comment>
-        <extracomment>&apos;&lt;first option&gt;&apos;</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 or &apos;%2&apos;</source>
-        <comment>expected</comment>
-        <extracomment>&lt;first option&gt;, &apos;&lt;second option&gt;&apos;</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1, &apos;%2&apos;</source>
-        <comment>expected</comment>
-        <extracomment>&lt;options so far&gt;, &apos;&lt;next option&gt;&apos;</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1, or &apos;%2&apos;</source>
-        <comment>expected</comment>
-        <extracomment>&lt;options so far&gt;, or &apos;&lt;final option&gt;&apos;</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Expected %1, but got &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unexpected &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Self-referencing entity detected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Entity expands to more characters than the entity expansion limit.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

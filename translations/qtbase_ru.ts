@@ -40,6 +40,20 @@
     </message>
 </context>
 <context>
+    <name>Print Device Input Slot</name>
+    <message>
+        <source>Automatic</source>
+        <translation>Автоматически</translation>
+    </message>
+</context>
+<context>
+    <name>Print Device Output Bin</name>
+    <message>
+        <source>Automatic</source>
+        <translation>Автоматически</translation>
+    </message>
+</context>
+<context>
     <name>QAbstractSocket</name>
     <message>
         <source>Socket operation timed out</source>
@@ -364,8 +378,12 @@ Press ESC to cancel</source>
         <translation>Показать сведения о версии.</translation>
     </message>
     <message>
-        <source>Displays this help.</source>
-        <translation>Показать эту справку.</translation>
+        <source>Displays help on commandline options.</source>
+        <translation>Вывод справки по параметрам командной строки.</translation>
+    </message>
+    <message>
+        <source>Displays help including Qt specific options.</source>
+        <translation>Вывод справки с особыми параметрами Qt.</translation>
     </message>
     <message>
         <source>Unknown option &apos;%1&apos;.</source>
@@ -788,6 +806,69 @@ Press ESC to cancel</source>
     </message>
 </context>
 <context>
+    <name>QDomParser</name>
+    <message>
+        <source>Error occurred while processing XML declaration</source>
+        <translation>Возникла ошибка при обработке объявления XML</translation>
+    </message>
+    <message>
+        <source>Multiple DTD sections are not allowed</source>
+        <translation>Недопустимо более одной DTD секции</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing document type declaration</source>
+        <translation>Возникла ошибка при обработке объявления типа документа</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing comment</source>
+        <translation>Возникла ошибка при обработке комментария</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing a processing instruction</source>
+        <translation>Возникла ошибка при обработке инструкции обработки</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing a start element</source>
+        <translation>Возникла ошибка при обработке начального элемента</translation>
+    </message>
+    <message>
+        <source>Unexpected end element &apos;%1&apos;</source>
+        <translation>Неожиданный конечный элемент «%1»</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing an end element</source>
+        <translation>Возникла ошибка при обработке конечного элемента</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing the element content</source>
+        <translation>Возникла ошибка при обработке содержимого элемента</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing comments</source>
+        <translation>Возникла ошибка при обработке комментариев</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing an entity reference</source>
+        <translation>Возникла ошибка при обработке ссылки на объект</translation>
+    </message>
+    <message>
+        <source>Unexpected token</source>
+        <translation>Неожиданный токен</translation>
+    </message>
+    <message>
+        <source>Tag mismatch</source>
+        <translation>Теги не соответствуют</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing entity declaration</source>
+        <translation>Возникла ошибка при обработке объявления объекта</translation>
+    </message>
+    <message>
+        <source>Error occurred while processing notation declaration</source>
+        <translation>Ошибка при обработке объявления нотации</translation>
+    </message>
+</context>
+<context>
     <name>QDtls</name>
     <message>
         <source>Invalid (empty) secret</source>
@@ -984,8 +1065,8 @@ Press ESC to cancel</source>
         <translation>Невозможно открыть %1 для ввода</translation>
     </message>
     <message>
-        <source>Cannot open for output</source>
-        <translation>Невозможно открыть для вывода</translation>
+        <source>Cannot open for output: %1</source>
+        <translation>Не удалось открыть для вывода: %1</translation>
     </message>
     <message>
         <source>Failure to write block</source>
@@ -1641,6 +1722,74 @@ Do you want to delete it anyway?</source>
         <comment>Translate this string to the string &apos;LTR&apos; in left-to-right languages or to &apos;RTL&apos; in right-to-left languages (such as Hebrew and Arabic) to get proper widget layout.</comment>
         <translation>LTR</translation>
     </message>
+    <message>
+        <source>QPA plugin. See QGuiApplication documentation for available options for each plugin.</source>
+        <translation>Модуль QPA. Доступные каждому модулю параметры описаны в документации QGuiApplication.</translation>
+    </message>
+    <message>
+        <source>Path to the platform plugins.</source>
+        <translation>Путь к платформным модулям.</translation>
+    </message>
+    <message>
+        <source>Platform theme.</source>
+        <translation>Тема платформы.</translation>
+    </message>
+    <message>
+        <source>Additional plugins to load, can be specified multiple times.</source>
+        <translation>Дополнительные загружаемые модули, может быть указано несколько раз.</translation>
+    </message>
+    <message>
+        <source>Window geometry for the main window, using the X11-syntax, like 100x100+50+50.</source>
+        <translation>Геометрия основного окна, задаётся в стиле X11, например: 100x100+50+50.</translation>
+    </message>
+    <message>
+        <source>Default window icon.</source>
+        <translation>Значок окна по умолчанию.</translation>
+    </message>
+    <message>
+        <source>Title of the first window.</source>
+        <translation>Заголовок первого окна.</translation>
+    </message>
+    <message>
+        <source>Sets the application&apos;s layout direction to Qt::RightToLeft (debugging helper).</source>
+        <translation>Задёт направление выравнивания Qt::RightToLeft (помощь в отладке).</translation>
+    </message>
+    <message>
+        <source>Restores the application from an earlier session.</source>
+        <translation>Восстанавливает приложение из предыдущей сессии.</translation>
+    </message>
+    <message>
+        <source>Display name, overrides $DISPLAY.</source>
+        <translation>Имя экрана, заменяет $DISPLAY.</translation>
+    </message>
+    <message>
+        <source>Instance name according to ICCCM 4.1.2.5.</source>
+        <translation>Имя экземпляра согласно ICCCM 4.1.2.5.</translation>
+    </message>
+    <message>
+        <source>Disable mouse grabbing (useful in debuggers).</source>
+        <translation>Запрет захвата мыши (полезно при отладке).</translation>
+    </message>
+    <message>
+        <source>Force mouse grabbing (even when running in a debugger).</source>
+        <translation>Принудительный захват мыши (даже под отладчиком).</translation>
+    </message>
+    <message>
+        <source>ID of the X11 Visual to use.</source>
+        <translation>ID используемого X11 Visual.</translation>
+    </message>
+    <message>
+        <source>Alias for --windowgeometry.</source>
+        <translation>То же, что и --windowgeometry.</translation>
+    </message>
+    <message>
+        <source>Alias for --windowicon.</source>
+        <translation>То же, что и --windowicon.</translation>
+    </message>
+    <message>
+        <source>Alias for --windowtitle.</source>
+        <translation>То же, что и --windowtitle.</translation>
+    </message>
 </context>
 <context>
     <name>QHostInfo</name>
@@ -1670,10 +1819,6 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Host not found</source>
         <translation>Узел не найден</translation>
-    </message>
-    <message>
-        <source>Unknown error (%1)</source>
-        <translation>Неизвестная ошибка (%1)</translation>
     </message>
 </context>
 <context>
@@ -2100,10 +2245,6 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Cannot unload library %1: %2</source>
         <translation>Невозможно выгрузить библиотеку %1: %2</translation>
-    </message>
-    <message>
-        <source>Cannot resolve symbol &quot;%1&quot; in %2: %3</source>
-        <translation>Невозможно разрешить символ «%1» в %2: %3</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is not a valid Mach-O binary (%2)</source>
@@ -3730,11 +3871,6 @@ Please turn one of those options off.</source>
         <source>OK</source>
         <translation>OK</translation>
     </message>
-    <message>
-        <source>Automatic</source>
-        <translatorcomment>источник бумаги</translatorcomment>
-        <translation>Автоматически</translation>
-    </message>
 </context>
 <context>
     <name>QPrintPreviewDialog</name>
@@ -3928,22 +4064,6 @@ Please turn one of those options off.</source>
         <translation>Оттенки серого</translation>
     </message>
     <message>
-        <source>Duplex Printing</source>
-        <translation>Двусторонняя печать</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation>Нет</translation>
-    </message>
-    <message>
-        <source>Long side</source>
-        <translation>По длинной стороне</translation>
-    </message>
-    <message>
-        <source>Short side</source>
-        <translation>По короткой стороне</translation>
-    </message>
-    <message>
         <source>Page Set:</source>
         <translation>Список страниц:</translation>
     </message>
@@ -3954,6 +4074,22 @@ Please turn one of those options off.</source>
     <message>
         <source>Specify pages or ranges separated by commas. Ranges are specified by two numbers separated by a hyphen. E.g: 3,5-7,9 prints pages 3, 5, 6, 7 and 9.</source>
         <translation>Укажите страницы или диапазоны, разделяя их запятыми. Диапазоны задаются двумя числами, разделёнными дефисом. Например: при указании 3,5-7,9 будут напечатаны страницы 3, 5, 6, 7 и 9.</translation>
+    </message>
+    <message>
+        <source>Double Sided Printing</source>
+        <translation>Двусторонняя печать</translation>
+    </message>
+    <message>
+        <source>Off</source>
+        <translation>Отключена</translation>
+    </message>
+    <message>
+        <source>Long side binding</source>
+        <translation>Переплёт по длинной стороне</translation>
+    </message>
+    <message>
+        <source>Short side binding</source>
+        <translation>Переплёт по короткой стороне</translation>
     </message>
 </context>
 <context>
@@ -4127,10 +4263,6 @@ Please turn one of those options off.</source>
         <translation>отсутствует завершающая ] для класса символов</translation>
     </message>
     <message>
-        <source>invalid escape sequence in character class</source>
-        <translation>некорректная ESC-последовательность в классе символов</translation>
-    </message>
-    <message>
         <source>range out of order in character class</source>
         <translation>некорректный диапазон в классе символов</translation>
     </message>
@@ -4159,20 +4291,12 @@ Please turn one of those options off.</source>
         <translation>внутренняя ошибка: переполнение кода</translation>
     </message>
     <message>
+        <source>missing closing parenthesis for condition</source>
+        <translation>отсутствует закрывающая скобка условия</translation>
+    </message>
+    <message>
         <source>lookbehind assertion is not fixed length</source>
         <translation>утверждение lookbehind не фиксированной длины</translation>
-    </message>
-    <message>
-        <source>malformed number or name after (?(</source>
-        <translation>некорректно сформировано число или имя после (?(</translation>
-    </message>
-    <message>
-        <source>conditional group contains more than two branches</source>
-        <translation>условная группа содержит более двух веток</translation>
-    </message>
-    <message>
-        <source>(?R or (?[+-]digits must be followed by )</source>
-        <translation>за (?R или (?[+-]цифры должна следовать )</translation>
     </message>
     <message>
         <source>unknown POSIX class name</source>
@@ -4183,20 +4307,8 @@ Please turn one of those options off.</source>
         <translation>POSIX-сортировка элементов не поддерживается</translation>
     </message>
     <message>
-        <source>invalid condition (?(0)</source>
-        <translation>некорректное условие (?(0)</translation>
-    </message>
-    <message>
-        <source>PCRE does not support \L, \l, \N{name}, \U, or \u</source>
-        <translation>PCRE не поддерживает \L, \l, \N{имя}, \U и \u</translation>
-    </message>
-    <message>
         <source>unrecognized character after (?P</source>
         <translation>не опознан символ после (?P</translation>
-    </message>
-    <message>
-        <source>syntax error in subpattern name (missing terminator)</source>
-        <translation>синтаксическая ошибка в имени подшаблона (отсутствует признак завершения)</translation>
     </message>
     <message>
         <source>malformed \P or \p sequence</source>
@@ -4215,32 +4327,12 @@ Please turn one of those options off.</source>
         <translation>внутренняя ошибка: ранее проверенный подшаблон не найден</translation>
     </message>
     <message>
-        <source>DEFINE group contains more than one branch</source>
-        <translation>группа DEFINE содержит более одной ветки</translation>
-    </message>
-    <message>
         <source>\g is not followed by a braced, angle-bracketed, or quoted name/number or by a plain number</source>
         <translation>за \g должно следовать число или название/число, заключённое в фигурные/угловые скобки или кавычки</translation>
     </message>
     <message>
-        <source>a numbered reference must not be zero</source>
-        <translation>нумерованная ссылка не должна быть нулём</translation>
-    </message>
-    <message>
-        <source>an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)</source>
-        <translation>для (*ACCEPT), (*FAIL) и (*COMMIT) аргументы не допустимы</translation>
-    </message>
-    <message>
-        <source>number is too big</source>
-        <translation>число слишком велико</translation>
-    </message>
-    <message>
         <source>subpattern name expected</source>
         <translation>требуется имя подшаблона</translation>
-    </message>
-    <message>
-        <source>digit expected after (?+</source>
-        <translation>после (?+ требуется цифра</translation>
     </message>
     <message>
         <source>different names for subpatterns of the same number are not allowed</source>
@@ -4253,10 +4345,6 @@ Please turn one of those options off.</source>
     <message>
         <source>\k is not followed by a braced, angle-bracketed, or quoted name</source>
         <translation>за \k должно следовать название, заключённое в фигурные/угловые скобки или кавычки</translation>
-    </message>
-    <message>
-        <source>internal error: unknown opcode in find_fixedlength()</source>
-        <translation>внутренняя ошибка: неизвестный опкод в find_fixedlength()</translation>
     </message>
     <message>
         <source>\N is not supported in a class</source>
@@ -4283,16 +4371,56 @@ Please turn one of those options off.</source>
         <translation>отсутствует открывающая фигурная скобка после \o</translation>
     </message>
     <message>
+        <source>escape sequence is invalid in character class</source>
+        <translation>ESC-последовательность в классе символов не допустима</translation>
+    </message>
+    <message>
         <source>parentheses are too deeply nested</source>
         <translation>слишком большое вложение скобок</translation>
     </message>
     <message>
-        <source>invalid range in character class</source>
-        <translation>недопустимый диапазон в классе символов</translation>
+        <source>a relative value of zero is not allowed</source>
+        <translation>относительное значение нуль не допустимо</translation>
     </message>
     <message>
-        <source>group name must start with a non-digit</source>
-        <translation>имя группы не должно начинаться с цифры</translation>
+        <source>conditional subpattern contains more than two branches</source>
+        <translation>условный подшаблон содержит более двух вариантов</translation>
+    </message>
+    <message>
+        <source>digit expected after (?+ or (?-</source>
+        <translation>ожидается цифра после (?+ или (?-</translation>
+    </message>
+    <message>
+        <source>lookbehind is too complicated</source>
+        <translation>слишком сложный lookbehind</translation>
+    </message>
+    <message>
+        <source>\C is not allowed in a lookbehind assertion in UTF-16 mode</source>
+        <translation>\C не допустимо в утверждении lookbehind в режиме UTF-16</translation>
+    </message>
+    <message>
+        <source>PCRE2 does not support \F, \L, \l, \N{name}, \U, or \u</source>
+        <translation>PCRE2 не поддерживает \F, \L, \l, \N{name}, \U и \u</translation>
+    </message>
+    <message>
+        <source>syntax error in subpattern name (missing terminator?)</source>
+        <translation>синтаксическая ошибка в имени подшаблона (отсутствует терминатор?)</translation>
+    </message>
+    <message>
+        <source>subpattern name must start with a non-digit</source>
+        <translation>имя подшаблона не должно начинаться с цифры</translation>
+    </message>
+    <message>
+        <source>subpattern name is too long (maximum 32 code units)</source>
+        <translation>слишком длинное имя подшаблона (максимум 32 кодовых единицы)</translation>
+    </message>
+    <message>
+        <source>too many named subpatterns (maximum 10000)</source>
+        <translation>слишком много именованных подшаблонов (максимум 10000)</translation>
+    </message>
+    <message>
+        <source>invalid range in character class</source>
+        <translation>недопустимый диапазон в классе символов</translation>
     </message>
     <message>
         <source>quantifier does not follow a repeatable item</source>
@@ -4323,10 +4451,6 @@ Please turn one of those options off.</source>
         <translation>не соответствует закрывающая скобка</translation>
     </message>
     <message>
-        <source>letter or underscore expected after (?&lt; or (?&apos;</source>
-        <translation>после (?&lt; или (?&apos; требуется буква или подчёркивание</translation>
-    </message>
-    <message>
         <source>assertion expected after (?( or (?(?C)</source>
         <translation>после (?( или (?(?C) требуется утверждение</translation>
     </message>
@@ -4345,10 +4469,6 @@ Please turn one of those options off.</source>
     <message>
         <source>character code point value in \x{} or \o{} is too large</source>
         <translation>значение кодовой точки символа в \x{} или \o{} слишком большое</translation>
-    </message>
-    <message>
-        <source>\C is not allowed in a lookbehind assertion</source>
-        <translation>\C не допустимо в утверждениях lookbehind</translation>
     </message>
     <message>
         <source>number after (?C is greater than 255</source>
@@ -4371,24 +4491,36 @@ Please turn one of those options off.</source>
         <translation>эта версия PCRE2 не поддерживает \P, \p или \X</translation>
     </message>
     <message>
-        <source>subpattern name is too long (maximum 10000 characters)</source>
-        <translation>название подшаблона слишком велико (ограничено 10000 символов)</translation>
-    </message>
-    <message>
-        <source>too many named subpatterns (maximum 256)</source>
-        <translation>слишком много именованных подшаблонов (ограничено 256)</translation>
-    </message>
-    <message>
         <source>octal value is greater than \377 in 8-bit non-UTF-8 mode</source>
         <translation>восьмеричное число больше \377 в 8-битном не UTF-8 режиме</translation>
+    </message>
+    <message>
+        <source>DEFINE subpattern contains more than one branch</source>
+        <translation>подшаблон DEFINE содержит более одного варианта</translation>
     </message>
     <message>
         <source>internal error: unknown newline setting</source>
         <translation>внутренняя ошибка: неизвестный разделитель строк</translation>
     </message>
     <message>
+        <source>(?R (recursive pattern call) must be followed by a closing parenthesis</source>
+        <translation>(?R (рекурсивный вызов шаблона) должен завершаться закрывающей скобкой</translation>
+    </message>
+    <message>
+        <source>obsolete error (should not occur)</source>
+        <translation>устаревшая ошибка (возникать не должна)</translation>
+    </message>
+    <message>
         <source>(*VERB) not recognized or malformed</source>
         <translation>(*VERB) не опознан или неверен</translation>
+    </message>
+    <message>
+        <source>subpattern number is too big</source>
+        <translation>номер подшаблона слишком велик</translation>
+    </message>
+    <message>
+        <source>internal error: parsed pattern overflow</source>
+        <translation>внутренняя ошибка: переполнение разбора шаблона</translation>
     </message>
     <message>
         <source>\c must be followed by a printable ASCII character</source>
@@ -4397,10 +4529,6 @@ Please turn one of those options off.</source>
     <message>
         <source>\c must be followed by a letter or one of [\]^_?</source>
         <translation>после \c должна идти буква или один из [\]^_?</translation>
-    </message>
-    <message>
-        <source>SPARE ERROR</source>
-        <translation>ОШИБКА SPARE</translation>
     </message>
     <message>
         <source>using UTF is disabled by the application</source>
@@ -4415,12 +4543,20 @@ Please turn one of those options off.</source>
         <translation>значение кодовой точки символа в последовательности \u.... слишком большое</translation>
     </message>
     <message>
-        <source>digits missing in \x{} or \o{}</source>
-        <translation>отсутствуют цифры в \x{} или \o{}</translation>
+        <source>internal error: unknown meta code in check_lookbehinds()</source>
+        <translation>внутренняя ошибка: неизвестный мета-код в check_lookbehinds()</translation>
     </message>
     <message>
-        <source>syntax error in (?(VERSION condition</source>
-        <translation>синтаксическая ошибка в условии (?(VERSION</translation>
+        <source>callout string is too long</source>
+        <translation>слишком длинная строка callout</translation>
+    </message>
+    <message>
+        <source>digits missing in \x{} or \o{} or \N{U+}</source>
+        <translation>отсутствуют цифры в \x{}, \o{} или \N{U+}</translation>
+    </message>
+    <message>
+        <source>syntax error or number too big in (?(VERSION condition</source>
+        <translation>синтаксическая ошибка или число слишком велико в условии (?(VERSION</translation>
     </message>
     <message>
         <source>internal error: unknown opcode in auto_possessify()</source>
@@ -4457,6 +4593,46 @@ Please turn one of those options off.</source>
     <message>
         <source>pattern string is longer than the limit set by the application</source>
         <translation>строка шаблона больше ограничения, заданного приложением</translation>
+    </message>
+    <message>
+        <source>internal error: unknown code in parsed pattern</source>
+        <translation>внутренняя ошибка: неизвестный код в разобранном шаблоне</translation>
+    </message>
+    <message>
+        <source>internal error: bad code value in parsed_skip()</source>
+        <translation>внутренняя ошибка: неверное значение кода в parsed_skip()</translation>
+    </message>
+    <message>
+        <source>PCRE2_EXTRA_ALLOW_SURROGATE_ESCAPES is not allowed in UTF-16 mode</source>
+        <translation>PCRE2_EXTRA_ALLOW_SURROGATE_ESCAPES не допустим в режиме UTF-16</translation>
+    </message>
+    <message>
+        <source>invalid option bits with PCRE2_LITERAL</source>
+        <translation>неверные биты опций с PCRE2_LITERAL</translation>
+    </message>
+    <message>
+        <source>\N{U+dddd} is supported only in Unicode (UTF) mode</source>
+        <translation>\N{U+dddd} поддерживается только в режиме Unicode (UTF)</translation>
+    </message>
+    <message>
+        <source>invalid hyphen in option setting</source>
+        <translation>неверный дефис в настройке опции</translation>
+    </message>
+    <message>
+        <source>(*alpha_assertion) not recognized</source>
+        <translation>не распознана (*alpha_assertion)</translation>
+    </message>
+    <message>
+        <source>script runs require Unicode support, which this version of PCRE2 does not have</source>
+        <translation>для запуска скрипта необходима поддержка Unicode, которая отсутствует у этой версии PCRE2</translation>
+    </message>
+    <message>
+        <source>too many capturing groups (maximum 65535)</source>
+        <translation>слишком много захватываемых групп (максимум 65535)</translation>
+    </message>
+    <message>
+        <source>atomic assertion expected after (?( or (?(?C)</source>
+        <translation>требуется атомарное утверждение после (?( или (?(?C)</translation>
     </message>
     <message>
         <source>no match</source>
@@ -4669,8 +4845,32 @@ Please turn one of those options off.</source>
         <translation>вложенная рекурсия в той же позиции субъекта</translation>
     </message>
     <message>
-        <source>recursion limit exceeded</source>
-        <translation>предел рекурсии превышен</translation>
+        <source>matching depth limit exceeded</source>
+        <translation>глубина совпадений превышена</translation>
+    </message>
+    <message>
+        <source>match with end before start or start moved backwards is not supported</source>
+        <translation>не поддерживается сравнение с окончанием до начала или с началом смещенным назад</translation>
+    </message>
+    <message>
+        <source>bad serialized data</source>
+        <translation>неверные данные сериализации</translation>
+    </message>
+    <message>
+        <source>heap limit exceeded</source>
+        <translation>превышен предел кучи</translation>
+    </message>
+    <message>
+        <source>invalid syntax</source>
+        <translation>неверный синтаксис</translation>
+    </message>
+    <message>
+        <source>internal error - duplicate substitution match</source>
+        <translation>внутренняя ошибка: двойное совпадение для замены</translation>
+    </message>
+    <message>
+        <source>PCRE2_MATCH_INVALID_UTF is not supported for DFA matching</source>
+        <translation>PCRE2_MATCH_INVALID_UTF не поддерживается для сравнения DFA</translation>
     </message>
     <message>
         <source>requested value is not available</source>
@@ -4696,10 +4896,6 @@ Please turn one of those options off.</source>
         <source>bad substitution in replacement string</source>
         <translatorcomment>бред какой-то</translatorcomment>
         <translation>плохая замена в замещающей строке</translation>
-    </message>
-    <message>
-        <source>match with end before start is not supported</source>
-        <translation>поиск с концом перед началом не поддерживается</translation>
     </message>
     <message>
         <source>too many replacements (more than INT_MAX)</source>
@@ -4801,8 +4997,8 @@ Please turn one of those options off.</source>
         <translation>Имя файла ссылается на каталог</translation>
     </message>
     <message>
-        <source>QSaveFile cannot open &apos;%1&apos; without direct write fallback enabled: path contains an Alternate Data Stream specifier</source>
-        <translation>QSaveFile не может открыть «%1» без включения прямой записи: путь содержит спецификатор альтернативного потока данных</translation>
+        <source>QSaveFile cannot open &apos;%1&apos; without direct write fallback enabled.</source>
+        <translation>QSaveFile не может открыть «%1» без включения прямой записи.</translation>
     </message>
     <message>
         <source>Writing canceled by application</source>
@@ -5224,6 +5420,14 @@ Please turn one of those options off.</source>
         <translation>Запустить (F)</translation>
     </message>
     <message>
+        <source>Launch (G)</source>
+        <translation>Запустить (G)</translation>
+    </message>
+    <message>
+        <source>Launch (H)</source>
+        <translation>Запустить (H)</translation>
+    </message>
+    <message>
         <source>Monitor Brightness Up</source>
         <translation>Увеличить яркость монитора</translation>
     </message>
@@ -5245,7 +5449,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>Power Off</source>
-        <translation>Отключение питания</translation>
+        <translation>Выключение</translation>
     </message>
     <message>
         <source>Wake Up</source>
@@ -5265,7 +5469,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>Sleep</source>
-        <translation>Спящий режим</translation>
+        <translation>Ждущий режим</translation>
     </message>
     <message>
         <source>LightBulb</source>
@@ -5324,6 +5528,10 @@ Please turn one of those options off.</source>
         <translation>Калькулятор</translation>
     </message>
     <message>
+        <source>Calendar</source>
+        <translation>Календарь</translation>
+    </message>
+    <message>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
@@ -5334,6 +5542,10 @@ Please turn one of those options off.</source>
     <message>
         <source>Close</source>
         <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>Adjust contrast</source>
+        <translation>Подстройка контраста</translation>
     </message>
     <message>
         <source>Copy</source>
@@ -5386,6 +5598,10 @@ Please turn one of those options off.</source>
     <message>
         <source>Meeting</source>
         <translation>Встреча</translation>
+    </message>
+    <message>
+        <source>Memo</source>
+        <translation>Заметки</translation>
     </message>
     <message>
         <source>Keyboard Menu</source>
@@ -5466,6 +5682,10 @@ Please turn one of those options off.</source>
     <message>
         <source>Terminal</source>
         <translation>Терминал</translation>
+    </message>
+    <message>
+        <source>To-do list</source>
+        <translation>Список дел</translation>
     </message>
     <message>
         <source>Tools</source>
@@ -5573,7 +5793,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>Hibernate</source>
-        <translation>Перейти в сон</translation>
+        <translation>Спящий режим</translation>
     </message>
     <message>
         <source>Media Rewind</source>
@@ -5585,7 +5805,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>Power Down</source>
-        <translation>Выключить</translation>
+        <translation>Отключение питания</translation>
     </message>
     <message>
         <source>Microphone Mute</source>
@@ -5940,6 +6160,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>+</source>
+        <extracomment>Key separator in shortcut string</extracomment>
         <translation>+</translation>
     </message>
     <message>
@@ -6361,6 +6582,21 @@ Role of an accessible object</extracomment>
         <translation>дополнительная информация</translation>
     </message>
     <message>
+        <source>terminal</source>
+        <extracomment>Role of an accessible object</extracomment>
+        <translation>терминал</translation>
+    </message>
+    <message>
+        <source>desktop</source>
+        <extracomment>Role of an accessible object</extracomment>
+        <translation>рабочий стол</translation>
+    </message>
+    <message>
+        <source>notification</source>
+        <extracomment>Role of an accessible object</extracomment>
+        <translation>уведомление</translation>
+    </message>
+    <message>
         <source>unknown</source>
         <extracomment>Role of an accessible object</extracomment>
         <translation>неизвестная</translation>
@@ -6476,6 +6712,50 @@ Role of an accessible object</extracomment>
         <translation>Сертификат узла в чёрном списке</translation>
     </message>
     <message>
+        <source>No OCSP status response found</source>
+        <translation>Не найден ответ с состоянием OCSP</translation>
+    </message>
+    <message>
+        <source>The OCSP status request had invalid syntax</source>
+        <translation>Запрос состояния OCSP синтаксически неверен</translation>
+    </message>
+    <message>
+        <source>OCSP response contains an unexpected number of SingleResponse structures</source>
+        <translation>Ответ OCSP содержит неожиданное число структур SingleResponse</translation>
+    </message>
+    <message>
+        <source>OCSP responder reached an inconsistent internal state</source>
+        <translation>Ответчик OCSP вошёл в неверное внутреннее состояние</translation>
+    </message>
+    <message>
+        <source>OCSP responder was unable to return a status for the requested certificate</source>
+        <translation>Ответчик OCSP не может вернуть состояние запрошенного сертификата</translation>
+    </message>
+    <message>
+        <source>The server requires the client to sign the OCSP request in order to construct a response</source>
+        <translation>Для подготовки ответа сервер требует от клиента подписать запрос OCSP</translation>
+    </message>
+    <message>
+        <source>The client is not authorized to request OCSP status from this server</source>
+        <translation>Клиент не авторизован для запроса состояния OCSP с этого сервера</translation>
+    </message>
+    <message>
+        <source>OCSP responder&apos;s identity cannot be verified</source>
+        <translation>Невозможно проверить подлинность ответчика OCSP</translation>
+    </message>
+    <message>
+        <source>The identity of a certificate in an OCSP response cannot be established</source>
+        <translation>Невозможно установить подлинность сертификата в ответе OCSP</translation>
+    </message>
+    <message>
+        <source>The certificate status response has expired</source>
+        <translation>Ответ о состоянии сертификата просрочен</translation>
+    </message>
+    <message>
+        <source>The certificate&apos;s status is unknown</source>
+        <translation>Состояние сертификата неизвестно</translation>
+    </message>
+    <message>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
@@ -6556,16 +6836,24 @@ Role of an accessible object</extracomment>
         <translation>Сбой SSL_CONF_CTX_new()</translation>
     </message>
     <message>
-        <source>OpenSSL version too old, need at least v1.0.2</source>
-        <translation>Версия OpenSSL очень старая, требуется минимум 1.0.2</translation>
-    </message>
-    <message>
         <source>Error creating SSL session, %1</source>
         <translation>Ошибка создания сессии SSL, %1</translation>
     </message>
     <message>
         <source>Error creating SSL session: %1</source>
         <translation>Ошибка создания сессии SSL: %1</translation>
+    </message>
+    <message>
+        <source>Server-side QSslSocket does not support OCSP stapling</source>
+        <translation>Серверный QSslSocket не поддерживает сшивку OCSP</translation>
+    </message>
+    <message>
+        <source>Failed to enable OCSP stapling</source>
+        <translation>Не удалось включить сшивку OCSP</translation>
+    </message>
+    <message>
+        <source>Client-side sockets do not send OCSP responses</source>
+        <translation>Клиентские сокеты не отправляют ответы OCSP</translation>
     </message>
     <message>
         <source>Unable to init SSL Context: %1</source>
@@ -6580,6 +6868,26 @@ Role of an accessible object</extracomment>
         <translation>Не удалось расшифровать данные: %1</translation>
     </message>
     <message>
+        <source>Failed to decode OCSP response</source>
+        <translation>Не удалось разобрать ответ OCSP</translation>
+    </message>
+    <message>
+        <source>Failed to extract basic OCSP response</source>
+        <translation>Не удалось извлечь базовый ответ OCSP</translation>
+    </message>
+    <message>
+        <source>No certificate verification store, cannot verify OCSP response</source>
+        <translation>Невозможно проверить ответ OCSP, так как отсутствует хранилище проверок сертификатов</translation>
+    </message>
+    <message>
+        <source>Failed to decode a SingleResponse from OCSP status response</source>
+        <translation>Не удалось разобрать SingleResponse из ответа с состоянием OCSP</translation>
+    </message>
+    <message>
+        <source>Failed to extract &apos;this update time&apos; from the SingleResponse</source>
+        <translation>Не удалось извлечь «время этого обновления» из SingleResponse</translation>
+    </message>
+    <message>
         <source>The TLS/SSL connection has been closed</source>
         <translation>Соединение TLS/SSL было закрыто</translation>
     </message>
@@ -6592,12 +6900,132 @@ Role of an accessible object</extracomment>
         <translation>Ошибка квитирования SSL: %1</translation>
     </message>
     <message>
-        <source>DTLS server requires a &apos;VerifyNone&apos; mode with your version of OpenSSL</source>
-        <translation>Серверу DTLS требуется режим «VerifyNone» для текущей версии OpenSSL</translation>
-    </message>
-    <message>
         <source>TLS initialization failed</source>
         <translation>Не удалось инициализировать TLS</translation>
+    </message>
+    <message>
+        <source>Attempted to use an unsupported protocol.</source>
+        <translation>Попытка использовать неподдерживаемый протокол.</translation>
+    </message>
+    <message>
+        <source>Insufficient memory</source>
+        <translation>Недостаточно памяти</translation>
+    </message>
+    <message>
+        <source>Internal error</source>
+        <translation>Внутренняя ошибка</translation>
+    </message>
+    <message>
+        <source>An internal handle was invalid</source>
+        <translation>Неверен внутренний указатель</translation>
+    </message>
+    <message>
+        <source>An internal token was invalid</source>
+        <translation>Неверен внутренний токен</translation>
+    </message>
+    <message>
+        <source>Access denied</source>
+        <translation>Доступ запрещён</translation>
+    </message>
+    <message>
+        <source>No authority could be contacted for authorization</source>
+        <translation>Отсутствует удалённый сервис авторизации</translation>
+    </message>
+    <message>
+        <source>No credentials</source>
+        <translation>Отсутствуют учётные данные</translation>
+    </message>
+    <message>
+        <source>The target is unknown or unreachable</source>
+        <translation>Цель неизвестна или недоступна</translation>
+    </message>
+    <message>
+        <source>An unsupported function was requested</source>
+        <translation>Запрошена неподдерживаемая функция</translation>
+    </message>
+    <message>
+        <source>The hostname provided does not match the one received from the peer</source>
+        <translation>Предоставленное имя узла не совпадает с полученным от пира</translation>
+    </message>
+    <message>
+        <source>No common protocol exists between the client and the server</source>
+        <translation>У клиента и сервера нет общих протоколов</translation>
+    </message>
+    <message>
+        <source>Unexpected or badly-formatted message received</source>
+        <translation>Получено неожиданное или неверно сформированное сообщение</translation>
+    </message>
+    <message>
+        <source>The data could not be encrypted</source>
+        <translation>Невозможно зашифровать данные</translation>
+    </message>
+    <message>
+        <source>No cipher suites in common</source>
+        <translation>Нет общих наборов шифров</translation>
+    </message>
+    <message>
+        <source>The credentials were not recognized / Invalid argument</source>
+        <translation>Учётные данные не распознаны / Неверный параметр</translation>
+    </message>
+    <message>
+        <source>The message was tampered with, damaged or out of sequence.</source>
+        <translation>Сообщение подделано, повреждено или вне последовательности.</translation>
+    </message>
+    <message>
+        <source>A message was received out of sequence.</source>
+        <translation>Сообщение получено вне последовательности.</translation>
+    </message>
+    <message>
+        <source>Unknown error occurred: %1</source>
+        <translation>Возникла неизвестная ошибка: %1</translation>
+    </message>
+    <message>
+        <source>Invalid protocol chosen</source>
+        <translation>Выбран неверный протокол</translation>
+    </message>
+    <message>
+        <source>The certificate provided cannot be used for a client.</source>
+        <translation>Невозможно использовать предоставленный сертификат для клиента.</translation>
+    </message>
+    <message>
+        <source>The certificate provided cannot be used for a server.</source>
+        <translation>Невозможно использовать предоставленный сертификат для сервера.</translation>
+    </message>
+    <message>
+        <source>Server did not accept any certificate we could present.</source>
+        <translation>Сервер не принимает предоставляемые нами сертификаты.</translation>
+    </message>
+    <message>
+        <source>Algorithm mismatch</source>
+        <translation>Не совпадают алгоритмы</translation>
+    </message>
+    <message>
+        <source>Handshake failed: %1</source>
+        <translation>Не удалось выполнить квитирование: %1</translation>
+    </message>
+    <message>
+        <source>Failed to query the TLS context: %1</source>
+        <translation>Не удалось запросить контекст TLS: %1</translation>
+    </message>
+    <message>
+        <source>Did not get the required attributes for the connection.</source>
+        <translation>Не удалось получить необходимые для подключения атрибуты.</translation>
+    </message>
+    <message>
+        <source>Unwanted protocol was negotiated</source>
+        <translation>Был согласован нежелательный протокол</translation>
+    </message>
+    <message>
+        <source>Renegotiation was unsuccessful: %1</source>
+        <translation>Не удалось выполнить пересогласование: %1</translation>
+    </message>
+    <message>
+        <source>Schannel failed to encrypt data: %1</source>
+        <translation>Schannel не удалось зашифровать данные: %1</translation>
+    </message>
+    <message>
+        <source>Cannot provide a certificate with no key</source>
+        <translation>Невозможно предоставить сертификат без ключа</translation>
     </message>
 </context>
 <context>
@@ -6688,6 +7116,10 @@ Role of an accessible object</extracomment>
     <message>
         <source>No common ancestor for targets and source of transition from state &apos;%1&apos;</source>
         <translation>Нет общего предка у источника и цели перехода из состояния «%1»</translation>
+    </message>
+    <message>
+        <source>Child mode of state machine &apos;%1&apos; is not &apos;ExclusiveStates&apos;.</source>
+        <translation>Дочернее состояние конечного автомата «%1» не «ExclusiveStates».</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -7233,8 +7665,12 @@ The minimum Direct2D version required is %1. The Direct2D version on this system
         <translation>Требуются символьные данные.</translation>
     </message>
     <message>
-        <source>Recursive entity detected.</source>
-        <translation>Обнаружен рекурсивный объект.</translation>
+        <source>Self-referencing entity detected.</source>
+        <translation>Обнаружен объект, ссылающийся на себя.</translation>
+    </message>
+    <message>
+        <source>Entity expands to more characters than the entity expansion limit.</source>
+        <translation>При разворачивании объекта число символов превысило предел.</translation>
     </message>
     <message>
         <source>Start tag expected.</source>
