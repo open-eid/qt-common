@@ -88,10 +88,10 @@ QHash<DRIVER_FEATURES,quint32> QPCSCReader::Private::features()
 	if(!featuresList.isEmpty())
 		return featuresList;
 	DWORD size = 0;
-	BYTE feature[256];
-	if(SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0U, feature, DWORD(sizeof(feature)), &size))
+	std::array<BYTE,256> feature{};
+	if(SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0U, feature.data(), feature.size(), &size))
 		return featuresList;
-	for(unsigned char *p = feature; DWORD(p-feature) < size; )
+	for(auto p = feature.cbegin(); std::distance(feature.cbegin(), p) < size; )
 	{
 		unsigned int tag = *p++, len = *p++, value = 0;
 		for(unsigned int i = 0; i < len; ++i)
@@ -108,7 +108,7 @@ QPCSC::QPCSC()
 {
 	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
 	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
-	Q_UNUSED(serviceRunning());
+	Q_UNUSED(serviceRunning())
 }
 
 QPCSC::~QPCSC()
@@ -128,7 +128,7 @@ QStringList QPCSC::drivers() const
 	if( !h )
 		return {};
 
-	SP_DEVINFO_DATA info = { sizeof(SP_DEVINFO_DATA) };
+	SP_DEVINFO_DATA info { sizeof(SP_DEVINFO_DATA) };
 	QStringList list;
 	for( DWORD i = 0; SetupDiEnumDeviceInfo( h, i, &info ); i++ )
 	{
@@ -153,7 +153,7 @@ QStringList QPCSC::drivers() const
 		SetupDiGetDeviceRegistryPropertyW( h, &info,
 			SPDRP_HARDWAREID, 0, LPBYTE(data), sizeof(data), &size );
 
-		list << QStringLiteral("%1 (%2)").arg(name, QString::fromWCharArray(data));
+		list.append(QStringLiteral("%1 (%2)").arg(name, QString::fromWCharArray(data)));
 	}
 	SetupDiDestroyDeviceInfoList( h );
 
@@ -348,10 +348,10 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 	if( DWORD ioctl = d->features().value(FEATURE_GET_TLV_PROPERTIES) )
 	{
 		DWORD size = 0;
-		BYTE recv[256];
-		if(SC(Control, d->card, ioctl, nullptr, 0U, recv, DWORD(sizeof(recv)), &size))
+		std::array<BYTE,256> recv{};
+		if(SC(Control, d->card, ioctl, nullptr, 0U, recv.data(), recv.size(), &size))
 			return properties;
-		for(unsigned char *p = recv; DWORD(p-recv) < size; )
+		for(auto p = recv.cbegin(); std::distance(recv.cbegin(), p) < size; )
 		{
 			int tag = *p++, len = *p++, value = 0;
 			for(int i = 0; i < len; ++i)
@@ -423,13 +423,10 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	QHash<DRIVER_FEATURES,quint32> features = d->features();
 	if( DWORD ioctl = features.value(FEATURE_IFD_PIN_PROPERTIES) )
 	{
-		DWORD size = 0;
-		BYTE recv[256];
-		if(!SC(Control, d->card, ioctl, nullptr, 0U, recv, DWORD(sizeof(recv)), &size))
-		{
-			PIN_PROPERTIES_STRUCTURE *caps = (PIN_PROPERTIES_STRUCTURE *)recv;
-			display = caps->wLcdLayout > 0;
-		}
+		PIN_PROPERTIES_STRUCTURE caps{};
+		DWORD size = sizeof(caps);
+		if(!SC(Control, d->card, ioctl, nullptr, 0U, &caps, size, &size))
+			display = caps.wLcdLayout > 0;
 	}
 
 	quint8 PINFrameOffset = 0, PINLengthOffset = 0;

@@ -32,6 +32,7 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTimer>
 #include <QtCore/QSettings>
+#include <QtCore/QVersionNumber>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -104,26 +105,7 @@ void Configuration::Private::initCache(bool clear)
 
 bool Configuration::Private::lessThanVersion( const QString &current, const QString &available )
 {
-	QStringList curList = current.split('.');
-	QStringList avaList = available.split('.');
-	for( int i = 0; i < std::max<int>(curList.size(), avaList.size()); ++i )
-	{
-		bool curconv = false, avaconv = false;
-		unsigned int cur = curList.value(i).toUInt( &curconv );
-		unsigned int ava = avaList.value(i).toUInt( &avaconv );
-		if( curconv && avaconv )
-		{
-			if( cur != ava )
-				return cur < ava;
-		}
-		else
-		{
-			int status = QString::localeAwareCompare( curList.value(i), avaList.value(i) );
-			if( status != 0 )
-				return status < 0;
-		}
-	}
-	return false;
+	return QVersionNumber::fromString(current) < QVersionNumber::fromString(available);
 }
 
 void Configuration::Private::setData(const QByteArray &_data, const QByteArray &_signature)
@@ -172,16 +154,16 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 		return false;
 	digest.resize(int(size));
 
-	static const QByteArray SHA1_OID = QByteArray::fromHex("3021300906052b0e03021a05000414");
-	static const QByteArray SHA224_OID = QByteArray::fromHex("302d300d06096086480165030402040500041c");
-	static const QByteArray SHA256_OID = QByteArray::fromHex("3031300d060960864801650304020105000420");
-	static const QByteArray SHA384_OID = QByteArray::fromHex("3041300d060960864801650304020205000430");
-	static const QByteArray SHA512_OID = QByteArray::fromHex("3051300d060960864801650304020305000440");
-	if(!(digest.startsWith(SHA1_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha1))) &&
-		!(digest.startsWith(SHA224_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha224))) &&
-		!(digest.startsWith(SHA256_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha256))) &&
-		!(digest.startsWith(SHA384_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha384))) &&
-		!(digest.startsWith(SHA512_OID) && digest.endsWith(QCryptographicHash::hash(data, QCryptographicHash::Sha512))))
+	static const std::map<QCryptographicHash::Algorithm,QByteArray> list {
+		{QCryptographicHash::Sha1, QByteArray::fromHex("3021300906052b0e03021a05000414")},
+		{QCryptographicHash::Sha224, QByteArray::fromHex("302d300d06096086480165030402040500041c")},
+		{QCryptographicHash::Sha256, QByteArray::fromHex("3031300d060960864801650304020105000420")},
+		{QCryptographicHash::Sha384, QByteArray::fromHex("3041300d060960864801650304020205000430")},
+		{QCryptographicHash::Sha512, QByteArray::fromHex("3051300d060960864801650304020305000440")},
+	};
+	if(std::none_of(list.cbegin(), list.cend(), [&](const auto &item) {
+		return digest.startsWith(item.second) && digest.endsWith(QCryptographicHash::hash(data, item.first));
+		}))
 		return false;
 	QString date = headerValue(toObject(data), QLatin1String("DATE")).toString();
 	return QDateTime::currentDateTimeUtc() > QDateTime::fromString(date, QStringLiteral("yyyyMMddHHmmss'Z'"));
