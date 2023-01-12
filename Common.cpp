@@ -26,9 +26,7 @@
 #include <QtCore/QOperatingSystemVersion>
 #include <QtCore/QSettings>
 #include <QtGui/QIcon>
-#include <QtGui/QTextDocument>
 #include <QtNetwork/QNetworkProxyFactory>
-#include <QtWidgets/QLabel>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -53,7 +51,9 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	setLibraryPaths({ applicationDirPath() });
 #elif defined(Q_OS_MAC)
 	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
+#ifdef NDEBUG
 	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
+#endif
 #endif
 	setStyleSheet(QStringLiteral(
 		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
