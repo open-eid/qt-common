@@ -24,6 +24,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QtEndian>
 
+#include <array>
 #include <cstring>
 
 #ifdef Q_OS_WIN
