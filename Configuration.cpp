@@ -52,8 +52,7 @@ static QJsonObject toObject(const QByteArray &data) {
 }
 
 static QByteArray readFile(const QString &file) {
-	QFile f(file);
-	if(f.open(QFile::ReadOnly))
+	if(QFile f(file); f.open(QFile::ReadOnly))
 		return f.readAll();
 	qWarning() << "Failed to read file" << file;
 	return {};
@@ -83,8 +82,8 @@ public:
 void Configuration::Private::initCache(bool clear)
 {
 #ifndef NO_CACHE
-	auto readAll = [clear, this](const QString &fileName, const QString &copy) {
-		QFile f(cache + fileName);
+	auto readAll = [clear, this](const QUrl &url, const QString &copy) {
+		QFile f(cache + url.fileName());
 		if(clear && f.exists())
 			f.remove();
 		if(!f.exists())
@@ -94,8 +93,8 @@ void Configuration::Private::initCache(bool clear)
 		}
 		return f.open(QFile::ReadOnly) ? f.readAll() : QByteArray();
 	};
-	setData(readAll(url.fileName(), QStringLiteral(":/config.json")),
-			readAll(rsaurl.fileName(), QStringLiteral(":/config.rsa")));
+	setData(readAll(url, QStringLiteral(":/config.json")),
+			readAll(rsaurl, QStringLiteral(":/config.rsa")));
 #else
 	setData(readFile(QStringLiteral(":/config.json")),
 			readFile(QStringLiteral(":/config.rsa")));
@@ -107,25 +106,23 @@ void Configuration::Private::setData(const QByteArray &_data, const QByteArray &
 	data = _data;
 	signature = _signature;
 	dataobject = toObject(data);
-#ifdef Q_OS_MAC
-	QSettings s2(QSettings::SystemScope, nullptr);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+	QSettings system(QSettings::SystemScope);
 #else
-	QSettings s2(QSettings::SystemScope, QApplication::organizationName(), QApplication::applicationName());
+	QSettings system(QSettings::SystemScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
 #endif
-
-	for(const QString &key: s2.childKeys())
+	for(const QString &key: system.childKeys())
 	{
-		if(dataobject.contains(key))
+		if(!dataobject.contains(key))
+			continue;
+		QVariant value = system.value(key);
+		switch(value.type())
 		{
-			QVariant value = s2.value(key);
-			switch(value.type())
-			{
-			case QVariant::String:
-				dataobject[key] = QJsonValue(value.toString()); break;
-			case QVariant::StringList:
-				dataobject[key] = QJsonValue(QJsonArray::fromStringList(value.toStringList())); break;
-			default: break;
-			}
+		case QVariant::String:
+			dataobject[key] = QJsonValue(value.toString()); break;
+		case QVariant::StringList:
+			dataobject[key] = QJsonValue(QJsonArray::fromStringList(value.toStringList())); break;
+		default: break;
 		}
 	}
 }
@@ -179,7 +176,7 @@ Configuration::Configuration(QObject *parent)
 		QFileInfo(d->url.fileName()).baseName());
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(QApplication::applicationName(), QApplication::applicationVersion(),
-			Common::applicationOs(), Common::language(), QPCSC::instance().drivers().join('/')).toUtf8());
+			Common::applicationOs(), QLocale().uiLanguages().first(), QPCSC::instance().drivers().join('/')).toUtf8());
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 	d->req.setTransferTimeout();
 #endif
@@ -298,11 +295,9 @@ Configuration::Configuration(QObject *parent)
 		d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 		update();
 	}
-	// Scheduled update
-	else if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS))
-		update();
-	// DigiDoc4 updated
-	else if(QVersionNumber::fromString(QSettings().value(QStringLiteral("LastVersion")).toString()) <
+	// Scheduled update or DigiDoc4 updated
+	else if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS) ||
+		QVersionNumber::fromString(QSettings().value(QStringLiteral("LastVersion")).toString()) <
 		QVersionNumber::fromString(QApplication::applicationVersion()))
 		update();
 #endif

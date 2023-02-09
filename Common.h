@@ -40,8 +40,6 @@ public:
 #endif
 
 	static QString applicationOs();
-	static void setAccessibleName( QLabel *widget );
-	static QString language();
 
 private:
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);

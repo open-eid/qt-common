@@ -24,7 +24,6 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QOperatingSystemVersion>
-#include <QtCore/QSettings>
 #include <QtGui/QIcon>
 #include <QtNetwork/QNetworkProxyFactory>
 
@@ -48,7 +47,9 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
+#ifdef NDEBUG
 	setLibraryPaths({ applicationDirPath() });
+#endif
 #elif defined(Q_OS_MAC)
 	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
 #ifdef NDEBUG
@@ -66,7 +67,7 @@ QString Common::applicationOs()
 {
 #if defined(Q_OS_MAC)
 	const auto version = QOperatingSystemVersion::current();
-	return QStringLiteral("%1 %2.%3.%4 (%5/%6)")
+	return QLatin1String("%1 %2.%3.%4 (%5/%6)")
 		.arg(version.name())
 		.arg(version.majorVersion())
 		.arg(version.minorVersion())
@@ -77,7 +78,7 @@ QString Common::applicationOs()
 	QString product = QSysInfo::productType();
 	product[0] = product[0].toUpper();
 	QString version = QSysInfo::productVersion();
-	version.replace(QStringLiteral("server"), QStringLiteral("Server "));
+	version.replace(QLatin1String("server"), QLatin1String("Server "));
 	return QStringLiteral("%1 %2 %3 (%4/%5)")
 		.arg(product)
 		.arg(version)
@@ -106,27 +107,14 @@ void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QSt
 	case QtFatalMsg: f.write("F"); break;
 	default: f.write("I"); break;
 	}
-	f.write(QStringLiteral(" %1 ").arg(ctx.category).toUtf8());
+	f.write(QStringLiteral(" %1 ").arg(QLatin1String(ctx.category)).toUtf8());
 	if(ctx.line > 0)
 	{
 		f.write(QStringLiteral("%1:%2 \"%3\" ")
-			.arg(QFileInfo(ctx.file).fileName())
+			.arg(QFileInfo(QString::fromLatin1(ctx.file)).fileName())
 			.arg(ctx.line)
-			.arg(ctx.function).toUtf8());
+			.arg(QLatin1String(ctx.function)).toUtf8());
 	}
 	f.write(msg.toUtf8());
 	f.write("\n");
-}
-
-QString Common::language()
-{
-	QString deflang;
-	switch( QLocale().language() )
-	{
-	case QLocale::Russian: deflang = QStringLiteral("ru"); break;
-	case QLocale::Estonian: deflang = QStringLiteral("et"); break;
-	case QLocale::English:
-	default: deflang = QStringLiteral("en"); break;
-	}
-	return QSettings().value(QStringLiteral("Language"), deflang).toString();
 }
