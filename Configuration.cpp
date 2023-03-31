@@ -63,7 +63,6 @@ class Configuration::Private
 {
 public:
 	void initCache(bool clear);
-	static bool lessThanVersion( const QString &current, const QString &available );
 	void setData(const QByteArray &data, const QByteArray &signature);
 	bool validate(const QByteArray &data, const QByteArray &signature) const;
 
@@ -103,11 +102,6 @@ void Configuration::Private::initCache(bool clear)
 #endif
 }
 
-bool Configuration::Private::lessThanVersion( const QString &current, const QString &available )
-{
-	return QVersionNumber::fromString(current) < QVersionNumber::fromString(available);
-}
-
 void Configuration::Private::setData(const QByteArray &_data, const QByteArray &_signature)
 {
 	data = _data;
@@ -116,7 +110,7 @@ void Configuration::Private::setData(const QByteArray &_data, const QByteArray &
 #ifdef Q_OS_MAC
 	QSettings s2(QSettings::SystemScope, nullptr);
 #else
-	QSettings s2(QSettings::SystemScope, qApp->organizationName(), qApp->applicationName());
+	QSettings s2(QSettings::SystemScope, QApplication::organizationName(), QApplication::applicationName());
 #endif
 
 	for(const QString &key: s2.childKeys())
@@ -184,7 +178,7 @@ Configuration::Configuration(QObject *parent)
 		d->url.adjusted(QUrl::RemoveFilename).toString(),
 		QFileInfo(d->url.fileName()).baseName());
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
-		.arg(qApp->applicationName(), qApp->applicationVersion(),
+		.arg(QApplication::applicationName(), QApplication::applicationVersion(),
 			Common::applicationOs(), Common::language(), QPCSC::instance().drivers().join('/')).toUtf8());
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 	d->req.setTransferTimeout();
@@ -261,7 +255,7 @@ Configuration::Configuration(QObject *parent)
 		return;
 	}
 
-#if OPENSSL_VERSION < 0x30000000L
+#if OPENSSL_VERSION_NUMBER < 0x30000000L
 	RSA *rsa = PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
 	d->publicKey = EVP_PKEY_new();
 	EVP_PKEY_set1_RSA(d->publicKey, rsa);
@@ -308,7 +302,8 @@ Configuration::Configuration(QObject *parent)
 	else if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS))
 		update();
 	// DigiDoc4 updated
-	else if(Private::lessThanVersion(QSettings().value(QStringLiteral("LastVersion")).toString(), qApp->applicationVersion()))
+	else if(QVersionNumber::fromString(QSettings().value(QStringLiteral("LastVersion")).toString()) <
+		QVersionNumber::fromString(QApplication::applicationVersion()))
 		update();
 #endif
 }
@@ -318,24 +313,6 @@ Configuration::~Configuration()
 	if(d->publicKey)
 		EVP_PKEY_free(d->publicKey);
 	delete d;
-}
-
-void Configuration::checkVersion(const QString &name)
-{
-	if(Private::lessThanVersion(qApp->applicationVersion(), object()[name+"-SUPPORTED"].toString()))
-		Q_EMIT updateReminder(true, tr("Update is available"), tr("Your ID-software has expired. To download the latest software version, go to the "
-				"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
-				"macOS users can download the latest ID-software version from the "
-				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
-
-	connect(this, &Configuration::finished, this, [=](bool changed, const QString &){
-		if(changed && Private::lessThanVersion(qApp->applicationVersion(), object()[name+"-LATEST"].toString()))
-			Q_EMIT updateReminder(false, tr("Update is available"),
-				tr("An ID-software update has been found. To download the update, go to the "
-					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
-					"macOS users can download the update from the "
-					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
-	});
 }
 
 QJsonObject Configuration::object() const
@@ -371,5 +348,5 @@ void Configuration::update(bool force)
 {
 	d->initCache(force);
 	sendRequest(d->rsaurl);
-	QSettings().setValue(QStringLiteral("LastVersion"), qApp->applicationVersion());
+	QSettings().setValue(QStringLiteral("LastVersion"), QApplication::applicationVersion());
 }

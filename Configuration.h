@@ -29,13 +29,11 @@ class Configuration final : public QObject
 public:
 	explicit Configuration(QObject *parent = nullptr);
 	~Configuration() final;
-	void checkVersion(const QString &name);
 	QJsonObject object() const;
 	void update(bool force = false);
 
 Q_SIGNALS:
 	void finished(bool changed, const QString &error);
-	void updateReminder(bool expired, const QString &title, const QString &message);
 
 private:
 	QNetworkReply *sendRequest(const QUrl &url);
