@@ -44,7 +44,7 @@ Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 static QStringList stateToString(DWORD state)
 {
 	QStringList result;
-	#define STATE(X) if(state & SCARD_STATE_##X) result << QStringLiteral(#X)
+	#define STATE(X) if(state & SCARD_STATE_##X) result.append(QStringLiteral(#X))
 	STATE(IGNORE);
 	STATE(CHANGED);
 	STATE(UNKNOWN);
@@ -69,28 +69,13 @@ LONG SCCall( const char *file, int line, const char *function, Func func, Args..
 }
 #define SC(API, ...) SCCall(__FILE__, __LINE__, "SCard"#API, SCard##API, __VA_ARGS__)
 
-QByteArray QPCSCReader::Private::attrib( DWORD id ) const
-{
-	if(!card)
-		return {};
-	DWORD size = 0;
-	LONG err = SC(GetAttrib, card, id, nullptr, &size);
-	if( err != SCARD_S_SUCCESS || !size )
-		return {};
-	QByteArray data(int(size), 0);
-	err = SC(GetAttrib, card, id, LPBYTE(data.data()), &size);
-	if( err != SCARD_S_SUCCESS || !size )
-		return {};
-	return data;
-}
-
 QHash<DRIVER_FEATURES,quint32> QPCSCReader::Private::features()
 {
 	if(!featuresList.isEmpty())
 		return featuresList;
 	DWORD size = 0;
 	std::array<BYTE,256> feature{};
-	if(SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0U, feature.data(), feature.size(), &size))
+	if(SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0U, feature.data(), DWORD(feature.size()), &size))
 		return featuresList;
 	for(auto p = feature.cbegin(); std::distance(feature.cbegin(), p) < size; )
 	{
@@ -218,9 +203,9 @@ void QPCSC::run()
 			if(std::none_of(list.cbegin(), list.cend(), [&name](const SCARD_READERSTATE &state) { return strcmp(state.szReader, name) == 0; }))
 				list.push_back({ strdup(name), nullptr, 0, 0, 0, {} });
 		}
-		if(SC(GetStatusChange, pcsc.d->context, 5*1000, list.data(), DWORD(list.size())) != SCARD_S_SUCCESS)
+		if(SC(GetStatusChange, pcsc.d->context, 5*1000U, list.data(), DWORD(list.size())) != SCARD_S_SUCCESS)
 			continue;
-		for(std::vector<SCARD_READERSTATE>::iterator i = list.begin(); i != list.end(); )
+		for(auto i = list.begin(); i != list.end(); )
 		{
 			if((i->dwEventState & SCARD_STATE_CHANGED) == 0)
 			{
@@ -312,16 +297,6 @@ bool QPCSCReader::endTransaction( Reset reset )
 	return result;
 }
 
-QString QPCSCReader::friendlyName() const
-{
-	return QString::fromLocal8Bit( d->attrib( SCARD_ATTR_DEVICE_FRIENDLY_NAME_A ) );
-}
-
-bool QPCSCReader::isConnected() const
-{
-	return d->card;
-}
-
 bool QPCSCReader::isPinPad() const
 {
 	if(d->reader.contains("HID Global OMNIKEY 3x21 Smart Card Reader") ||
@@ -350,7 +325,7 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 	{
 		DWORD size = 0;
 		std::array<BYTE,256> recv{};
-		if(SC(Control, d->card, ioctl, nullptr, 0U, recv.data(), recv.size(), &size))
+		if(SC(Control, d->card, ioctl, nullptr, 0U, recv.data(), DWORD(recv.size()), &size))
 			return properties;
 		for(auto p = recv.cbegin(); std::distance(recv.cbegin(), p) < size; )
 		{
@@ -385,7 +360,7 @@ QStringList QPCSCReader::state() const
 QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 {
 	QByteArray data( 1024, 0 );
-	DWORD size = DWORD(data.size());
+	auto size = DWORD(data.size());
 
 	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex().constData();
 	LONG ret = SC(Transmit, d->card, &d->io,
@@ -431,53 +406,49 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	}
 
 	quint8 PINFrameOffset = 0, PINLengthOffset = 0;
-	#define SET() \
-		data->bTimerOut = 30; \
-		data->bTimerOut2 = 30; \
-		data->bmFormatString = FormatASCII|AlignLeft|quint8(PINFrameOffset << 4)|PINFrameOffsetUnitBits; \
-		data->bmPINBlockString = PINLengthNone << 5|PINFrameSizeAuto; \
-		data->bmPINLengthFormat = PINLengthOffsetUnitBits|PINLengthOffset; \
-		data->wPINMaxExtraDigit = quint16(minlen << 8) | 12; \
-		data->bEntryValidationCondition = ValidOnKeyPressed; \
-		data->wLangId = lang; \
-		data->bTeoPrologue[0] = 0x00; \
-		data->bTeoPrologue[1] = 0x00; \
-		data->bTeoPrologue[2] = 0x00; \
-		data->ulDataLength = quint32(apdu.size())
+	auto toByteArray = [&](auto &data) {
+		data.bTimerOut = 30;
+		data.bTimerOut2 = 30;
+		data.bmFormatString = FormatASCII|AlignLeft|quint8(PINFrameOffset << 4)|PINFrameOffsetUnitBits;
+		data.bmPINBlockString = PINLengthNone << 5|PINFrameSizeAuto;
+		data.bmPINLengthFormat = PINLengthOffsetUnitBits|PINLengthOffset;
+		data.wPINMaxExtraDigit = quint16(minlen << 8) | 12;
+		data.bEntryValidationCondition = ValidOnKeyPressed;
+		data.wLangId = lang;
+		data.ulDataLength = quint32(apdu.size());
+		return QByteArray((const char*)&data, sizeof(data) - 1) + apdu;
+	};
 
-	QByteArray cmd( 255, 0 );
+	QByteArray cmd;
 	if( verify )
 	{
-		PIN_VERIFY_STRUCTURE *data = (PIN_VERIFY_STRUCTURE*)cmd.data();
-		SET();
-		data->bNumberMessage = display ? CCIDDefaultInvitationMessage : NoInvitationMessage;
-		data->bMsgIndex = NoInvitationMessage;
-		cmd.resize( sizeof(PIN_VERIFY_STRUCTURE) - 1 );
+		PIN_VERIFY_STRUCTURE data{};
+		data.bNumberMessage = display ? CCIDDefaultInvitationMessage : NoInvitationMessage;
+		data.bMsgIndex = NoInvitationMessage;
+		cmd = toByteArray(data);
 	}
 	else
 	{
-		PIN_MODIFY_STRUCTURE *data = (PIN_MODIFY_STRUCTURE*)cmd.data();
-		SET();
-		data->bNumberMessage = display ? ThreeInvitationMessage : NoInvitationMessage;
-		data->bInsertionOffsetOld = 0x00;
-		data->bInsertionOffsetNew = newPINOffset;
-		data->bConfirmPIN = ConfirmNewPin;
+		PIN_MODIFY_STRUCTURE data{};
+		data.bNumberMessage = display ? ThreeInvitationMessage : NoInvitationMessage;
+		data.bInsertionOffsetOld = 0x00;
+		data.bInsertionOffsetNew = newPINOffset;
+		data.bConfirmPIN = ConfirmNewPin;
 		if(requestCurrentPIN)
 		{
-			data->bConfirmPIN |= RequestCurrentPin;
-			data->bMsgIndex1 = NoInvitationMessage;
-			data->bMsgIndex2 = OneInvitationMessage;
-			data->bMsgIndex3 = TwoInvitationMessage;
+			data.bConfirmPIN |= RequestCurrentPin;
+			data.bMsgIndex1 = NoInvitationMessage;
+			data.bMsgIndex2 = OneInvitationMessage;
+			data.bMsgIndex3 = TwoInvitationMessage;
 		}
 		else
 		{
-			data->bMsgIndex1 = OneInvitationMessage;
-			data->bMsgIndex2 = TwoInvitationMessage;
-			data->bMsgIndex3 = ThreeInvitationMessage;
+			data.bMsgIndex1 = OneInvitationMessage;
+			data.bMsgIndex2 = TwoInvitationMessage;
+			data.bMsgIndex3 = ThreeInvitationMessage;
 		}
-		cmd.resize( sizeof(PIN_MODIFY_STRUCTURE) - 1 );
+		cmd = toByteArray(data);
 	}
-	cmd += apdu;
 
 	DWORD ioctl = features.value( verify ? FEATURE_VERIFY_PIN_START : FEATURE_MODIFY_PIN_START );
 	if( !ioctl )
@@ -486,7 +457,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex().constData();
 	qCDebug(APDU).nospace() << "CTL" << "> " << cmd.toHex().constData();
 	QByteArray data( 255 + 3, 0 );
-	DWORD size = DWORD(data.size());
+	auto size = DWORD(data.size());
 	LONG err = SC(Control, d->card, ioctl, cmd.constData(), DWORD(cmd.size()), LPVOID(data.data()), DWORD(data.size()), &size);
 
 	if( DWORD finish = features.value( verify ? FEATURE_VERIFY_PIN_FINISH : FEATURE_MODIFY_PIN_FINISH ) )
@@ -495,7 +466,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 		err = SC(Control, d->card, finish, nullptr, 0U, LPVOID(data.data()), DWORD(data.size()), &size);
 	}
 
-	Result result = { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(err) };
+	Result result { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(err) };
 	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "< " << result.SW.toHex().constData();
 	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(int(size)).toHex().constData();
 	return result;

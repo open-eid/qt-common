@@ -184,32 +184,24 @@ using DISPLAY_PROPERTIES_STRUCTURE = struct {
 #pragma pack(pop)
 #endif
 
-#ifndef SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-#define SCARD_ATTR_VALUE(Class, Tag) ((ULONG(Class) << 16) | ULONG(Tag))
-#define SCARD_CLASS_SYSTEM     0x7fff
-#define SCARD_ATTR_DEVICE_FRIENDLY_NAME_A SCARD_ATTR_VALUE(SCARD_CLASS_SYSTEM, 0x0003)
-#define SCARD_ATTR_DEVICE_FRIENDLY_NAME SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-#endif
-
 class QPCSC::Private
 {
 public:
-	SCARDCONTEXT context = 0;
+	SCARDCONTEXT context {};
 	QHash<QString,QMutex*> lock;
 };
 
 class QPCSCReader::Private
 {
 public:
-	QByteArray attrib( DWORD id ) const;
 	QHash<DRIVER_FEATURES,quint32> features();
 
-	QPCSC::Private *d = nullptr;
-	SCARDHANDLE card = 0;
-	SCARD_IO_REQUEST io = {SCARD_PROTOCOL_UNDEFINED, sizeof(SCARD_IO_REQUEST)};
-	SCARD_READERSTATE state = {};
+	QPCSC::Private *d {};
+	SCARDHANDLE card {};
+	SCARD_IO_REQUEST io {SCARD_PROTOCOL_UNDEFINED, sizeof(SCARD_IO_REQUEST)};
+	SCARD_READERSTATE state {};
 	QByteArray reader;
-	bool isTransacted = false;
+	bool isTransacted {};
 
 	QHash<DRIVER_FEATURES,quint32> featuresList;
 };

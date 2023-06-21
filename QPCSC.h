@@ -106,8 +106,6 @@ public:
 	~QPCSCReader() final;
 
 	QByteArray atr() const;
-	QString friendlyName() const;
-	bool isConnected() const;
 	bool isPinPad() const;
 	bool isPresent() const;
 	QString name() const;
