@@ -28,6 +28,7 @@ target_compile_definitions(qdigidoccommon PUBLIC QT_DEPRECATED_WARNINGS_SINCE=05
 target_link_libraries(qdigidoccommon PUBLIC Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets OpenSSL::SSL)
 
 if(WIN32)
+	target_include_directories(qdigidoccommon PRIVATE ${Qt6Gui_PRIVATE_INCLUDE_DIRS})
 	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
 	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi winscard)
 elseif(APPLE)

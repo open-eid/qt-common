@@ -29,6 +29,7 @@
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
+#include <private/qguiapplication_p.h>
 #endif
 
 #ifndef COMMON_STATIC
@@ -47,6 +48,8 @@ Common::Common( int &argc, char **argv, const QString &app, const QString &icon 
 	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
+	if(auto inf = nativeInterface<QNativeInterface::Private::QWindowsApplication>())
+		inf->setWindowActivationBehavior(QNativeInterface::Private::QWindowsApplication::AlwaysActivateWindow);
 #ifdef NDEBUG
 	setLibraryPaths({ applicationDirPath() });
 #endif
