@@ -2,24 +2,24 @@ name: CI
 on: [push, pull_request]
 env:
   BUILD_NUMBER: ${{ github.run_number }}
-  MAKEFLAGS: -j3
+  CMAKE_BUILD_PARALLEL_LEVEL: 3
 jobs:
   macos:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 10.15
+      MACOSX_DEPLOYMENT_TARGET: 11.0
       HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Install libraries
       run: brew install qt@6
     - name: Build
       run: |
-        cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1 -B build -S .
+        cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@3.0 -B build -S .
         cmake --build build
   ubuntu:
     name: Build on Ubuntu to ${{ matrix.container }}
@@ -38,7 +38,7 @@ jobs:
       if: matrix.container != 'ubuntu:20.04'
       run: apt update -qq && apt install --no-install-recommends -y git ca-certificates build-essential pkg-config cmake libpcsclite-dev libssl-dev libgl-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Build packages
@@ -47,22 +47,22 @@ jobs:
         cmake --build build
   windows:
     name: Build on Windows
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: a69b65229b3956b7f45abd81671b7330114bcaad
+        vcpkgGitCommitId: 1f619be01b436b796dab797dd1e1721c5676f8ac
         vcpkgTriplet: x64-windows
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
-        version: 6.4.2
+        version: 6.6.1
         arch: win64_msvc2019_64
     - name: Build
       run: |

@@ -82,7 +82,7 @@ public:
 void Configuration::Private::initCache(bool clear)
 {
 #ifndef NO_CACHE
-	auto readAll = [clear, this](const QUrl &url, const QString &copy) {
+	auto readAll = [clear, this](const QUrl &url, const QString &copy) -> QByteArray {
 		QFile f(cache + url.fileName());
 		if(clear && f.exists())
 			f.remove();
@@ -153,7 +153,7 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 		{QCryptographicHash::Sha512, QByteArray::fromHex("3051300d060960864801650304020305000440")},
 	};
 	if(std::none_of(list.cbegin(), list.cend(), [&](const auto &item) {
-		return digest.startsWith(item.second) && digest.endsWith(QCryptographicHash::hash(data, item.first));
+		return digest == item.second + QCryptographicHash::hash(data, item.first);
 		}))
 		return false;
 	QString date = headerValue(toObject(data), QLatin1String("DATE")).toString();
@@ -230,8 +230,7 @@ Configuration::Configuration(QObject *parent)
 			d->setData(data, signature);
 #ifndef NO_CACHE
 			auto writeAll = [this](const QString &fileName, const QByteArray &data) {
-				QFile f(d->cache + fileName);
-				if(f.open(QFile::WriteOnly|QFile::Truncate))
+				if(QFile f(d->cache + fileName); f.open(QFile::WriteOnly|QFile::Truncate))
 					f.write(data);
 			};
 			writeAll(d->url.fileName(), d->data);
@@ -285,8 +284,6 @@ Configuration::Configuration(QObject *parent)
 			d->initCache(true);
 		}
 	}
-
-	Q_EMIT finished(true, {});
 
 #ifdef LAST_CHECK_DAYS
 	QDate lastCheck = QDate::fromString(d->s.value(QStringLiteral("LastCheck")).toString(), QStringLiteral("yyyyMMdd"));
