@@ -2,13 +2,13 @@ name: CI
 on: [push, pull_request]
 env:
   BUILD_NUMBER: ${{ github.run_number }}
-  CMAKE_BUILD_PARALLEL_LEVEL: 3
+  CMAKE_BUILD_PARALLEL_LEVEL: 4
 jobs:
   macos:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 11.0
+      MACOSX_DEPLOYMENT_TARGET: 12.0
       HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
     steps:
     - name: Checkout
@@ -24,18 +24,18 @@ jobs:
   ubuntu:
     name: Build on Ubuntu to ${{ matrix.container }}
     runs-on: ubuntu-latest
-    container: ${{ matrix.container }}
+    container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:22.04']
+        container: ['20.04', '22.04', '24.04']
     env:
       DEBIAN_FRONTEND: noninteractive
     steps:
     - name: Install dependencies
-      if: matrix.container == 'ubuntu:20.04'
+      if: matrix.container == '20.04'
       run: apt update -qq && apt install --no-install-recommends -y git ca-certificates build-essential pkg-config cmake libpcsclite-dev libssl-dev qttools5-dev-tools qttools5-dev
     - name: Install dependencies
-      if: matrix.container != 'ubuntu:20.04'
+      if: matrix.container != '20.04'
       run: apt update -qq && apt install --no-install-recommends -y git ca-certificates build-essential pkg-config cmake libpcsclite-dev libssl-dev libgl-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
     - name: Checkout
       uses: actions/checkout@v4
@@ -57,12 +57,12 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: 1f619be01b436b796dab797dd1e1721c5676f8ac
+        vcpkgGitCommitId: 18b028fe785e707265fa0e35590b7537ae1d12ea
         vcpkgTriplet: x64-windows
     - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
-        version: 6.6.1
+        version: 6.7.1
         arch: win64_msvc2019_64
     - name: Build
       run: |
