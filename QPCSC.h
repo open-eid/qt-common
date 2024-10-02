@@ -56,15 +56,10 @@ class QPCSCReader final: public QObject
 	Q_OBJECT
 public:
 	struct Result {
-		QByteArray SW;
 		QByteArray data;
+		quint16 SW;
 		quint32 err = 0;
-		inline operator bool() const { return resultOk(); }
-		inline bool resultOk() const
-		{
-			static const QByteArray OK("\x90\x00", 2);
-			return SW == OK;
-		}
+		constexpr operator bool() const { return SW == 0x9000; }
 	};
 
 	enum Properties {
