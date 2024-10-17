@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.10)
 project(qdigidoccommon VERSION 1.0.0)
 if(NOT VERSION)
-	set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
-	include(VersionInfo)
+	macro(set_env)
+		set(${ARGN})
+	endmacro()
+	add_compile_definitions(
+		MAJOR_VER=${PROJECT_VERSION_MAJOR}
+		MINOR_VER=${PROJECT_VERSION_MINOR}
+		RELEASE_VER=${PROJECT_VERSION_PATCH}
+		BUILD_VER=$<IF:$<BOOL:$ENV{BUILD_NUMBER}>,$ENV{BUILD_NUMBER},0>
+	)
 endif()
 set_env( CONFIG_URL "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
 find_package(OpenSSL 1.1.1 REQUIRED)
@@ -22,7 +29,7 @@ configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
 qt_add_translation(SOURCES translations/qtbase_et.ts translations/qtbase_ru.ts
 	translations/common_en.ts translations/common_et.ts translations/common_ru.ts)
 qt_add_resources(SOURCES ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc)
-add_library(qdigidoccommon STATIC ${SOURCES} Common.cpp QPCSC.cpp)
+add_library(qdigidoccommon STATIC ${SOURCES} Common.cpp)
 target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_definitions(qdigidoccommon PUBLIC QT_DEPRECATED_WARNINGS_SINCE=051200)
 target_link_libraries(qdigidoccommon PUBLIC Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets OpenSSL::SSL)
@@ -35,7 +42,7 @@ elseif(APPLE)
 else()
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(PCSCLITE REQUIRED libpcsclite IMPORTED_TARGET)
-	target_link_libraries(qdigidoccommon PRIVATE PkgConfig::PCSCLITE)
+	target_link_libraries(qdigidoccommon PUBLIC PkgConfig::PCSCLITE)
 endif()
 
 if(NOT APPLE)

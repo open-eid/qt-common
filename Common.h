@@ -19,28 +19,12 @@
 
 #pragma once
 
-#include <QtCore/QtGlobal>
+#include <QtCore/QStringList>
 
-#ifdef Q_OS_MAC
-#include <QtWidgets/QApplication>
-typedef QApplication BaseApplication;
-#else
-#include "qtsingleapplication/src/QtSingleApplication"
-typedef QtSingleApplication BaseApplication;
-#endif
-
-class QLabel;
-
-class Common: public BaseApplication
+class Common
 {
-	Q_OBJECT
 public:
-#ifndef COMMON_STATIC
-	Common( int &argc, char **argv, const QString &app, const QString &icon );
-#endif
-
 	static QString applicationOs();
+	static QStringList drivers();
 
-private:
-	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 };

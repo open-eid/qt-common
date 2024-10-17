@@ -19,48 +19,20 @@
 
 #include "Common.h"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QDebug>
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
 #include <QtCore/QOperatingSystemVersion>
-#include <QtGui/QIcon>
-#include <QtNetwork/QNetworkProxyFactory>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
-#endif
-
-#ifndef COMMON_STATIC
-Common::Common( int &argc, char **argv, const QString &app, const QString &icon )
-	: BaseApplication( argc, argv )
-{
-	setApplicationName( app );
-	setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
-		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
-	setOrganizationDomain(QStringLiteral("ria.ee"));
-	setOrganizationName(QStringLiteral("RIA"));
-	setWindowIcon( QIcon( icon ) );
-	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), app)))
-		qInstallMessageHandler(msgHandler);
-
-	Q_INIT_RESOURCE(common_tr);
-#if defined(Q_OS_WIN)
-	AllowSetForegroundWindow( ASFW_ANY );
-#ifdef NDEBUG
-	setLibraryPaths({ applicationDirPath() });
-#endif
+#include <Regstr.h>
+#include <Setupapi.h>
 #elif defined(Q_OS_MAC)
-	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
-#ifdef NDEBUG
-	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
-#endif
-#endif
-	setStyleSheet(QStringLiteral(
-		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
-
-	QNetworkProxyFactory::setUseSystemConfiguration(true);
-}
+#include <PCSC/wintypes.h>
+#include <PCSC/winscard.h>
+#include <arpa/inet.h>
+#else
+#include <wintypes.h>
+#include <winscard.h>
+#include <arpa/inet.h>
 #endif
 
 QString Common::applicationOs()
@@ -93,28 +65,50 @@ QString Common::applicationOs()
 #endif
 }
 
-void Common::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
+QStringList Common::drivers()
 {
-	QFile f(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName()));
-	if(!f.open( QFile::Append ))
-		return;
-	f.write(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss ")).toUtf8());
-	switch(type)
+	QStringList list;
+#ifdef Q_OS_WIN
+	GUID guid {0x50dd5230L, 0xba8a, 0x11d1, 0xbf, 0x5d, 0x00, 0x00, 0xf8, 0x05, 0xf5, 0x30}; // SmartCardReader
+	HDEVINFO h = SetupDiGetClassDevs(&guid, nullptr, 0, DIGCF_PRESENT);
+	if(!h)
+		return list;
+
+	SP_DEVINFO_DATA info { sizeof(SP_DEVINFO_DATA) };
+	DWORD size = 0;
+	WCHAR data[1024];
+	for(DWORD i = 0; SetupDiEnumDeviceInfo(h, i, &info); ++i)
 	{
-	case QtDebugMsg: f.write("D"); break;
-	case QtWarningMsg: f.write("W"); break;
-	case QtCriticalMsg: f.write("C"); break;
-	case QtFatalMsg: f.write("F"); break;
-	default: f.write("I"); break;
+		DWORD conf = 0;
+		SetupDiGetDeviceRegistryPropertyW(h, &info,
+			SPDRP_CONFIGFLAGS, 0, LPBYTE(&conf), sizeof(conf), &size);
+		if(conf & CONFIGFLAG_DISABLED)
+			continue;
+
+		SetupDiGetDeviceRegistryPropertyW(h, &info,
+			SPDRP_DEVICEDESC, 0, LPBYTE(data), sizeof(data), &size);
+		QString name = QString::fromWCharArray(data);
+
+		SetupDiGetDeviceRegistryPropertyW(h, &info,
+			SPDRP_HARDWAREID, 0, LPBYTE(data), sizeof(data), &size);
+
+		list.append(QStringLiteral("%1 (%2)").arg(name, QString::fromWCharArray(data)));
 	}
-	f.write(QStringLiteral(" %1 ").arg(QLatin1String(ctx.category)).toUtf8());
-	if(ctx.line > 0)
-	{
-		f.write(QStringLiteral("%1:%2 \"%3\" ")
-			.arg(QFileInfo(QString::fromLatin1(ctx.file)).fileName())
-			.arg(ctx.line)
-			.arg(QLatin1String(ctx.function)).toUtf8());
-	}
-	f.write(msg.toUtf8());
-	f.write("\n");
+	SetupDiDestroyDeviceInfoList(h);
+#else
+	SCARDCONTEXT context{};
+	SCardEstablishContext(DWORD(SCARD_SCOPE_USER), nullptr, nullptr, &context);
+	if(!context)
+		return list;
+	DWORD size{};
+	if(SCardListReaders(context, nullptr, nullptr, &size) != SCARD_S_SUCCESS || !size)
+		return list;
+	QByteArray data(int(size), 0);
+	if(SCardListReaders(context, nullptr, data.data(), &size) != SCARD_S_SUCCESS)
+		data.clear();
+	SCardReleaseContext(context);
+	list = QString::fromLatin1(data).split('\0');
+	list.removeAll({});
+#endif
+	return list;
 }
