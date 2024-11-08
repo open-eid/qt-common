@@ -47,7 +47,7 @@
 // http://ludovic.rousseau.free.fr/softwares/pcsc-lite/SecurePIN%20discussion%20v5.pdf
 #define CM_IOCTL_GET_FEATURE_REQUEST SCARD_CTL_CODE(3400)
 
-enum DRIVER_FEATURES {
+enum DRIVER_FEATURES : quint8 {
 FEATURE_VERIFY_PIN_START         = 0x01,
 FEATURE_VERIFY_PIN_FINISH        = 0x02,
 FEATURE_MODIFY_PIN_START         = 0x03,
@@ -69,13 +69,9 @@ FEATURE_GET_TLV_PROPERTIES       = 0x12,
 FEATURE_CCID_ESC_COMMAND         = 0x13
 };
 
-#ifdef Q_OS_MAC
-#pragma pack(1)
-#else
 #pragma pack(push, 1)
-#endif
 
-using PCSC_TLV_STRUCTURE = struct
+struct PCSC_TLV_STRUCTURE
 {
 	quint8 tag;
 	quint8 length;
@@ -128,7 +124,7 @@ enum bConfirmPIN : quint8
 	AdvancedModify = 1 << 2,
 };
 
-using PIN_VERIFY_STRUCTURE = struct
+struct PIN_VERIFY_STRUCTURE
 {
 	quint8 bTimerOut; // timeout in seconds (00 means use default timeout)
 	quint8 bTimerOut2; // timeout in seconds after first key stroke
@@ -145,7 +141,7 @@ using PIN_VERIFY_STRUCTURE = struct
 	quint8 abData[1]; // Data to send to the ICC
 };
 
-using PIN_MODIFY_STRUCTURE = struct
+struct PIN_MODIFY_STRUCTURE
 {
 	quint8 bTimerOut; // timeout in seconds (00 means use default timeout)
 	quint8 bTimerOut2; // timeout in seconds after first key stroke
@@ -167,22 +163,20 @@ using PIN_MODIFY_STRUCTURE = struct
 	quint8 abData[1]; // Data to send to the ICC
 };
 
-using PIN_PROPERTIES_STRUCTURE = struct {
+struct PIN_PROPERTIES_STRUCTURE
+{
 	quint16 wLcdLayout;
 	quint8 bEntryValidationCondition;
 	quint8 bTimeOut2;
 };
 
-using DISPLAY_PROPERTIES_STRUCTURE = struct {
+struct DISPLAY_PROPERTIES_STRUCTURE
+{
 	quint16 wLcdMaxCharacters;
 	quint16 wLcdMaxLines;
 };
 
-#ifdef Q_OS_MAC
-#pragma pack()
-#else
 #pragma pack(pop)
-#endif
 
 class QPCSC::Private
 {

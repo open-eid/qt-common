@@ -41,6 +41,11 @@ namespace Qt {
 Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
 Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 
+static quint16 toUInt16(const QByteArray &data, int size)
+{
+	return size >= 2 ? quint16((quint16(data[size - 2]) << 8) | quint16(data[size - 1])) : 0;
+}
+
 static QStringList stateToString(DWORD state)
 {
 	QStringList result;
@@ -58,10 +63,10 @@ static QStringList stateToString(DWORD state)
 	return result;
 }
 
-template < typename Func, typename... Args>
-LONG SCCall( const char *file, int line, const char *function, Func func, Args... args)
+template<typename Func, typename... Args>
+static auto SCCall(const char *file, int line, const char *function, Func func, Args... args)
 {
-	LONG err = func(args...);
+	auto err = func(args...);
 	if(SCard().isDebugEnabled())
 		QMessageLogger(file, line, function, SCard().categoryName()).debug()
 			<< function << Qt::hex << (unsigned long)err;
@@ -284,7 +289,7 @@ void QPCSCReader::disconnect( Reset reset )
 	if( d->card )
 		SC(Disconnect, d->card, reset);
 	d->io.dwProtocol = SCARD_PROTOCOL_UNDEFINED;
-	d->card = 0;
+	d->card = {};
 	d->featuresList.clear();
 	updateState();
 }
@@ -362,19 +367,19 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	QByteArray data( 1024, 0 );
 	auto size = DWORD(data.size());
 
-	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex().constData();
+	qCDebug(APDU).nospace().noquote() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex();
 	LONG ret = SC(Transmit, d->card, &d->io,
 		LPCBYTE(apdu.constData()), DWORD(apdu.size()), nullptr, LPBYTE(data.data()), &size);
 	if( ret != SCARD_S_SUCCESS )
 		return { {}, {}, quint32(ret) };
 
-	Result result = { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(ret) };
-	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "< " << result.SW.toHex().constData();
-	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(int(size)).toHex().constData();
+	Result result { data.left(int(size - 2)), toUInt16(data, size), quint32(ret) };
+	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "< " << Qt::hex << result.SW;
+	if(!result.data.isEmpty()) qCDebug(APDU).nospace().noquote() << result.data.toHex();
 
-	switch(result.SW.at(0))
+	switch(result.SW & 0xFF00)
 	{
-	case 0x61: // Read more
+	case 0x6100: // Read more
 	{
 		QByteArray cmd( "\x00\xC0\x00\x00\x00", 5 );
 		cmd[4] = data.at(int(size - 1));
@@ -382,10 +387,10 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 		result2.data.prepend(result.data);
 		return result2;
 	}
-	case 0x6C: // Excpected lenght
+	case 0x6C00: // Excpected lenght
 	{
 		QByteArray cmd = apdu;
-		cmd[4] = result.SW.at(1);
+		cmd[4] = char(result.SW);
 		return transfer(cmd);
 	}
 	default: return result;
@@ -454,8 +459,8 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	if( !ioctl )
 		ioctl = features.value( verify ? FEATURE_VERIFY_PIN_DIRECT : FEATURE_MODIFY_PIN_DIRECT );
 
-	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex().constData();
-	qCDebug(APDU).nospace() << "CTL" << "> " << cmd.toHex().constData();
+	qCDebug(APDU).nospace().noquote() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex();
+	qCDebug(APDU).nospace().noquote() << "CTL" << "> " << cmd.toHex();
 	QByteArray data( 255 + 3, 0 );
 	auto size = DWORD(data.size());
 	LONG err = SC(Control, d->card, ioctl, cmd.constData(), DWORD(cmd.size()), LPVOID(data.data()), DWORD(data.size()), &size);
@@ -466,9 +471,9 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 		err = SC(Control, d->card, finish, nullptr, 0U, LPVOID(data.data()), DWORD(data.size()), &size);
 	}
 
-	Result result { data.mid(int(size - 2), 2), data.left(int(size - 2)), quint32(err) };
-	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "< " << result.SW.toHex().constData();
-	if(!result.data.isEmpty()) qCDebug(APDU).nospace() << data.left(int(size)).toHex().constData();
+	Result result { data.left(int(size - 2)), toUInt16(data, size), quint32(err) };
+	qCDebug(APDU).nospace() << 'T' << d->io.dwProtocol - 1 << "< " << Qt::hex << result.SW;
+	if(!result.data.isEmpty()) qCDebug(APDU).nospace().noquote() << result.data.toHex();
 	return result;
 }
 
