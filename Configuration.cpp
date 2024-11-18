@@ -20,8 +20,7 @@
 #include "Configuration.h"
 
 #include "Common.h"
-#include "QPCSC.h"
-
+#include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -175,8 +174,8 @@ Configuration::Configuration(QObject *parent)
 		d->url.adjusted(QUrl::RemoveFilename).toString(),
 		QFileInfo(d->url.fileName()).baseName());
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
-		.arg(QApplication::applicationName(), QApplication::applicationVersion(),
-			Common::applicationOs(), QLocale().uiLanguages().first(), QPCSC::instance().drivers().join('/')).toUtf8());
+		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(),
+			Common::applicationOs(), QLocale().uiLanguages().first(), Common::drivers().join('/')).toUtf8());
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 	d->req.setTransferTimeout();
 #endif
@@ -185,7 +184,7 @@ Configuration::Configuration(QObject *parent)
 			[](QNetworkReply *reply, const QList<QSslError> &errors){
 		reply->ignoreSslErrors(errors);
 	});
-	connect(d->net, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply){
+	connect(d->net, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply){
 		QScopedPointer<QNetworkReply, QScopedPointerDeleteLater> replyScoped(reply);
 		if(reply->error() != QNetworkReply::NoError)
 		{
@@ -244,7 +243,7 @@ Configuration::Configuration(QObject *parent)
 	});
 
 	QByteArray key = readFile(QStringLiteral(":/config.pub"));
-	BIO *bio = BIO_new_mem_buf(key.constData(), key.size());
+	BIO *bio = BIO_new_mem_buf(key.constData(), int(key.size()));
 	if(!bio)
 	{
 		qWarning() << "Failed to parse public key";
@@ -295,7 +294,7 @@ Configuration::Configuration(QObject *parent)
 	// Scheduled update or DigiDoc4 updated
 	else if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS) ||
 		QVersionNumber::fromString(QSettings().value(QStringLiteral("LastVersion")).toString()) <
-		QVersionNumber::fromString(QApplication::applicationVersion()))
+		QVersionNumber::fromString(QCoreApplication::applicationVersion()))
 		update();
 #endif
 }
@@ -340,5 +339,5 @@ void Configuration::update(bool force)
 {
 	d->initCache(force);
 	sendRequest(d->rsaurl);
-	QSettings().setValue(QStringLiteral("LastVersion"), QApplication::applicationVersion());
+	QSettings().setValue(QStringLiteral("LastVersion"), QCoreApplication::applicationVersion());
 }
