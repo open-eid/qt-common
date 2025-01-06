@@ -40,7 +40,14 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 
-#include <memory>
+#include <array>
+
+template<auto D>
+struct free_deleter
+{
+	template<typename T>
+	constexpr void operator()(T *t) const noexcept { D(t); }
+};
 
 static QVariant headerValue(const QJsonObject &obj, QLatin1String key) {
 	return obj.value(QLatin1String("META-INF")).toObject().value(key);
@@ -70,7 +77,7 @@ public:
 	QByteArray data, signature;
 	QJsonObject dataobject;
 	QUrl rsaurl, url = QUrl(QStringLiteral(CONFIG_URL));
-	EVP_PKEY *publicKey = nullptr;
+	std::unique_ptr<EVP_PKEY,free_deleter<EVP_PKEY_free>> publicKey;
 	QNetworkRequest req;
 	QNetworkAccessManager *net = nullptr;
 #ifdef LAST_CHECK_DAYS
@@ -105,21 +112,17 @@ void Configuration::Private::setData(const QByteArray &_data, const QByteArray &
 	data = _data;
 	signature = _signature;
 	dataobject = toObject(data);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
 	QSettings system(QSettings::SystemScope);
-#else
-	QSettings system(QSettings::SystemScope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
-#endif
 	for(const QString &key: system.childKeys())
 	{
 		if(!dataobject.contains(key))
 			continue;
 		QVariant value = system.value(key);
-		switch(value.type())
+		switch(value.typeId())
 		{
-		case QVariant::String:
+		case QMetaType::QString:
 			dataobject[key] = QJsonValue(value.toString()); break;
-		case QVariant::StringList:
+		case QMetaType::QStringList:
 			dataobject[key] = QJsonValue(QJsonArray::fromStringList(value.toStringList())); break;
 		default: break;
 		}
@@ -133,23 +136,24 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 
 	QByteArray sig = QByteArray::fromBase64(signature);
 	size_t size = 0;
-	auto ctx = std::unique_ptr<EVP_PKEY_CTX,decltype(&EVP_PKEY_CTX_free)>(EVP_PKEY_CTX_new(publicKey, nullptr), EVP_PKEY_CTX_free);
+	auto ctx = std::unique_ptr<EVP_PKEY_CTX,free_deleter<EVP_PKEY_CTX_free>>(EVP_PKEY_CTX_new(publicKey.get(), nullptr));
 	if(!ctx || EVP_PKEY_verify_recover_init(ctx.get()) < 1 ||
 		EVP_PKEY_verify_recover(ctx.get(), nullptr, &size,
 			(const unsigned char*)sig.constData(), size_t(sig.size())) < 1)
 		return false;
-	QByteArray digest(int(size), '\0');
+	QByteArray digest(qsizetype(size), '\0');
 	if(EVP_PKEY_verify_recover(ctx.get(), (unsigned char*)digest.data(), &size,
 			(const unsigned char*)sig.constData(), size_t(sig.size())) < 1)
 		return false;
-	digest.resize(int(size));
+	digest.resize(qsizetype(size));
 
-	static const std::map<QCryptographicHash::Algorithm,QByteArray> list {
-		{QCryptographicHash::Sha1, QByteArray::fromHex("3021300906052b0e03021a05000414")},
-		{QCryptographicHash::Sha224, QByteArray::fromHex("302d300d06096086480165030402040500041c")},
-		{QCryptographicHash::Sha256, QByteArray::fromHex("3031300d060960864801650304020105000420")},
-		{QCryptographicHash::Sha384, QByteArray::fromHex("3041300d060960864801650304020205000430")},
-		{QCryptographicHash::Sha512, QByteArray::fromHex("3051300d060960864801650304020305000440")},
+	using item = std::pair<QCryptographicHash::Algorithm,QByteArray>;
+	static const std::array list {
+		item{QCryptographicHash::Sha1, QByteArray::fromHex("3021300906052b0e03021a05000414")},
+		item{QCryptographicHash::Sha224, QByteArray::fromHex("302d300d06096086480165030402040500041c")},
+		item{QCryptographicHash::Sha256, QByteArray::fromHex("3031300d060960864801650304020105000420")},
+		item{QCryptographicHash::Sha384, QByteArray::fromHex("3041300d060960864801650304020205000430")},
+		item{QCryptographicHash::Sha512, QByteArray::fromHex("3051300d060960864801650304020305000440")},
 	};
 	if(std::none_of(list.cbegin(), list.cend(), [&](const auto &item) {
 		return digest == item.second + QCryptographicHash::hash(data, item.first);
@@ -165,8 +169,6 @@ Configuration::Configuration(QObject *parent)
 	: QObject(parent)
 	, d(new Private)
 {
-	Q_INIT_RESOURCE(config);
-
 #ifndef NO_CACHE
 	QDir().mkpath(d->cache);
 #endif
@@ -176,9 +178,7 @@ Configuration::Configuration(QObject *parent)
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(),
 			Common::applicationOs(), QLocale().uiLanguages().first(), Common::drivers().join('/')).toUtf8());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 	d->req.setTransferTimeout();
-#endif
 	d->net = new QNetworkAccessManager(this);
 	connect(d->net, &QNetworkAccessManager::sslErrors, this,
 			[](QNetworkReply *reply, const QList<QSslError> &errors){
@@ -203,7 +203,8 @@ Configuration::Configuration(QObject *parent)
 				return;
 			}
 			qDebug() << "Remote signature does not match, downloading new configuration";
-			sendRequest(d->url)->setProperty("signature", signature);
+			d->req.setUrl(d->url);
+			d->net->get(d->req)->setProperty("signature", signature);
 		}
 		else if(reply->url() == d->url)
 		{
@@ -250,14 +251,7 @@ Configuration::Configuration(QObject *parent)
 		return;
 	}
 
-#if OPENSSL_VERSION_NUMBER < 0x30000000L
-	RSA *rsa = PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
-	d->publicKey = EVP_PKEY_new();
-	EVP_PKEY_set1_RSA(d->publicKey, rsa);
-	RSA_free(rsa);
-#else
-	d->publicKey = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
-#endif
+	d->publicKey.reset(PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr));
 	BIO_free(bio);
 	if(!d->publicKey)
 	{
@@ -299,45 +293,17 @@ Configuration::Configuration(QObject *parent)
 #endif
 }
 
-Configuration::~Configuration()
-{
-	if(d->publicKey)
-		EVP_PKEY_free(d->publicKey);
-	delete d;
-}
+Configuration::~Configuration() = default;
 
 QJsonObject Configuration::object() const
 {
 	return d->dataobject;
 }
 
-QNetworkReply* Configuration::sendRequest(const QUrl &url)
-{
-	d->req.setUrl(url);
-	QNetworkReply *reply = d->net->get(d->req);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	if(!reply->isRunning())
-		return reply;
-	QTimer *timer = new QTimer(this);
-	timer->setSingleShot(true);
-	connect(reply, &QNetworkReply::finished, timer, [=]{
-		timer->stop();
-		timer->deleteLater();
-	});
-	connect(timer, &QTimer::timeout, this, [=]{
-		timer->deleteLater();
-		reply->abort();
-		qDebug() << "Request timed out";
-		Q_EMIT finished(false, tr("Request timed out"));
-	});
-	timer->start(30*1000);
-#endif
-	return reply;
-}
-
 void Configuration::update(bool force)
 {
 	d->initCache(force);
-	sendRequest(d->rsaurl);
+	d->req.setUrl(d->rsaurl);
+	d->net->get(d->req);
 	QSettings().setValue(QStringLiteral("LastVersion"), QCoreApplication::applicationVersion());
 }

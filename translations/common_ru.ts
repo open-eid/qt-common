@@ -4,10 +4,6 @@
 <context>
     <name>Configuration</name>
     <message>
-        <source>Request timed out</source>
-        <translation>Время запроса истекло</translation>
-    </message>
-    <message>
         <source>The configuration file located on the server cannot be validated.</source>
         <translation>Находящийся на сервере конфигурационный файл не валидируется.</translation>
     </message>
