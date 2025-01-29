@@ -36,10 +36,8 @@ Q_SIGNALS:
 	void finished(bool changed, const QString &error);
 
 private:
-	QNetworkReply *sendRequest(const QUrl &url);
-
 	Q_DISABLE_COPY(Configuration)
 
 	class Private;
-	Private *d;
+	std::unique_ptr<Private> d;
 };

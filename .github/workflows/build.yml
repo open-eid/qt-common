@@ -13,8 +13,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Install libraries
       run: brew install qt@6
     - name: Build
@@ -27,20 +25,14 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['20.04', '22.04', '24.04']
+        container: ['22.04', '24.04', '24.10']
     env:
       DEBIAN_FRONTEND: noninteractive
     steps:
     - name: Install dependencies
-      if: matrix.container == '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git ca-certificates build-essential pkg-config cmake libpcsclite-dev libssl-dev qttools5-dev-tools qttools5-dev
-    - name: Install dependencies
-      if: matrix.container != '20.04'
       run: apt update -qq && apt install --no-install-recommends -y git ca-certificates build-essential pkg-config cmake libpcsclite-dev libssl-dev libgl-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Build packages
       run: |
         cmake -B build -S .
@@ -51,19 +43,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: 18b028fe785e707265fa0e35590b7537ae1d12ea
+        vcpkgGitCommitId: e4644bd15436d406bba71928d086c809e5c9ca45
         vcpkgTriplet: x64-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.7.1
-        arch: win64_msvc2019_64
+        version: 6.8.1
+        arch: win64_msvc2022_64
     - name: Build
       run: |
         cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo `

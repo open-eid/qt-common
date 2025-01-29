@@ -1,38 +1,18 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.22)
 project(qdigidoccommon VERSION 1.0.0)
-if(NOT VERSION)
+if(NOT DEFINED set_env)
 	macro(set_env)
 		set(${ARGN})
 	endmacro()
-	add_compile_definitions(
-		MAJOR_VER=${PROJECT_VERSION_MAJOR}
-		MINOR_VER=${PROJECT_VERSION_MINOR}
-		RELEASE_VER=${PROJECT_VERSION_PATCH}
-		BUILD_VER=$<IF:$<BOOL:$ENV{BUILD_NUMBER}>,$ENV{BUILD_NUMBER},0>
-	)
 endif()
 set_env( CONFIG_URL "https://id.eesti.ee/config.json" CACHE STRING "Set Config URL" )
-find_package(OpenSSL 1.1.1 REQUIRED)
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} 5.12.0 REQUIRED COMPONENTS Widgets Network LinguistTools)
+find_package(OpenSSL 3.0.0 REQUIRED)
+find_package(Qt6 6.2.0 REQUIRED COMPONENTS Widgets Network LinguistTools)
 
-if(${QT_VERSION} VERSION_LESS "5.15.0")
-	macro(qt_add_translation)
-		qt5_add_translation(${ARGN})
-	endmacro()
-	macro(qt_add_resources)
-		qt5_add_resources(${ARGN})
-	endmacro()
-endif()
-
-configure_file( translations/common_tr.qrc common_tr.qrc COPYONLY )
-qt_add_translation(SOURCES translations/qtbase_et.ts translations/qtbase_ru.ts
-	translations/common_en.ts translations/common_et.ts translations/common_ru.ts)
-qt_add_resources(SOURCES ${CMAKE_CURRENT_BINARY_DIR}/common_tr.qrc)
 add_library(qdigidoccommon STATIC ${SOURCES} Common.cpp)
 target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_compile_definitions(qdigidoccommon PUBLIC QT_DEPRECATED_WARNINGS_SINCE=051200)
-target_link_libraries(qdigidoccommon PUBLIC Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets OpenSSL::SSL)
+target_compile_definitions(qdigidoccommon PUBLIC QT_WARN_DEPRECATED_UP_TO=060200)
+target_link_libraries(qdigidoccommon PUBLIC Qt6::Network Qt6::Widgets OpenSSL::SSL)
 
 if(WIN32)
 	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
@@ -57,16 +37,18 @@ if( CONFIG_URL )
 	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.json AND
 		EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.rsa AND
 		EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.pub)
-		qt_add_resources(CONFIG_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/config.qrc)
+		set(CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 	else()
 		file(DOWNLOAD ${CONFIG_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.json)
 		string(REPLACE ".json" ".rsa" RSA_URL ${CONFIG_URL} )
 		file(DOWNLOAD ${RSA_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.rsa)
 		string(REPLACE ".json" ".pub" PUB_URL ${CONFIG_URL} )
 		file(DOWNLOAD ${PUB_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.pub)
-		configure_file(config.qrc config.qrc COPYONLY)
-		qt_add_resources(CONFIG_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/config.qrc)
+		set(CONFIG_DIR ${CMAKE_CURRENT_BINARY_DIR})
 	endif()
+	qt_add_resources(qdigidoccommon config BASE ${CONFIG_DIR} PREFIX / FILES
+		${CONFIG_DIR}/config.json ${CONFIG_DIR}/config.rsa ${CONFIG_DIR}/config.pub
+	)
 	target_compile_definitions(qdigidoccommon PUBLIC CONFIG_URL="${CONFIG_URL}")
-	target_sources(qdigidoccommon PRIVATE ${CONFIG_SOURCES} Configuration.cpp)
+	target_sources(qdigidoccommon PRIVATE Configuration.cpp)
 endif()

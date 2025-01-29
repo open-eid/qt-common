@@ -4,10 +4,6 @@
 <context>
     <name>Configuration</name>
     <message>
-        <source>Request timed out</source>
-        <translation>Tempo de requesição expirada</translation>
-    </message>
-    <message>
         <source>The configuration file located on the server cannot be validated.</source>
         <translation>O arquivo de configuração localizado no servidor não pode ser validado.</translation>
     </message>
