@@ -35,19 +35,19 @@ if( CONFIG_URL )
 		set_source_files_properties(Configuration.cpp PROPERTIES COMPILE_DEFINITIONS LAST_CHECK_DAYS=${LAST_CHECK_DAYS})
 	endif()
 	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.json AND
-		EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.rsa AND
-		EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.pub)
+		EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.ecc AND
+		EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config.ecpub)
 		set(CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 	else()
 		file(DOWNLOAD ${CONFIG_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.json)
-		string(REPLACE ".json" ".rsa" RSA_URL ${CONFIG_URL} )
-		file(DOWNLOAD ${RSA_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.rsa)
-		string(REPLACE ".json" ".pub" PUB_URL ${CONFIG_URL} )
-		file(DOWNLOAD ${PUB_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.pub)
+		string(REPLACE ".json" ".ecc" ECC_URL ${CONFIG_URL})
+		file(DOWNLOAD ${ECC_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.ecc)
+		string(REPLACE ".json" ".ecpub" PUB_URL ${CONFIG_URL})
+		file(DOWNLOAD ${PUB_URL} ${CMAKE_CURRENT_BINARY_DIR}/config.ecpub)
 		set(CONFIG_DIR ${CMAKE_CURRENT_BINARY_DIR})
 	endif()
 	qt_add_resources(qdigidoccommon config BASE ${CONFIG_DIR} PREFIX / FILES
-		${CONFIG_DIR}/config.json ${CONFIG_DIR}/config.rsa ${CONFIG_DIR}/config.pub
+		${CONFIG_DIR}/config.json ${CONFIG_DIR}/config.ecc ${CONFIG_DIR}/config.ecpub
 	)
 	target_compile_definitions(qdigidoccommon PUBLIC CONFIG_URL="${CONFIG_URL}")
 	target_sources(qdigidoccommon PRIVATE Configuration.cpp)
