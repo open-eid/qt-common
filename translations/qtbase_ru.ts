@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>Assets::Downloader::AssetDownloader</name>
+    <message>
+        <source>Downloading JSON file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading zip file...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unzipping...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading assets...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copying assets...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CloseButton</name>
     <message>
         <source>Close Tab</source>
@@ -51,6 +74,41 @@
     <message>
         <source>Automatic</source>
         <translation>Автоматически</translation>
+    </message>
+</context>
+<context>
+    <name>QAbstractFileIconProvider</name>
+    <message>
+        <source>Drive</source>
+        <translation>Диск</translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation>Файл</translation>
+    </message>
+    <message>
+        <source>File Folder</source>
+        <comment>Match Windows Explorer</comment>
+        <translation>Папка с файлами</translation>
+    </message>
+    <message>
+        <source>Folder</source>
+        <comment>All other platforms</comment>
+        <translation>Папка</translation>
+    </message>
+    <message>
+        <source>Alias</source>
+        <comment>macOS Finder</comment>
+        <translation>Псевдоним</translation>
+    </message>
+    <message>
+        <source>Shortcut</source>
+        <comment>All other platforms</comment>
+        <translation>Ярлык</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Неизвестный</translation>
     </message>
 </context>
 <context>
@@ -225,11 +283,22 @@
     <name>QApplication</name>
     <message>
         <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation>Программе «%1» требуется Qt %2, а используется Qt %3.</translation>
+        <translation type="vanished">Программе «%1» требуется Qt %2, а используется Qt %3.</translation>
     </message>
     <message>
         <source>Incompatible Qt Library Error</source>
         <translation>Ошибка совместимости библиотеки Qt</translation>
+    </message>
+    <message>
+        <source>Application &quot;%1&quot; requires Qt %2, found Qt %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QCocoaMenuBar</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -383,7 +452,7 @@ Press ESC to cancel</source>
     </message>
     <message>
         <source>Displays help including Qt specific options.</source>
-        <translation>Вывод справки с особыми параметрами Qt.</translation>
+        <translation type="vanished">Вывод справки с особыми параметрами Qt.</translation>
     </message>
     <message>
         <source>Unknown option &apos;%1&apos;.</source>
@@ -417,60 +486,64 @@ Press ESC to cancel</source>
         <source>Arguments:</source>
         <translation>Аргументы:</translation>
     </message>
+    <message>
+        <source>Displays help, including generic Qt options.</source>
+        <translation>Вывод справки с особыми параметрами Qt.</translation>
+    </message>
 </context>
 <context>
     <name>QCoreApplication</name>
     <message>
         <source>%1: key is empty</source>
         <comment>QSystemSemaphore</comment>
-        <translation>%1: пустой ключ</translation>
+        <translation type="vanished">%1: пустой ключ</translation>
     </message>
     <message>
         <source>%1: unable to make key</source>
         <comment>QSystemSemaphore</comment>
-        <translation>%1: невозможно создать ключ</translation>
+        <translation type="vanished">%1: невозможно создать ключ</translation>
     </message>
     <message>
         <source>%1: ftok failed</source>
         <comment>QSystemSemaphore</comment>
-        <translation>%1: ошибка ftok</translation>
+        <translation type="vanished">%1: ошибка ftok</translation>
     </message>
 </context>
 <context>
     <name>QCupsJobWidget</name>
     <message>
         <source>Job</source>
-        <translation>Задание</translation>
+        <translation type="vanished">Задание</translation>
     </message>
     <message>
         <source>Job Control</source>
-        <translation>Управление</translation>
+        <translation type="vanished">Управление</translation>
     </message>
     <message>
         <source>Scheduled printing:</source>
-        <translation>Отложенная печать:</translation>
+        <translation type="vanished">Отложенная печать:</translation>
     </message>
     <message>
         <source>Billing information:</source>
-        <translation>Платёжная информация:</translation>
+        <translation type="vanished">Платёжная информация:</translation>
     </message>
     <message>
         <source>Job priority:</source>
-        <translation>Приоритет:</translation>
+        <translation type="vanished">Приоритет:</translation>
     </message>
     <message>
         <source>Banner Pages</source>
-        <translation>Гриф</translation>
+        <translation type="vanished">Гриф</translation>
     </message>
     <message>
         <source>End:</source>
         <comment>Banner page at end</comment>
-        <translation>В конце:</translation>
+        <translation type="vanished">В конце:</translation>
     </message>
     <message>
         <source>Start:</source>
         <comment>Banner page at start</comment>
-        <translation>В начале:</translation>
+        <translation type="vanished">В начале:</translation>
     </message>
     <message>
         <source>Print Immediately</source>
@@ -621,22 +694,22 @@ Press ESC to cancel</source>
     <message>
         <source>AM</source>
         <translatorcomment>до полудня</translatorcomment>
-        <translation>ДП</translation>
+        <translation type="vanished">ДП</translation>
     </message>
     <message>
         <source>am</source>
         <translatorcomment>до полудня</translatorcomment>
-        <translation>дп</translation>
+        <translation type="vanished">дп</translation>
     </message>
     <message>
         <source>PM</source>
         <translatorcomment>после полудня</translatorcomment>
-        <translation>ПП</translation>
+        <translation type="vanished">ПП</translation>
     </message>
     <message>
         <source>pm</source>
         <translatorcomment>после полудня</translatorcomment>
-        <translation>пп</translation>
+        <translation type="vanished">пп</translation>
     </message>
 </context>
 <context>
@@ -657,25 +730,25 @@ Press ESC to cancel</source>
     <name>QDirModel</name>
     <message>
         <source>Name</source>
-        <translation>Имя</translation>
+        <translation type="vanished">Имя</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation>Размер</translation>
+        <translation type="vanished">Размер</translation>
     </message>
     <message>
         <source>Kind</source>
         <comment>Match OS X Finder</comment>
-        <translation>Вид</translation>
+        <translation type="vanished">Вид</translation>
     </message>
     <message>
         <source>Type</source>
         <comment>All other platforms</comment>
-        <translation>Тип</translation>
+        <translation type="vanished">Тип</translation>
     </message>
     <message>
         <source>Date Modified</source>
-        <translation>Дата изменения</translation>
+        <translation type="vanished">Дата изменения</translation>
     </message>
 </context>
 <context>
@@ -684,28 +757,17 @@ Press ESC to cancel</source>
         <source>Operation cancelled</source>
         <translation>Операция отменена</translation>
     </message>
-</context>
-<context>
-    <name>QDnsLookupRunnable</name>
-    <message>
-        <source>IPv6 addresses for nameservers are currently not supported</source>
-        <translation>Адреса IPv6 серверов имён ещё не поддерживаются</translation>
-    </message>
     <message>
         <source>Invalid domain name</source>
         <translation>Некорректное имя домена</translation>
     </message>
     <message>
-        <source>Not yet supported on Android</source>
-        <translation>Ещё не поддерживается под Android</translation>
+        <source>SSL/TLS support not present</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Resolver functions not found</source>
-        <translation>Функция разрешения имён не найдена</translation>
-    </message>
-    <message>
-        <source>Resolver initialization failed</source>
-        <translation>Не удалось инициализировать разрешение имён</translation>
+        <source>Request timed out</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Server could not process query</source>
@@ -724,8 +786,24 @@ Press ESC to cancel</source>
         <translation>Сервер отклонил запрос</translation>
     </message>
     <message>
+        <source>Invalid reply received (rcode %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Invalid reply received</source>
         <translation>Получен некорректный ответ</translation>
+    </message>
+    <message>
+        <source>Invalid reply received (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IPv6 nameservers are currently not supported on this OS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply was too large</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Could not expand domain name</source>
@@ -760,28 +838,115 @@ Press ESC to cancel</source>
         <translation>Некорректная запись service</translation>
     </message>
     <message>
+        <source>Invalid TLS association record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Invalid text record</source>
         <translation>Некорректная запись text</translation>
     </message>
+</context>
+<context>
+    <name>QDnsLookupRunnable</name>
+    <message>
+        <source>IPv6 addresses for nameservers are currently not supported</source>
+        <translation type="vanished">Адреса IPv6 серверов имён ещё не поддерживаются</translation>
+    </message>
+    <message>
+        <source>Invalid domain name</source>
+        <translation type="vanished">Некорректное имя домена</translation>
+    </message>
+    <message>
+        <source>Not yet supported on Android</source>
+        <translation type="vanished">Ещё не поддерживается под Android</translation>
+    </message>
+    <message>
+        <source>Resolver functions not found</source>
+        <translation type="vanished">Функция разрешения имён не найдена</translation>
+    </message>
+    <message>
+        <source>Resolver initialization failed</source>
+        <translation type="vanished">Не удалось инициализировать разрешение имён</translation>
+    </message>
+    <message>
+        <source>Server could not process query</source>
+        <translation type="vanished">Сервер не смог обработать запрос</translation>
+    </message>
+    <message>
+        <source>Server failure</source>
+        <translation type="vanished">Ошибка сервера</translation>
+    </message>
+    <message>
+        <source>Non existent domain</source>
+        <translation type="vanished">Домен не существует</translation>
+    </message>
+    <message>
+        <source>Server refused to answer</source>
+        <translation type="vanished">Сервер отклонил запрос</translation>
+    </message>
+    <message>
+        <source>Invalid reply received</source>
+        <translation type="vanished">Получен некорректный ответ</translation>
+    </message>
+    <message>
+        <source>Could not expand domain name</source>
+        <translation type="vanished">Не удалось развернуть имя домена</translation>
+    </message>
+    <message>
+        <source>Invalid IPv4 address record</source>
+        <translation type="vanished">Некорректная запись адреса IPv4</translation>
+    </message>
+    <message>
+        <source>Invalid IPv6 address record</source>
+        <translation type="vanished">Некорректная запись адреса IPv6</translation>
+    </message>
+    <message>
+        <source>Invalid canonical name record</source>
+        <translation type="vanished">Некорректная запись cannonical name</translation>
+    </message>
+    <message>
+        <source>Invalid name server record</source>
+        <translation type="vanished">Некорректная запись name server</translation>
+    </message>
+    <message>
+        <source>Invalid pointer record</source>
+        <translation type="vanished">Некорректная запись pointer</translation>
+    </message>
+    <message>
+        <source>Invalid mail exchange record</source>
+        <translation type="vanished">Некорректная запись mail exchange</translation>
+    </message>
+    <message>
+        <source>Invalid service record</source>
+        <translation type="vanished">Некорректная запись service</translation>
+    </message>
+    <message>
+        <source>Invalid text record</source>
+        <translation type="vanished">Некорректная запись text</translation>
+    </message>
     <message>
         <source>Resolver library can&apos;t be loaded: No runtime library loading support</source>
-        <translation>Не удалось загрузить библиотеку для разрешения имён: загрузка библиотек во время работы не поддерживается</translation>
+        <translation type="vanished">Не удалось загрузить библиотеку для разрешения имён: загрузка библиотек во время работы не поддерживается</translation>
     </message>
     <message>
         <source>No hostname given</source>
-        <translation>Имя узла не указано</translation>
+        <translation type="vanished">Имя узла не указано</translation>
     </message>
     <message>
         <source>Invalid hostname</source>
-        <translation>Некорректное имя узла</translation>
+        <translation type="vanished">Некорректное имя узла</translation>
     </message>
     <message>
         <source>Host %1 could not be found.</source>
-        <translation>Не удалось найти узел %1.</translation>
+        <translation type="vanished">Не удалось найти узел %1.</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
+        <translation type="vanished">Неизвестная ошибка</translation>
+    </message>
+    <message>
+        <source>Not yet supported on this OS</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -988,11 +1153,15 @@ Press ESC to cancel</source>
     <name>QDtlsClientVerifier</name>
     <message>
         <source>A valid UDP socket, non-empty datagram, valid address/port were expected</source>
-        <translation>Требуется допустимый сокет UDP, непустая датаграмма и корректный адрес/порт</translation>
+        <translation type="vanished">Требуется допустимый сокет UDP, непустая датаграмма и корректный адрес/порт</translation>
     </message>
     <message>
         <source>BIO_ADDR_new failed, ignoring client hello</source>
         <translation>BIO_ADD_new завершилась с ошибкой, приветствие клиента (client hello) пропускается</translation>
+    </message>
+    <message>
+        <source>A valid UDP socket, non-empty datagram, and valid address/port were expected</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1024,6 +1193,25 @@ Press ESC to cancel</source>
     <message>
         <source>&amp;OK</source>
         <translation>&amp;Закрыть</translation>
+    </message>
+    <message>
+        <source>An error occurred</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QFactoryLoader</name>
+    <message>
+        <source>Metadata parsing error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid metadata version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected metadata contents</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1070,11 +1258,19 @@ Press ESC to cancel</source>
     </message>
     <message>
         <source>Failure to write block</source>
-        <translation>Сбой записи блока</translation>
+        <translation type="vanished">Сбой записи блока</translation>
     </message>
     <message>
         <source>Cannot create %1 for output</source>
-        <translation>Невозможно создать %1 для вывода</translation>
+        <translation type="vanished">Невозможно создать %1 для вывода</translation>
+    </message>
+    <message>
+        <source>Failure to write block: %1</source>
+        <translation>Сбой записи блока: %1</translation>
+    </message>
+    <message>
+        <source>Cannot create %1 for output: %2</source>
+        <translation>Невозможно создать %1 для вывода: %2</translation>
     </message>
 </context>
 <context>
@@ -1092,59 +1288,59 @@ Press ESC to cancel</source>
     <name>QFileDialog</name>
     <message>
         <source>Look in:</source>
-        <translation>Перейти к:</translation>
+        <translation type="vanished">Перейти к:</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation>Назад</translation>
+        <translation type="vanished">Назад</translation>
     </message>
     <message>
         <source>Go back</source>
-        <translation>Назад</translation>
+        <translation type="vanished">Назад</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>Вперёд</translation>
+        <translation type="vanished">Вперёд</translation>
     </message>
     <message>
         <source>Go forward</source>
-        <translation>Вперёд</translation>
+        <translation type="vanished">Вперёд</translation>
     </message>
     <message>
         <source>Parent Directory</source>
-        <translation>Родительский каталог</translation>
+        <translation type="vanished">Родительский каталог</translation>
     </message>
     <message>
         <source>Go to the parent directory</source>
-        <translation>Перейти в родительский каталог</translation>
+        <translation type="vanished">Перейти в родительский каталог</translation>
     </message>
     <message>
         <source>Create New Folder</source>
-        <translation>Создать папку</translation>
+        <translation type="vanished">Создать папку</translation>
     </message>
     <message>
         <source>Create a New Folder</source>
-        <translation>Создать новую папку</translation>
+        <translation type="vanished">Создать новую папку</translation>
     </message>
     <message>
         <source>List View</source>
-        <translation>Список</translation>
+        <translation type="vanished">Список</translation>
     </message>
     <message>
         <source>Change to list view mode</source>
-        <translation>Переключить в режим списка</translation>
+        <translation type="vanished">Переключить в режим списка</translation>
     </message>
     <message>
         <source>Detail View</source>
-        <translation>Подробный вид</translation>
+        <translation type="vanished">Подробный вид</translation>
     </message>
     <message>
         <source>Change to detail view mode</source>
-        <translation>Переключить в подробный режим</translation>
+        <translation type="vanished">Переключить в подробный режим</translation>
     </message>
     <message>
         <source>Files of type:</source>
-        <translation>Типы файлов:</translation>
+        <translation type="vanished">Типы файлов:</translation>
     </message>
     <message>
         <source>Find Directory</source>
@@ -1264,79 +1460,79 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>My Computer</source>
-        <translation>Мой компьютер</translation>
+        <translation type="vanished">Мой компьютер</translation>
     </message>
     <message>
         <source>Drive</source>
-        <translation>Диск</translation>
+        <translation type="vanished">Диск</translation>
     </message>
     <message>
         <source>%1 File</source>
         <extracomment>%1 is a file name suffix, for example txt</extracomment>
-        <translation>Файл %1</translation>
+        <translation type="vanished">Файл %1</translation>
     </message>
     <message>
         <source>File</source>
-        <translation>Файл</translation>
+        <translation type="vanished">Файл</translation>
     </message>
     <message>
         <source>File Folder</source>
         <comment>Match Windows Explorer</comment>
-        <translation>Папка с файлами</translation>
+        <translation type="vanished">Папка с файлами</translation>
     </message>
     <message>
         <source>Folder</source>
         <comment>All other platforms</comment>
-        <translation>Папка</translation>
+        <translation type="vanished">Папка</translation>
     </message>
     <message>
         <source>Alias</source>
         <comment>OS X Finder</comment>
-        <translation>Псевдоним</translation>
+        <translation type="vanished">Псевдоним</translation>
     </message>
     <message>
         <source>Shortcut</source>
         <comment>All other platforms</comment>
-        <translation>Ярлык</translation>
+        <translation type="vanished">Ярлык</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Неизвестный</translation>
+        <translation type="vanished">Неизвестный</translation>
     </message>
     <message>
         <source>Sidebar</source>
-        <translation>Боковая панель</translation>
+        <translation type="vanished">Боковая панель</translation>
     </message>
     <message>
         <source>List of places and bookmarks</source>
-        <translation>Места и закладки</translation>
+        <translation type="vanished">Места и закладки</translation>
     </message>
     <message>
         <source>Files</source>
-        <translation>Файлы</translation>
+        <translation type="vanished">Файлы</translation>
     </message>
     <message>
         <source>Alt+Left</source>
-        <translation>Alt+Left</translation>
+        <translation type="vanished">Alt+Left</translation>
     </message>
     <message>
         <source>Alt+Right</source>
-        <translation>Alt+Right</translation>
+        <translation type="vanished">Alt+Right</translation>
     </message>
     <message>
         <source>Alt+Up</source>
-        <translation>Alt+Up</translation>
+        <translation type="vanished">Alt+Up</translation>
     </message>
 </context>
 <context>
     <name>QFileSystemModel</name>
     <message>
         <source>Invalid filename</source>
-        <translation>Некорректное имя файла</translation>
+        <translation type="vanished">Некорректное имя файла</translation>
     </message>
     <message>
         <source>&lt;b&gt;The name &quot;%1&quot; cannot be used.&lt;/b&gt;&lt;p&gt;Try using another name, with fewer characters or no punctuation marks.</source>
-        <translation>&lt;b&gt;Имя «%1» не может быть использовано.&lt;/b&gt;&lt;p&gt;Попробуйте использовать имя меньшей длины и/или без символов пунктуации.</translation>
+        <translation type="vanished">&lt;b&gt;Имя «%1» не может быть использовано.&lt;/b&gt;&lt;p&gt;Попробуйте использовать имя меньшей длины и/или без символов пунктуации.</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1604,95 +1800,6 @@ Do you want to delete it anyway?</source>
     </message>
 </context>
 <context>
-    <name>QFtp</name>
-    <message>
-        <source>Not connected</source>
-        <translation>Соединение не установлено</translation>
-    </message>
-    <message>
-        <source>Host %1 not found</source>
-        <translation>Узел %1 не найден</translation>
-    </message>
-    <message>
-        <source>Connection refused to host %1</source>
-        <translation>В соединении с узлом %1 отказано</translation>
-    </message>
-    <message>
-        <source>Connection timed out to host %1</source>
-        <translation>Время на соединение с узлом %1 истекло</translation>
-    </message>
-    <message>
-        <source>Connected to host %1</source>
-        <translation>Установлено соединение с узлом %1</translation>
-    </message>
-    <message>
-        <source>Data Connection refused</source>
-        <translation>Отклонена попытка подключения для передачи данных</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Connecting to host failed:
-%1</source>
-        <translation>Не удалось соединиться с узлом:
-%1</translation>
-    </message>
-    <message>
-        <source>Login failed:
-%1</source>
-        <translation>Не удалось авторизоваться:
-%1</translation>
-    </message>
-    <message>
-        <source>Listing directory failed:
-%1</source>
-        <translation>Не удалось прочитать каталог:
-%1</translation>
-    </message>
-    <message>
-        <source>Changing directory failed:
-%1</source>
-        <translation>Не удалось сменить каталог:
-%1</translation>
-    </message>
-    <message>
-        <source>Downloading file failed:
-%1</source>
-        <translation>Не удалось загрузить файл:
-%1</translation>
-    </message>
-    <message>
-        <source>Uploading file failed:
-%1</source>
-        <translation>Не удалось передать файл:
-%1</translation>
-    </message>
-    <message>
-        <source>Removing file failed:
-%1</source>
-        <translation>Не удалось удалить файл:
-%1</translation>
-    </message>
-    <message>
-        <source>Creating directory failed:
-%1</source>
-        <translation>Не удалось создать каталог:
-%1</translation>
-    </message>
-    <message>
-        <source>Removing directory failed:
-%1</source>
-        <translation>Не удалось удалить каталог:
-%1</translation>
-    </message>
-    <message>
-        <source>Connection closed</source>
-        <translation>Соединение закрыто</translation>
-    </message>
-</context>
-<context>
     <name>QGnomeTheme</name>
     <message>
         <source>&amp;OK</source>
@@ -1780,15 +1887,27 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Alias for --windowgeometry.</source>
-        <translation>То же, что и --windowgeometry.</translation>
+        <translation type="vanished">То же, что и --windowgeometry.</translation>
     </message>
     <message>
         <source>Alias for --windowicon.</source>
-        <translation>То же, что и --windowicon.</translation>
+        <translation type="vanished">То же, что и --windowicon.</translation>
     </message>
     <message>
         <source>Alias for --windowtitle.</source>
-        <translation>То же, что и --windowtitle.</translation>
+        <translation type="vanished">То же, что и --windowtitle.</translation>
+    </message>
+    <message>
+        <source>Alias for --qwindowgeometry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias for --qwindowicon.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias for --qwindowtitle.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1863,6 +1982,30 @@ Do you want to delete it anyway?</source>
         <source>Insecure redirect</source>
         <translation>Небезопасное перенаправление</translation>
     </message>
+    <message>
+        <source>Unsupported content encoding: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to initialize the compression decoder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The decompressed output exceeds the limits specified by QNetworkRequest::decompressedSafetyCheckThreshold()</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decompression failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data downloaded is too large to store</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to initialize decompression: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QHttpSocketEngine</name>
@@ -1920,6 +2063,14 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Unable to rollback transaction</source>
         <translation>Невозможно откатить транзакцию</translation>
+    </message>
+    <message>
+        <source>Could not subscribe to event notifications for %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not unsubscribe from event notifications for %1.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1991,6 +2142,18 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Could not get statement info</source>
         <translation>Не удалось найти информацию о выражении</translation>
+    </message>
+    <message>
+        <source>Array size mismatch. Field name: %3, expected size: %1. Supplied size: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Array dimensions mismatch. Field name: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Array size mismatch: size of %1 is %2, size of provided list is %3</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2156,39 +2319,39 @@ Do you want to delete it anyway?</source>
     <name>QLibrary</name>
     <message>
         <source>&apos;%1&apos; is not an ELF object (%2)</source>
-        <translation>«%1» не является объектом ELF (%2)</translation>
+        <translation type="vanished">«%1» не является объектом ELF (%2)</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is not an ELF object</source>
-        <translation>«%1» не является объектом ELF</translation>
+        <translation type="vanished">«%1» не является объектом ELF</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is an invalid ELF object (%2)</source>
-        <translation>«%1» является некорректным объектом ELF (%2)</translation>
+        <translation type="vanished">«%1» является некорректным объектом ELF (%2)</translation>
     </message>
     <message>
         <source>odd cpu architecture</source>
-        <translation>странная архитектура CPU</translation>
+        <translation type="vanished">странная архитектура CPU</translation>
     </message>
     <message>
         <source>wrong cpu architecture</source>
-        <translation>неверная архитектура CPU</translation>
+        <translation type="vanished">неверная архитектура CPU</translation>
     </message>
     <message>
         <source>odd endianness</source>
-        <translation>странный порядок байтов</translation>
+        <translation type="vanished">странный порядок байтов</translation>
     </message>
     <message>
         <source>unexpected e_shsize</source>
-        <translation>неожиданный e_shsize</translation>
+        <translation type="vanished">неожиданный e_shsize</translation>
     </message>
     <message>
         <source>unexpected e_shentsize</source>
-        <translation>неожиданный e_shentsize</translation>
+        <translation type="vanished">неожиданный e_shentsize</translation>
     </message>
     <message numerus="yes">
         <source>announced %n section(s), each %1 byte(s), exceed file size</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>объявлена %n секция по %1 байт, что превышает размер файла</numerusform>
             <numerusform>объявлено %n секции по %1 байт, что превышает размер файла</numerusform>
             <numerusform>объявлено %n секций по %1 байт, что превышает размер файла</numerusform>
@@ -2196,27 +2359,27 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>shstrtab section header seems to be at %1</source>
-        <translation>заголовок секции shstrtab, похоже, находится в позиции %1</translation>
+        <translation type="vanished">заголовок секции shstrtab, похоже, находится в позиции %1</translation>
     </message>
     <message>
         <source>string table seems to be at %1</source>
-        <translation>таблица строк, похоже, находится в позиции %1</translation>
+        <translation type="vanished">таблица строк, похоже, находится в позиции %1</translation>
     </message>
     <message>
         <source>section name %1 of %2 behind end of file</source>
-        <translation>имя секции %1 из %2 за пределами файла</translation>
+        <translation type="vanished">имя секции %1 из %2 за пределами файла</translation>
     </message>
     <message>
         <source>empty .rodata. not a library.</source>
-        <translation>пустая .rodata. Это не библиотека.</translation>
+        <translation type="vanished">пустая .rodata. Это не библиотека.</translation>
     </message>
     <message>
         <source>missing section data. This is not a library.</source>
-        <translation>отсутствуют данные секции. Это не библиотека.</translation>
+        <translation type="vanished">отсутствуют данные секции. Это не библиотека.</translation>
     </message>
     <message>
         <source>Failed to extract plugin meta data from &apos;%1&apos;</source>
-        <translation>Не удалось извлечь метаданные модуля из «%1»</translation>
+        <translation type="vanished">Не удалось извлечь метаданные модуля из «%1»</translation>
     </message>
     <message>
         <source>The shared library was not found.</source>
@@ -2277,6 +2440,146 @@ Do you want to delete it anyway?</source>
     <message>
         <source>&apos;%1&apos; is not a Qt plugin</source>
         <translation>«%1» не является модулем Qt</translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is not a valid Windows DLL (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is not a Qt plugin (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>metadata not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid signature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file is for a different processor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file has no sections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>wrong characteristics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file is for a different word size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file has no code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a section name is empty or extends past the end of the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>section contents extend past the end of the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.qtmetadata section is too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.qtmetadata section has incorrect magic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.qtmetadata section is writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>.qtmetadata section is executable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file is for the wrong endianness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file has an unknown ELF version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file has an unexpected ABI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>file is not a shared object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is not a valid ELF object (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unimplemented: PN_XNUM program headers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>program header table extends past the end of the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a program header entry extends past the end of the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a note segment start is not properly aligned (offset 0x%1, alignment %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>section table extends past the end of the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>section header string table extends past the end of the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a section name extends past the end of the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unexpected program header entry size (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unexpected section entry size (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>e_shstrndx greater than the number of sections e_shnum (%1 &gt;= %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to extract plugin meta data from &apos;%1&apos;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not resolve &apos;qt_plugin_instance&apos; function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>metadata too small</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>entrypoint to query the plugin meta data not found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2386,6 +2689,14 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Trying to connect while connection is in progress</source>
         <translation>Попытка подключиться во время подключения</translation>
+    </message>
+    <message>
+        <source>Socket is not connected</source>
+        <translation>Сокет не подключён</translation>
+    </message>
+    <message>
+        <source>Remote closed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2561,11 +2872,127 @@ Do you want to delete it anyway?</source>
     <message>
         <source>&lt;p&gt;Qt is a C++ toolkit for cross-platform application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across all major desktop operating systems. It is also available for embedded Linux and other embedded and mobile operating systems.&lt;/p&gt;&lt;p&gt;Qt is available under multiple licensing options designed to accommodate the needs of our various users.&lt;/p&gt;&lt;p&gt;Qt licensed under our commercial license agreement is appropriate for development of proprietary/commercial software where you do not want to share any source code with third parties or otherwise cannot comply with the terms of GNU (L)GPL.&lt;/p&gt;&lt;p&gt;Qt licensed under GNU (L)GPL is appropriate for the development of Qt&amp;nbsp;applications provided you can comply with the terms and conditions of the respective licenses.&lt;/p&gt;&lt;p&gt;Please see &lt;a href=&quot;http://%2/&quot;&gt;%2&lt;/a&gt; for an overview of Qt licensing.&lt;/p&gt;&lt;p&gt;Copyright (C) %1 The Qt Company Ltd and other contributors.&lt;/p&gt;&lt;p&gt;Qt and the Qt logo are trademarks of The Qt Company Ltd.&lt;/p&gt;&lt;p&gt;Qt is The Qt Company Ltd product developed as an open source project. See &lt;a href=&quot;http://%3/&quot;&gt;%3&lt;/a&gt; for more information.&lt;/p&gt;</source>
         <extracomment>Leave this text untranslated or include a verbatim copy of it below and note that it is the authoritative version in case of doubt.</extracomment>
-        <translation>&lt;p&gt;Qt is a C++ toolkit for cross-platform application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across all major desktop operating systems. It is also available for embedded Linux and other embedded and mobile operating systems.&lt;/p&gt;&lt;p&gt;Qt is available under multiple licensing options designed to accommodate the needs of our various users.&lt;/p&gt;&lt;p&gt;Qt licensed under our commercial license agreement is appropriate for development of proprietary/commercial software where you do not want to share any source code with third parties or otherwise cannot comply with the terms of GNU (L)GPL.&lt;/p&gt;&lt;p&gt;Qt licensed under GNU (L)GPL is appropriate for the development of Qt&amp;nbsp;applications provided you can comply with the terms and conditions of the respective licenses.&lt;/p&gt;&lt;p&gt;Please see &lt;a href=&quot;http://%2/&quot;&gt;%2&lt;/a&gt; for an overview of Qt licensing.&lt;/p&gt;&lt;p&gt;Copyright (C) %1 The Qt Company Ltd and other contributors.&lt;/p&gt;&lt;p&gt;Qt and the Qt logo are trademarks of The Qt Company Ltd.&lt;/p&gt;&lt;p&gt;Qt is The Qt Company Ltd product developed as an open source project. See &lt;a href=&quot;http://%3/&quot;&gt;%3&lt;/a&gt; for more information.&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;p&gt;Qt is a C++ toolkit for cross-platform application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across all major desktop operating systems. It is also available for embedded Linux and other embedded and mobile operating systems.&lt;/p&gt;&lt;p&gt;Qt is available under multiple licensing options designed to accommodate the needs of our various users.&lt;/p&gt;&lt;p&gt;Qt licensed under our commercial license agreement is appropriate for development of proprietary/commercial software where you do not want to share any source code with third parties or otherwise cannot comply with the terms of GNU (L)GPL.&lt;/p&gt;&lt;p&gt;Qt licensed under GNU (L)GPL is appropriate for the development of Qt&amp;nbsp;applications provided you can comply with the terms and conditions of the respective licenses.&lt;/p&gt;&lt;p&gt;Please see &lt;a href=&quot;http://%2/&quot;&gt;%2&lt;/a&gt; for an overview of Qt licensing.&lt;/p&gt;&lt;p&gt;Copyright (C) %1 The Qt Company Ltd and other contributors.&lt;/p&gt;&lt;p&gt;Qt and the Qt logo are trademarks of The Qt Company Ltd.&lt;/p&gt;&lt;p&gt;Qt is The Qt Company Ltd product developed as an open source project. See &lt;a href=&quot;http://%3/&quot;&gt;%3&lt;/a&gt; for more information.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>About Qt</source>
         <translation>О Qt</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Qt is a C++ toolkit for cross-platform application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across all major desktop operating systems. It is also available for embedded Linux and other embedded and mobile operating systems.&lt;/p&gt;&lt;p&gt;Qt is available under multiple licensing options designed to accommodate the needs of our various users.&lt;/p&gt;&lt;p&gt;Qt licensed under our commercial license agreement is appropriate for development of proprietary/commercial software where you do not want to share any source code with third parties or otherwise cannot comply with the terms of GNU (L)GPL.&lt;/p&gt;&lt;p&gt;Qt licensed under GNU (L)GPL is appropriate for the development of Qt&amp;nbsp;applications provided you can comply with the terms and conditions of the respective licenses.&lt;/p&gt;&lt;p&gt;Please see &lt;a href=&quot;https://%2/&quot;&gt;%2&lt;/a&gt; for an overview of Qt licensing.&lt;/p&gt;&lt;p&gt;Copyright (C) The Qt Company Ltd. and other contributors.&lt;/p&gt;&lt;p&gt;Qt and the Qt logo are trademarks of The Qt Company Ltd.&lt;/p&gt;&lt;p&gt;Qt is The Qt Company Ltd. product developed as an open source project. See &lt;a href=&quot;https://%3/&quot;&gt;%3&lt;/a&gt; for more information.&lt;/p&gt;</source>
+        <extracomment>Leave this text untranslated or include a verbatim copy of it below and note that it is the authoritative version in case of doubt.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QMimerSQL</name>
+    <message>
+        <source>No Mimer SQL error for code %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generic Mimer SQL error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QMimerSQLDriver</name>
+    <message>
+        <source>Could not connect to database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not start transaction</source>
+        <translation>Не удалось начать транзакцию</translation>
+    </message>
+    <message>
+        <source>Could not commit transaction</source>
+        <translation>Не удалось завершить транзакцию</translation>
+    </message>
+    <message>
+        <source>Could not roll back transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QMimerSQLResult</name>
+    <message>
+        <source>Could not get %1, column %2</source>
+        <extracomment>Data type, column</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not set %1, parameter %2</source>
+        <extracomment>Data type, parameter</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not close cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not close statement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch did not succeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch first did not succeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not fetch next row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown data type %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not check null, column %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not prepare/execute statement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong number of parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown datatype, parameter %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not execute statement/open cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only input parameters can be used in batch operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not add batch %1</source>
+        <extracomment>%1 is the batch number</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not execute batch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QMimerSQLResult:</name>
+    <message>
+        <source>Fetch last did not succeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Column %1 out of range</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2740,44 +3167,14 @@ Do you want to delete it anyway?</source>
     </message>
 </context>
 <context>
-    <name>QNetworkAccessFtpBackend</name>
-    <message>
-        <source>No suitable proxy found</source>
-        <translation>Подходящий прокси-сервер не найден</translation>
-    </message>
-    <message>
-        <source>Cannot open %1: is a directory</source>
-        <translation>Невозможно открыть %1: это каталог</translation>
-    </message>
-    <message>
-        <source>Logging in to %1 failed: authentication required</source>
-        <translation>Соединение с %1 не удалось: требуется аутентификация</translation>
-    </message>
-    <message>
-        <source>Error while downloading %1: %2</source>
-        <translation>Ошибка в процессе загрузки %1: %2</translation>
-    </message>
-    <message>
-        <source>Error while uploading %1: %2</source>
-        <translation>Ошибка в процессе передачи %1: %2</translation>
-    </message>
-</context>
-<context>
-    <name>QNetworkAccessManager</name>
-    <message>
-        <source>Network access is disabled.</source>
-        <translation>Доступ в сеть отключён.</translation>
-    </message>
-</context>
-<context>
     <name>QNetworkReply</name>
     <message>
         <source>Background request not allowed.</source>
-        <translation>Фоновые запросы недопустимы.</translation>
+        <translation type="vanished">Фоновые запросы недопустимы.</translation>
     </message>
     <message>
         <source>Network session error.</source>
-        <translation>Ошибка сетевой сессии.</translation>
+        <translation type="vanished">Ошибка сетевой сессии.</translation>
     </message>
     <message>
         <source>backend start error.</source>
@@ -2785,7 +3182,7 @@ Do you want to delete it anyway?</source>
     </message>
     <message>
         <source>Temporary network failure.</source>
-        <translation>Временная ошибка сети.</translation>
+        <translation type="vanished">Временная ошибка сети.</translation>
     </message>
     <message>
         <source>Protocol &quot;%1&quot; is unknown</source>
@@ -2812,36 +3209,6 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Operation canceled</source>
         <translation>Операция отменена</translation>
-    </message>
-</context>
-<context>
-    <name>QNetworkSession</name>
-    <message>
-        <source>Invalid configuration.</source>
-        <translation>Некорректная конфигурация.</translation>
-    </message>
-</context>
-<context>
-    <name>QNetworkSessionPrivateImpl</name>
-    <message>
-        <source>Unknown session error.</source>
-        <translation>Неизвестная ошибка сессии.</translation>
-    </message>
-    <message>
-        <source>The session was aborted by the user or system.</source>
-        <translation>Сессия была прервана пользователем или системой.</translation>
-    </message>
-    <message>
-        <source>The requested operation is not supported by the system.</source>
-        <translation>Требуемая операция не поддерживается системой.</translation>
-    </message>
-    <message>
-        <source>The specified configuration cannot be used.</source>
-        <translation>Невозможно использовать указанную конфигурацию.</translation>
-    </message>
-    <message>
-        <source>Roaming was aborted or is not possible.</source>
-        <translation>Роуминг прерван или невозможен.</translation>
     </message>
 </context>
 <context>
@@ -2968,6 +3335,10 @@ Do you want to delete it anyway?</source>
         <source>Unable to bind variable</source>
         <translation>Невозможно привязать значение</translation>
     </message>
+    <message>
+        <source>QODBCResult::reset: Unable to set &apos;SQL_ATTR_CURSOR_TYPE&apos; as statement attribute. Please check your ODBC driver configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QPSQLDriver</name>
@@ -2994,6 +3365,10 @@ Do you want to delete it anyway?</source>
     <message>
         <source>Unable to unsubscribe</source>
         <translation>Невозможно отписаться</translation>
+    </message>
+    <message>
+        <source>Unable to set client encoding to &apos;UNICODE&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3023,79 +3398,79 @@ Do you want to delete it anyway?</source>
     <name>QPageSetupWidget</name>
     <message>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation type="vanished">Форма</translation>
     </message>
     <message>
         <source>Paper</source>
-        <translation>Бумага</translation>
+        <translation type="vanished">Бумага</translation>
     </message>
     <message>
         <source>Page size:</source>
-        <translation>Размер страницы:</translation>
+        <translation type="vanished">Размер страницы:</translation>
     </message>
     <message>
         <source>Width:</source>
-        <translation>Ширина:</translation>
+        <translation type="vanished">Ширина:</translation>
     </message>
     <message>
         <source>Height:</source>
-        <translation>Высота:</translation>
+        <translation type="vanished">Высота:</translation>
     </message>
     <message>
         <source>Paper source:</source>
-        <translation>Источник бумаги:</translation>
+        <translation type="vanished">Источник бумаги:</translation>
     </message>
     <message>
         <source>Orientation</source>
-        <translation>Ориентация</translation>
+        <translation type="vanished">Ориентация</translation>
     </message>
     <message>
         <source>Portrait</source>
-        <translation>Книжная</translation>
+        <translation type="vanished">Книжная</translation>
     </message>
     <message>
         <source>Landscape</source>
-        <translation>Альбомная</translation>
+        <translation type="vanished">Альбомная</translation>
     </message>
     <message>
         <source>Reverse landscape</source>
-        <translation>Перевёрнутая альбомная</translation>
+        <translation type="vanished">Перевёрнутая альбомная</translation>
     </message>
     <message>
         <source>Reverse portrait</source>
-        <translation>Перевёрнутая книжная</translation>
+        <translation type="vanished">Перевёрнутая книжная</translation>
     </message>
     <message>
         <source>Margins</source>
-        <translation>Поля</translation>
+        <translation type="vanished">Поля</translation>
     </message>
     <message>
         <source>top margin</source>
-        <translation>верхнее поле</translation>
+        <translation type="vanished">верхнее поле</translation>
     </message>
     <message>
         <source>left margin</source>
-        <translation>левое поле</translation>
+        <translation type="vanished">левое поле</translation>
     </message>
     <message>
         <source>right margin</source>
-        <translation>правое поле</translation>
+        <translation type="vanished">правое поле</translation>
     </message>
     <message>
         <source>bottom margin</source>
-        <translation>нижнее поле</translation>
+        <translation type="vanished">нижнее поле</translation>
     </message>
     <message>
         <source>Page Layout</source>
-        <translation>Размещение страниц</translation>
+        <translation type="vanished">Размещение страниц</translation>
     </message>
     <message>
         <source>Page order:</source>
-        <translation>Порядок страниц:</translation>
+        <translation type="vanished">Порядок страниц:</translation>
     </message>
     <message>
         <source>Pages per sheet:</source>
-        <translation>Страниц на листе:</translation>
+        <translation type="vanished">Страниц на листе:</translation>
     </message>
     <message>
         <source>Millimeters (mm)</source>
@@ -3869,7 +4244,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="vanished">OK</translation>
     </message>
 </context>
 <context>
@@ -3982,153 +4357,149 @@ Please turn one of those options off.</source>
     <name>QPrintPropertiesWidget</name>
     <message>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation type="vanished">Форма</translation>
     </message>
     <message>
         <source>Page</source>
-        <translation>Страница</translation>
+        <translation type="vanished">Страница</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation>Расширенные</translation>
+        <translation type="vanished">Расширенные</translation>
     </message>
     <message>
         <source>There are conflicts in some options. Please fix them.</source>
-        <translation>Обнаружены противоречия в некоторых настройках. Устраните их.</translation>
+        <translation type="vanished">Обнаружены противоречия в некоторых настройках. Устраните их.</translation>
     </message>
 </context>
 <context>
     <name>QPrintSettingsOutput</name>
     <message>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Copies</source>
-        <translation>Копии</translation>
+        <translation type="vanished">Копии</translation>
     </message>
     <message>
         <source>Print range</source>
-        <translation>Диапазон печати</translation>
+        <translation type="vanished">Диапазон печати</translation>
     </message>
     <message>
         <source>Print all</source>
-        <translation>Все</translation>
+        <translation type="vanished">Все</translation>
     </message>
     <message>
         <source>Pages from</source>
-        <translation>Страницы с</translation>
+        <translation type="vanished">Страницы с</translation>
     </message>
     <message>
         <source>to</source>
-        <translation>по</translation>
+        <translation type="vanished">по</translation>
     </message>
     <message>
         <source>Current Page</source>
-        <translation>Текущая страница</translation>
+        <translation type="vanished">Текущая страница</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation>Выделенный фрагмент</translation>
+        <translation type="vanished">Выделенный фрагмент</translation>
     </message>
     <message>
         <source>Output Settings</source>
-        <translation>Настройки вывода</translation>
+        <translation type="vanished">Настройки вывода</translation>
     </message>
     <message>
         <source>Copies:</source>
-        <translation>Количество копий:</translation>
+        <translation type="vanished">Количество копий:</translation>
     </message>
     <message>
         <source>Collate</source>
-        <translation>Разобрать по копиям</translation>
+        <translation type="vanished">Разобрать по копиям</translation>
     </message>
     <message>
         <source>Reverse</source>
-        <translation>Обратный порядок</translation>
+        <translation type="vanished">Обратный порядок</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Параметры</translation>
+        <translation type="vanished">Параметры</translation>
     </message>
     <message>
         <source>Color Mode</source>
-        <translation>Режим цвета</translation>
+        <translation type="vanished">Режим цвета</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Цвет</translation>
+        <translation type="vanished">Цвет</translation>
     </message>
     <message>
         <source>Grayscale</source>
-        <translation>Оттенки серого</translation>
+        <translation type="vanished">Оттенки серого</translation>
     </message>
     <message>
         <source>Page Set:</source>
-        <translation>Список страниц:</translation>
+        <translation type="vanished">Список страниц:</translation>
     </message>
     <message>
         <source>Pages</source>
-        <translation>Страницы</translation>
+        <translation type="vanished">Страницы</translation>
     </message>
     <message>
         <source>Specify pages or ranges separated by commas. Ranges are specified by two numbers separated by a hyphen. E.g: 3,5-7,9 prints pages 3, 5, 6, 7 and 9.</source>
-        <translation>Укажите страницы или диапазоны, разделяя их запятыми. Диапазоны задаются двумя числами, разделёнными дефисом. Например: при указании 3,5-7,9 будут напечатаны страницы 3, 5, 6, 7 и 9.</translation>
+        <translation type="vanished">Укажите страницы или диапазоны, разделяя их запятыми. Диапазоны задаются двумя числами, разделёнными дефисом. Например: при указании 3,5-7,9 будут напечатаны страницы 3, 5, 6, 7 и 9.</translation>
     </message>
     <message>
         <source>Double Sided Printing</source>
-        <translation>Двусторонняя печать</translation>
+        <translation type="vanished">Двусторонняя печать</translation>
     </message>
     <message>
         <source>Off</source>
-        <translation>Отключена</translation>
+        <translation type="vanished">Отключена</translation>
     </message>
     <message>
         <source>Long side binding</source>
-        <translation>Переплёт по длинной стороне</translation>
+        <translation type="vanished">Переплёт по длинной стороне</translation>
     </message>
     <message>
         <source>Short side binding</source>
-        <translation>Переплёт по короткой стороне</translation>
+        <translation type="vanished">Переплёт по короткой стороне</translation>
     </message>
 </context>
 <context>
     <name>QPrintWidget</name>
     <message>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation type="vanished">Форма</translation>
     </message>
     <message>
         <source>Printer</source>
-        <translation>Принтер</translation>
+        <translation type="vanished">Принтер</translation>
     </message>
     <message>
         <source>&amp;Name:</source>
-        <translation>&amp;Название:</translation>
+        <translation type="vanished">&amp;Название:</translation>
     </message>
     <message>
         <source>P&amp;roperties</source>
-        <translation>С&amp;войства</translation>
+        <translation type="vanished">С&amp;войства</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Расположение:</translation>
+        <translation type="vanished">Расположение:</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation>Просмотр</translation>
+        <translation type="vanished">Просмотр</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation>Тип:</translation>
+        <translation type="vanished">Тип:</translation>
     </message>
     <message>
         <source>Output &amp;file:</source>
-        <translation>Вывод в &amp;файл:</translation>
+        <translation type="vanished">Вывод в &amp;файл:</translation>
     </message>
     <message>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="vanished">...</translation>
     </message>
 </context>
 <context>
@@ -4173,63 +4544,28 @@ Please turn one of those options off.</source>
         <source>Process failed to start: %1</source>
         <translation>Не удалось запустить процесс: %1</translation>
     </message>
+    <message>
+        <source>Child process modifier threw an exception: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Child process modifier reported error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Child process modifier reported error: %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Child process set up failed: %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QProgressDialog</name>
     <message>
         <source>Cancel</source>
         <translation>Отменить</translation>
-    </message>
-</context>
-<context>
-    <name>QRegExp</name>
-    <message>
-        <source>no error occurred</source>
-        <translation>ошибки отсутствуют</translation>
-    </message>
-    <message>
-        <source>disabled feature used</source>
-        <translation>использование отключённых возможностей</translation>
-    </message>
-    <message>
-        <source>bad char class syntax</source>
-        <translation>неправильный синтаксис класса символов</translation>
-    </message>
-    <message>
-        <source>bad lookahead syntax</source>
-        <translation>неправильный синтаксис lookahead</translation>
-    </message>
-    <message>
-        <source>lookbehinds not supported, see QTBUG-2371</source>
-        <translation>lookbehind не поддерживается, см. QTBUG-2371</translation>
-    </message>
-    <message>
-        <source>bad repetition syntax</source>
-        <translation>неправильный синтаксис повторения</translation>
-    </message>
-    <message>
-        <source>invalid octal value</source>
-        <translation>некорректное восьмеричное значение</translation>
-    </message>
-    <message>
-        <source>missing left delim</source>
-        <translation>отсутствует левый разделитель</translation>
-    </message>
-    <message>
-        <source>unexpected end</source>
-        <translation>неожиданный конец</translation>
-    </message>
-    <message>
-        <source>met internal limit</source>
-        <translation>достигнуто внутреннее ограничение</translation>
-    </message>
-    <message>
-        <source>invalid interval</source>
-        <translation>некорректный интервал</translation>
-    </message>
-    <message>
-        <source>invalid category</source>
-        <translation>некорректная категория</translation>
     </message>
 </context>
 <context>
@@ -4901,35 +5237,9 @@ Please turn one of those options off.</source>
         <source>too many replacements (more than INT_MAX)</source>
         <translation>слишком много замен (более INT_MAX)</translation>
     </message>
-</context>
-<context>
-    <name>QSQLite2Driver</name>
     <message>
-        <source>Error opening database</source>
-        <translation>Ошибка открытия базы данных</translation>
-    </message>
-    <message>
-        <source>Unable to begin transaction</source>
-        <translation>Невозможно начать транзакцию</translation>
-    </message>
-    <message>
-        <source>Unable to commit transaction</source>
-        <translation>Невозможно завершить транзакцию</translation>
-    </message>
-    <message>
-        <source>Unable to rollback transaction</source>
-        <translation>Невозможно откатить транзакцию</translation>
-    </message>
-</context>
-<context>
-    <name>QSQLite2Result</name>
-    <message>
-        <source>Unable to fetch results</source>
-        <translation>Невозможно получить результаты</translation>
-    </message>
-    <message>
-        <source>Unable to execute statement</source>
-        <translation>Невозможно выполнить выражение</translation>
+        <source>INTERNAL ERROR: invalid substring offset</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5071,7 +5381,7 @@ Please turn one of those options off.</source>
     <name>QSharedMemory</name>
     <message>
         <source>%1: unable to set key on lock</source>
-        <translation>%1: невозможно установить ключ блокировки</translation>
+        <translation type="vanished">%1: невозможно установить ключ блокировки</translation>
     </message>
     <message>
         <source>%1: create size is less then 0</source>
@@ -5103,7 +5413,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>%1: unknown error %2</source>
-        <translation>%1: неизвестная ошибка %2</translation>
+        <translation type="vanished">%1: неизвестная ошибка %2</translation>
     </message>
     <message>
         <source>%1: key is empty</source>
@@ -5115,11 +5425,11 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>%1: UNIX key file doesn&apos;t exist</source>
-        <translation>%1: специфический ключ UNIX не существует</translation>
+        <translation type="vanished">%1: специфический ключ UNIX не существует</translation>
     </message>
     <message>
         <source>%1: ftok failed</source>
-        <translation>%1: ошибка ftok</translation>
+        <translation type="vanished">%1: ошибка ftok</translation>
     </message>
     <message>
         <source>%1: unable to make key</source>
@@ -5144,6 +5454,18 @@ Please turn one of those options off.</source>
     <message>
         <source>%1: size query failed</source>
         <translation>%1: не удалось запросить размер</translation>
+    </message>
+    <message>
+        <source>%1: unsupported key type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: unable to set key on lock (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: unknown error: %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6167,6 +6489,10 @@ Please turn one of those options off.</source>
         <source>F%1</source>
         <translation>F%1</translation>
     </message>
+    <message>
+        <source>Control</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QSocks5SocketEngine</name>
@@ -6321,9 +6647,7 @@ Please turn one of those options off.</source>
     </message>
     <message>
         <source>frame</source>
-        <extracomment>Role of an accessible object: a window with frame and title
-----------
-Role of an accessible object</extracomment>
+        <extracomment>Role of an accessible object: a window with frame and title</extracomment>
         <translation>рамка</translation>
     </message>
     <message>
@@ -6785,7 +7109,7 @@ Role of an accessible object</extracomment>
     </message>
     <message>
         <source>Cannot provide a certificate with no key, %1</source>
-        <translation>Невозможно предоставить сертификат без ключа, %1</translation>
+        <translation type="vanished">Невозможно предоставить сертификат без ключа, %1</translation>
     </message>
     <message>
         <source>Error loading local certificate, %1</source>
@@ -7027,6 +7351,14 @@ Role of an accessible object</extracomment>
         <source>Cannot provide a certificate with no key</source>
         <translation>Невозможно предоставить сертификат без ключа</translation>
     </message>
+    <message>
+        <source>TLS certificate unexpectedly changed during renegotiation!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The data could not be decrypted</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QStandardPaths</name>
@@ -7102,28 +7434,49 @@ Role of an accessible object</extracomment>
         <source>Download</source>
         <translation>Загрузки</translation>
     </message>
+    <message>
+        <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shared State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Temporary Items</source>
+        <extracomment>macOS: Temporary directory</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QStateMachine</name>
     <message>
         <source>Missing initial state in compound state &apos;%1&apos;</source>
-        <translation>Отсутствует исходное состояние в составном состоянии «%1»</translation>
+        <translation type="vanished">Отсутствует исходное состояние в составном состоянии «%1»</translation>
     </message>
     <message>
         <source>Missing default state in history state &apos;%1&apos;</source>
-        <translation>Отсутствует состояние по умолчанию в историческом состоянии «%1»</translation>
+        <translation type="vanished">Отсутствует состояние по умолчанию в историческом состоянии «%1»</translation>
     </message>
     <message>
         <source>No common ancestor for targets and source of transition from state &apos;%1&apos;</source>
-        <translation>Нет общего предка у источника и цели перехода из состояния «%1»</translation>
+        <translation type="vanished">Нет общего предка у источника и цели перехода из состояния «%1»</translation>
     </message>
     <message>
         <source>Child mode of state machine &apos;%1&apos; is not &apos;ExclusiveStates&apos;.</source>
-        <translation>Дочернее состояние конечного автомата «%1» не «ExclusiveStates».</translation>
+        <translation type="vanished">Дочернее состояние конечного автомата «%1» не «ExclusiveStates».</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
+        <translation type="vanished">Неизвестная ошибка</translation>
     </message>
 </context>
 <context>
@@ -7146,18 +7499,35 @@ Role of an accessible object</extracomment>
     </message>
     <message>
         <source>%1: unknown error %2</source>
-        <translation>%1: неизвестная ошибка %2</translation>
-    </message>
-</context>
-<context>
-    <name>QTDSDriver</name>
-    <message>
-        <source>Unable to open connection</source>
-        <translation>Невозможно открыть соединение</translation>
+        <translation type="vanished">%1: неизвестная ошибка %2</translation>
     </message>
     <message>
-        <source>Unable to use database</source>
-        <translation>Невозможно использовать базу данных</translation>
+        <source>%1: unsupported key type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: key too long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: unknown error: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: key is empty</source>
+        <translation type="unfinished">%1: пустой ключ</translation>
+    </message>
+    <message>
+        <source>%1: System V semaphores are not available for sandboxed applications. Please build Qt with -feature-ipc_posix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: unable to make key</source>
+        <translation type="unfinished">%1: невозможно создать ключ</translation>
+    </message>
+    <message>
+        <source>%1: ftok failed</source>
+        <translation type="unfinished">%1: ошибка ftok</translation>
     </message>
 </context>
 <context>
@@ -7176,53 +7546,6 @@ Role of an accessible object</extracomment>
     <message>
         <source>Operation on socket is not supported</source>
         <translation>Операция с сокетом не поддерживается</translation>
-    </message>
-</context>
-<context>
-    <name>QTgaFile</name>
-    <message>
-        <source>Could not read image data</source>
-        <translation>Не удалось прочитать данные изображения</translation>
-    </message>
-    <message>
-        <source>Sequential device (eg socket) for image read not supported</source>
-        <translation>Чтение из последовательных устройств (например, из сокета) не поддерживается</translation>
-    </message>
-    <message>
-        <source>Seek file/device for image read failed</source>
-        <translation>Не удалось произвести перемещение по файлу/устройству для чтения изображения</translation>
-    </message>
-    <message>
-        <source>Image header read failed</source>
-        <translation>Не удалось прочитать заголовок изображения</translation>
-    </message>
-    <message>
-        <source>Image type not supported</source>
-        <translation>Неподдерживаемый тип изображения</translation>
-    </message>
-    <message>
-        <source>Image depth not valid</source>
-        <translation>Недопустимая глубина цвета изображения</translation>
-    </message>
-    <message>
-        <source>Image size exceeds limit</source>
-        <translation>Размер изображения больше допустимого</translation>
-    </message>
-    <message>
-        <source>Could not seek to image read footer</source>
-        <translation>Не удалось переместиться к концу изображения</translation>
-    </message>
-    <message>
-        <source>Could not read footer</source>
-        <translation>Не удалось прочитать окончание изображения</translation>
-    </message>
-    <message>
-        <source>Image type (non-TrueVision 2.0) not supported</source>
-        <translation>Неподдерживаемый тип изображения: не TrueVision 2.0</translation>
-    </message>
-    <message>
-        <source>Could not reset to read data</source>
-        <translation>Не удалось переместиться к данным</translation>
     </message>
 </context>
 <context>
@@ -7460,101 +7783,6 @@ The minimum Direct2D version required is %1. The Direct2D version on this system
     </message>
 </context>
 <context>
-    <name>QXml</name>
-    <message>
-        <source>no error occurred</source>
-        <translation>ошибки отсутствуют</translation>
-    </message>
-    <message>
-        <source>error triggered by consumer</source>
-        <translation>ошибка вызвана пользователем</translation>
-    </message>
-    <message>
-        <source>unexpected end of file</source>
-        <translation>неожиданный конец файла</translation>
-    </message>
-    <message>
-        <source>more than one document type definition</source>
-        <translation>указано более одного типа документа</translation>
-    </message>
-    <message>
-        <source>error occurred while parsing element</source>
-        <translation>ошибка разбора элемента</translation>
-    </message>
-    <message>
-        <source>tag mismatch</source>
-        <translation>тег не совпадает</translation>
-    </message>
-    <message>
-        <source>error occurred while parsing content</source>
-        <translation>ошибка разбора документа</translation>
-    </message>
-    <message>
-        <source>unexpected character</source>
-        <translation>неожиданный символ</translation>
-    </message>
-    <message>
-        <source>invalid name for processing instruction</source>
-        <translation>некорректное имя инструкции по обработке</translation>
-    </message>
-    <message>
-        <source>version expected while reading the XML declaration</source>
-        <translation>в объявлении XML требуется параметр version</translation>
-    </message>
-    <message>
-        <source>wrong value for standalone declaration</source>
-        <translation>некорректное значение параметра standalone</translation>
-    </message>
-    <message>
-        <source>encoding declaration or standalone declaration expected while reading the XML declaration</source>
-        <translation>в объявлении XML требуются параметры encoding или standalone</translation>
-    </message>
-    <message>
-        <source>standalone declaration expected while reading the XML declaration</source>
-        <translation>в объявлении XML требуется параметр standalone</translation>
-    </message>
-    <message>
-        <source>error occurred while parsing document type definition</source>
-        <translation>ошибка разбора объявления типа документа</translation>
-    </message>
-    <message>
-        <source>letter is expected</source>
-        <translation>требуется буква</translation>
-    </message>
-    <message>
-        <source>error occurred while parsing comment</source>
-        <translation>ошибка разбора комментария</translation>
-    </message>
-    <message>
-        <source>error occurred while parsing reference</source>
-        <translation>ошибка разбора ссылки</translation>
-    </message>
-    <message>
-        <source>internal general entity reference not allowed in DTD</source>
-        <translation>внутренняя ссылка на общий объект недопустима в DTD</translation>
-    </message>
-    <message>
-        <source>external parsed general entity reference not allowed in attribute value</source>
-        <translation>внешняя ссылка на общий объект недопустима в значении атрибута</translation>
-    </message>
-    <message>
-        <source>external parsed general entity reference not allowed in DTD</source>
-        <translation>внешняя ссылка на общий объект недопустима в DTD</translation>
-    </message>
-    <message>
-        <source>unparsed entity reference in wrong context</source>
-        <translation>неразобранная ссылка на объект в неправильном контексте</translation>
-    </message>
-    <message>
-        <source>recursive entities</source>
-        <translation>рекурсивные объекты</translation>
-    </message>
-    <message>
-        <source>error in the text declaration of an external entity</source>
-        <translation>ошибка в объявлении внешнего объекта</translation>
-    </message>
-</context>
-<context>
     <name>QXmlStream</name>
     <message>
         <source>Extra content at end of document.</source>
@@ -7618,7 +7846,7 @@ The minimum Direct2D version required is %1. The Direct2D version on this system
     </message>
     <message>
         <source>Invalid attribute in XML declaration.</source>
-        <translation>Некорректный атрибут в объявлении XML.</translation>
+        <translation type="vanished">Некорректный атрибут в объявлении XML.</translation>
     </message>
     <message>
         <source>Premature end of document.</source>
@@ -7719,6 +7947,33 @@ The minimum Direct2D version required is %1. The Direct2D version on this system
     <message>
         <source>Invalid character reference.</source>
         <translation>Некорректная символьная ссылка.</translation>
+    </message>
+    <message>
+        <source>Invalid attribute in XML declaration: %1 = %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length of XML attribute name exceeds implementation limits (4KiB characters).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected token type %1 in %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Found second DTD token in %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>quiaccessibilityelement</name>
+    <message>
+        <source>checked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unchecked</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
