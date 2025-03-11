@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 project(qdigidoccommon VERSION 1.0.0)
-if(NOT DEFINED set_env)
+if(NOT COMMAND SET_ENV)
 	macro(set_env)
 		set(${ARGN})
 	endmacro()
@@ -16,7 +16,7 @@ target_link_libraries(qdigidoccommon PUBLIC Qt6::Network Qt6::Widgets OpenSSL::S
 
 if(WIN32)
 	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
-	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi winscard)
+	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi)
 elseif(APPLE)
 	target_link_libraries(qdigidoccommon PRIVATE "-framework PCSC")
 else()
