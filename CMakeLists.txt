@@ -14,6 +14,12 @@ target_include_directories(qdigidoccommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_definitions(qdigidoccommon PUBLIC QT_WARN_DEPRECATED_UP_TO=060200)
 target_link_libraries(qdigidoccommon PUBLIC Qt6::Network Qt6::Widgets OpenSSL::SSL)
 
+add_custom_target(update_config_files
+    COMMAND curl ${CONFIG_URL} > ${CMAKE_SOURCE_DIR}/config.json
+    COMMAND curl ${CONFIG_URL}/../config.pub > ${CMAKE_SOURCE_DIR}/config.pub
+    COMMAND curl ${CONFIG_URL}/../config.rsa > ${CMAKE_SOURCE_DIR}/config.rsa
+)
+
 if(WIN32)
 	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
 	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi)
