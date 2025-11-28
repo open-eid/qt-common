@@ -21,20 +21,19 @@
 
 #include "Common.h"
 #include <QtCore/QCoreApplication>
-#include <QtCore/QCryptographicHash>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTimer>
-#include <QtCore/QSettings>
 #include <QtCore/QVersionNumber>
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 
 #include <openssl/err.h>
 #include <openssl/evp.h>
@@ -76,7 +75,7 @@ public:
 #endif
 	QByteArray data, signature;
 	QJsonObject dataobject;
-	QUrl rsaurl, url = QUrl(QStringLiteral(CONFIG_URL));
+	QUrl eccurl, url = QUrl(QStringLiteral(CONFIG_URL));
 	std::unique_ptr<EVP_PKEY,free_deleter<EVP_PKEY_free>> publicKey;
 	QNetworkRequest req;
 	QNetworkAccessManager *net = nullptr;
@@ -100,10 +99,10 @@ void Configuration::Private::initCache(bool clear)
 		return f.open(QFile::ReadOnly) ? f.readAll() : QByteArray();
 	};
 	setData(readAll(url, QStringLiteral(":/config.json")),
-			readAll(rsaurl, QStringLiteral(":/config.rsa")));
+			readAll(eccurl, QStringLiteral(":/config.ecc")));
 #else
 	setData(readFile(QStringLiteral(":/config.json")),
-			readFile(QStringLiteral(":/config.rsa")));
+			readFile(QStringLiteral(":/config.ecc")));
 #endif
 }
 
@@ -135,30 +134,21 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 		return false;
 
 	QByteArray sig = QByteArray::fromBase64(signature);
-	size_t size = 0;
-	auto ctx = std::unique_ptr<EVP_PKEY_CTX,free_deleter<EVP_PKEY_CTX_free>>(EVP_PKEY_CTX_new(publicKey.get(), nullptr));
-	if(!ctx || EVP_PKEY_verify_recover_init(ctx.get()) < 1 ||
-		EVP_PKEY_verify_recover(ctx.get(), nullptr, &size,
-			(const unsigned char*)sig.constData(), size_t(sig.size())) < 1)
+	const EVP_MD *md = [&]{
+		switch(EVP_PKEY_bits(publicKey.get()))
+		{
+		case SHA256_DIGEST_LENGTH * 8: return EVP_sha256();
+		case SHA384_DIGEST_LENGTH * 8: return EVP_sha384();
+		default: return EVP_sha512();
+		}
+	}();
+	if(std::unique_ptr<EVP_MD_CTX,free_deleter<EVP_MD_CTX_free>> ctx(EVP_MD_CTX_new());
+		!ctx ||
+		EVP_DigestVerifyInit(ctx.get(), nullptr, md, nullptr, publicKey.get()) < 1 ||
+		EVP_DigestVerify(ctx.get(), (const unsigned char*)sig.constData(), size_t(sig.size()),
+			(const unsigned char*)data.constData(), size_t(data.size())) < 1)
 		return false;
-	QByteArray digest(qsizetype(size), '\0');
-	if(EVP_PKEY_verify_recover(ctx.get(), (unsigned char*)digest.data(), &size,
-			(const unsigned char*)sig.constData(), size_t(sig.size())) < 1)
-		return false;
-	digest.resize(qsizetype(size));
 
-	using item = std::pair<QCryptographicHash::Algorithm,QByteArray>;
-	static const std::array list {
-		item{QCryptographicHash::Sha1, QByteArray::fromHex("3021300906052b0e03021a05000414")},
-		item{QCryptographicHash::Sha224, QByteArray::fromHex("302d300d06096086480165030402040500041c")},
-		item{QCryptographicHash::Sha256, QByteArray::fromHex("3031300d060960864801650304020105000420")},
-		item{QCryptographicHash::Sha384, QByteArray::fromHex("3041300d060960864801650304020205000430")},
-		item{QCryptographicHash::Sha512, QByteArray::fromHex("3051300d060960864801650304020305000440")},
-	};
-	if(std::none_of(list.cbegin(), list.cend(), [&](const auto &item) {
-		return digest == item.second + QCryptographicHash::hash(data, item.first);
-		}))
-		return false;
 	QString date = headerValue(toObject(data), QLatin1String("DATE")).toString();
 	return QDateTime::currentDateTimeUtc() > QDateTime::fromString(date, QStringLiteral("yyyyMMddHHmmss'Z'"));
 }
@@ -172,7 +162,7 @@ Configuration::Configuration(QObject *parent)
 #ifndef NO_CACHE
 	QDir().mkpath(d->cache);
 #endif
-	d->rsaurl = QStringLiteral("%1%2.rsa").arg(
+	d->eccurl = QStringLiteral("%1%2.ecc").arg(
 		d->url.adjusted(QUrl::RemoveFilename).toString(),
 		QFileInfo(d->url.fileName()).baseName());
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
@@ -191,7 +181,7 @@ Configuration::Configuration(QObject *parent)
 			Q_EMIT finished(false, reply->errorString());
 			return;
 		}
-		if(reply->url() == d->rsaurl)
+		if(reply->url() == d->eccurl)
 		{
 			QByteArray signature = reply->readAll();
 			if(d->validate(d->data, signature))
@@ -234,7 +224,7 @@ Configuration::Configuration(QObject *parent)
 					f.write(data);
 			};
 			writeAll(d->url.fileName(), d->data);
-			writeAll(d->rsaurl.fileName(), d->signature);
+			writeAll(d->eccurl.fileName(), d->signature);
 #endif
 #ifdef LAST_CHECK_DAYS
 			d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
@@ -243,16 +233,15 @@ Configuration::Configuration(QObject *parent)
 		}
 	});
 
-	QByteArray key = readFile(QStringLiteral(":/config.pub"));
-	BIO *bio = BIO_new_mem_buf(key.constData(), int(key.size()));
+	QByteArray key = readFile(QStringLiteral(":/config.ecpub"));
+	std::unique_ptr<BIO,free_deleter<BIO_free>> bio(BIO_new_mem_buf(key.constData(), int(key.size())));
 	if(!bio)
 	{
 		qWarning() << "Failed to parse public key";
 		return;
 	}
 
-	d->publicKey.reset(PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr));
-	BIO_free(bio);
+	d->publicKey.reset(PEM_read_bio_PUBKEY(bio.get(), nullptr, nullptr, nullptr));
 	if(!d->publicKey)
 	{
 		qWarning() << "Failed to parse public key";
@@ -260,28 +249,27 @@ Configuration::Configuration(QObject *parent)
 	}
 
 	d->initCache(false);
-	if(!d->validate(d->data, d->signature))
-	{
-		qWarning() << "Config siganture is invalid, clearing cache";
-		d->initCache(true);
-	}
-	else
-	{
+	auto readSerials = [this]() -> std::tuple<int, int> {
 		int serial = headerValue(object(), QLatin1String("SERIAL")).toInt();
 		qDebug() << "Chache configuration serial:" << serial;
 		int bundledSerial = headerValue(toObject(readFile(QStringLiteral(":/config.json"))), QLatin1String("SERIAL")).toInt();
 		qDebug() << "Bundled configuration serial:" << bundledSerial;
-		if(serial < bundledSerial)
-		{
-			qWarning() << "Bundled configuration is recent than cache, resetting cache";
-			d->initCache(true);
-		}
+		return {serial, bundledSerial};
+	};
+	if(!d->validate(d->data, d->signature))
+	{
+		qWarning() << "Config siganture is invalid, clearing cache";
+		update(true);
 	}
-
+	else if(auto [serial, bundledSerial] = readSerials(); serial < bundledSerial)
+	{
+		qWarning() << "Bundled configuration is recent than cache, resetting cache";
+		update(true);
+	}
 #ifdef LAST_CHECK_DAYS
-	QDate lastCheck = QDate::fromString(d->s.value(QStringLiteral("LastCheck")).toString(), QStringLiteral("yyyyMMdd"));
 	// Clean computer
-	if(lastCheck.isNull()) {
+	else if(QDate lastCheck = QDate::fromString(d->s.value(QStringLiteral("LastCheck")).toString(), QStringLiteral("yyyyMMdd"));
+		lastCheck.isNull()) {
 		d->s.setValue(QStringLiteral("LastCheck"), QDate::currentDate().toString(QStringLiteral("yyyyMMdd")));
 		update();
 	}
@@ -303,7 +291,7 @@ QJsonObject Configuration::object() const
 void Configuration::update(bool force)
 {
 	d->initCache(force);
-	d->req.setUrl(d->rsaurl);
+	d->req.setUrl(d->eccurl);
 	d->net->get(d->req);
 	QSettings().setValue(QStringLiteral("LastVersion"), QCoreApplication::applicationVersion());
 }
