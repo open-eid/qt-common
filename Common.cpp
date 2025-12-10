@@ -20,11 +20,14 @@
 #include "Common.h"
 
 #include <QtCore/QOperatingSystemVersion>
+#include <QtCore/QSettings>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
 #include <Regstr.h>
 #include <Setupapi.h>
+
+using namespace Qt::StringLiterals;
 #elif defined(Q_OS_MAC)
 #include <PCSC/wintypes.h>
 #include <PCSC/winscard.h>
@@ -37,7 +40,7 @@
 
 QString Common::applicationOs()
 {
-#if defined(Q_OS_MAC)
+#ifdef Q_OS_MAC
 	const auto version = QOperatingSystemVersion::current();
 	return QLatin1String("%1 %2.%3.%4 (%5/%6)")
 		.arg(version.name())
@@ -46,17 +49,18 @@ QString Common::applicationOs()
 		.arg(version.microVersion())
 		.arg(QSysInfo::buildCpuArchitecture())
 		.arg(QSysInfo::currentCpuArchitecture());
-#elif defined(Q_OS_WIN)
+#elifdef Q_OS_WIN
 	QString product = QSysInfo::productType();
 	product[0] = product[0].toUpper();
 	QString version = QSysInfo::productVersion();
 	version.replace(QLatin1String("server"), QLatin1String("Server "));
+	QSettings s(R"(HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment)"_L1, QSettings::Registry64Format);
 	return QStringLiteral("%1 %2 %3 (%4/%5)")
 		.arg(product)
 		.arg(version)
 		.arg(QOperatingSystemVersion::current().microVersion())
 		.arg(QSysInfo::buildCpuArchitecture())
-		.arg(QSysInfo::currentCpuArchitecture());
+		.arg(s.value("PROCESSOR_ARCHITECTURE"_L1, QSysInfo::currentCpuArchitecture()).toString());
 #else
 	return QStringLiteral("%1 (%2/%3)").arg(
 		QSysInfo::prettyProductName(),
@@ -81,16 +85,16 @@ QStringList Common::drivers()
 	{
 		DWORD conf = 0;
 		SetupDiGetDeviceRegistryPropertyW(h, &info,
-			SPDRP_CONFIGFLAGS, 0, LPBYTE(&conf), sizeof(conf), &size);
+			SPDRP_CONFIGFLAGS, nullptr, LPBYTE(&conf), sizeof(conf), &size);
 		if(conf & CONFIGFLAG_DISABLED)
 			continue;
 
 		SetupDiGetDeviceRegistryPropertyW(h, &info,
-			SPDRP_DEVICEDESC, 0, LPBYTE(data), sizeof(data), &size);
+			SPDRP_DEVICEDESC, nullptr, LPBYTE(data), sizeof(data), &size);
 		QString name = QString::fromWCharArray(data);
 
 		SetupDiGetDeviceRegistryPropertyW(h, &info,
-			SPDRP_HARDWAREID, 0, LPBYTE(data), sizeof(data), &size);
+			SPDRP_HARDWAREID, nullptr, LPBYTE(data), sizeof(data), &size);
 
 		list.append(QStringLiteral("%1 (%2)").arg(name, QString::fromWCharArray(data)));
 	}

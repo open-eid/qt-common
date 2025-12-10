@@ -9,15 +9,18 @@ jobs:
     runs-on: macos-latest
     env:
       MACOSX_DEPLOYMENT_TARGET: 13.0
-      HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
-    - name: Install libraries
-      run: brew install qt@6
+      uses: actions/checkout@v6
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: 6.10.2
+        arch: clang_64
+        cache: true
     - name: Build
       run: |
-        cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@3.0 -B build -S .
+        cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@3.5 -B build -S .
         cmake --build build
   ubuntu:
     name: Build on Ubuntu to ${{ matrix.container }}
@@ -32,7 +35,7 @@ jobs:
     - name: Install dependencies
       run: apt update -qq && apt install --no-install-recommends -y git ca-certificates build-essential pkg-config cmake libpcsclite-dev libssl-dev libgl-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     - name: Build packages
       run: |
         cmake -B build -S .
@@ -42,20 +45,22 @@ jobs:
     runs-on: windows-2025
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
-    - name: Prepare vcpkg
-      uses: lukka/run-vcpkg@v7
-      with:
-        vcpkgArguments: openssl
-        vcpkgGitCommitId: 98e7cd3a7ba579efc543f8854af800d033031eae
-        vcpkgTriplet: x64-windows
+      uses: actions/checkout@v6
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.10.1
+        version: 6.10.2
         arch: win64_msvc2022_64
+        cache: true
+    - name: Cache vcpkg
+      uses: actions/cache@v5
+      with:
+        path: ${{ github.workspace }}/vcpkg_cache
+        key: vcpkg-windows
     - name: Build
+      env:
+        VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
       run: |
         cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake -B build -S .
+          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -B build -S .
         cmake --build build
