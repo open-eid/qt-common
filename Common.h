@@ -19,12 +19,16 @@
 
 #pragma once
 
+#include <QtCore/QObject>
 #include <QtCore/QStringList>
+
+#include <functional>
 
 class Common
 {
 public:
 	static QString applicationOs();
 	static QStringList drivers();
-
+	static bool sendLocalMessage(const QStringList &args);
+	static bool startLocalServer(QObject *parent, std::function<void (const QStringList&)> f);
 };

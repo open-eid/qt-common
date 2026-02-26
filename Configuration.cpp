@@ -111,6 +111,7 @@ void Configuration::Private::setData(const QByteArray &_data, const QByteArray &
 	data = _data;
 	signature = _signature;
 	dataobject = toObject(data);
+#ifdef NO_REGISTRY
 	QSettings system(QSettings::SystemScope);
 	for(const QString &key: system.childKeys())
 	{
@@ -126,6 +127,7 @@ void Configuration::Private::setData(const QByteArray &_data, const QByteArray &
 		default: break;
 		}
 	}
+#endif
 }
 
 bool Configuration::Private::validate(const QByteArray &data, const QByteArray &signature) const

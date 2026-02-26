@@ -19,8 +19,14 @@
 
 #include "Common.h"
 
+#include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 #include <QtCore/QOperatingSystemVersion>
 #include <QtCore/QSettings>
+#include <QtCore/QStandardPaths>
+#include <QtCore/QThread>
+#include <QtNetwork/QLocalServer>
+#include <QtNetwork/QLocalSocket>
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
@@ -28,7 +34,7 @@
 #include <Setupapi.h>
 
 using namespace Qt::StringLiterals;
-#elif defined(Q_OS_MAC)
+#elifdef Q_OS_MAC
 #include <PCSC/wintypes.h>
 #include <PCSC/winscard.h>
 #include <arpa/inet.h>
@@ -73,7 +79,7 @@ QStringList Common::drivers()
 {
 	QStringList list;
 #ifdef Q_OS_WIN
-	GUID guid {0x50dd5230L, 0xba8a, 0x11d1, 0xbf, 0x5d, 0x00, 0x00, 0xf8, 0x05, 0xf5, 0x30}; // SmartCardReader
+	static const GUID guid {0x50dd5230L, 0xba8a, 0x11d1, 0xbf, 0x5d, 0x00, 0x00, 0xf8, 0x05, 0xf5, 0x30}; // SmartCardReader
 	HDEVINFO h = SetupDiGetClassDevs(&guid, nullptr, 0, DIGCF_PRESENT);
 	if(!h)
 		return list;
@@ -111,8 +117,56 @@ QStringList Common::drivers()
 	if(SCardListReaders(context, nullptr, data.data(), &size) != SCARD_S_SUCCESS)
 		data.clear();
 	SCardReleaseContext(context);
-	list = QString::fromLatin1(data).split('\0');
-	list.removeAll({});
+	for(const char *name = data.data(); *name; name += std::char_traits<char>::length(name) + 1)
+		list.append(QString::fromLatin1(name));
 #endif
 	return list;
+}
+
+static QString serverName()
+{
+#ifdef Q_OS_WIN
+	return QCoreApplication::applicationName();
+#else
+	QString runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
+	if(runtimeDir.isEmpty())
+		runtimeDir = QDir::tempPath();
+	return runtimeDir + QLatin1Char('/') + QCoreApplication::applicationName();
+#endif
+}
+
+bool Common::sendLocalMessage(const QStringList &args)
+{
+	QLocalSocket socket;
+	int timeout = 5000;
+	for(int i = 0; i < 2; i++) {
+		socket.connectToServer(serverName(), QLocalSocket::WriteOnly);
+		if(socket.waitForConnected(timeout/2))
+			break;
+		if(i)
+			return false;
+		QThread::msleep(250);
+	}
+	QDataStream ds(&socket);
+	ds << args;
+	return socket.waitForBytesWritten(timeout);
+}
+
+bool Common::startLocalServer(QObject *parent, std::function<void (const QStringList&)> f)
+{
+	auto *server = new QLocalServer(parent);
+	QObject::connect(server, &QLocalServer::newConnection, parent, [server, parent, f = std::move(f)] {
+		while(QLocalSocket *socket = server->nextPendingConnection())
+		{
+			QObject::connect(socket, &QLocalSocket::readyRead, parent, [socket, f = std::move(f)] {
+				QDataStream ds(socket);
+				QStringList args;
+				ds >> args;
+				socket->waitForDisconnected(1000);
+				socket->deleteLater();
+				f(args);
+			});
+		}
+	});
+	return server->listen(serverName());
 }
