@@ -26,10 +26,6 @@ else()
 	target_link_libraries(qdigidoccommon PUBLIC PkgConfig::PCSCLITE)
 endif()
 
-if(NOT APPLE)
-	target_sources(qdigidoccommon PRIVATE qtsingleapplication/src/qtlocalpeer.cpp qtsingleapplication/src/qtsingleapplication.cpp)
-endif()
-
 if( CONFIG_URL )
 	set_env( LAST_CHECK_DAYS 4 CACHE STRING "How often check configuration changes" )
 	if( LAST_CHECK_DAYS )
