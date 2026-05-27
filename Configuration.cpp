@@ -39,8 +39,6 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 
-#include <array>
-
 template<auto D>
 struct free_deleter
 {
@@ -309,6 +307,11 @@ Configuration::~Configuration() = default;
 QJsonObject Configuration::object() const
 {
 	return d->dataobject;
+}
+
+QJsonObject Configuration::rawObject() const
+{
+	return toObject(d->data);
 }
 
 void Configuration::update(bool force)

@@ -30,6 +30,7 @@ public:
 	explicit Configuration(QObject *parent = nullptr);
 	~Configuration() final;
 	QJsonObject object() const;
+	QJsonObject rawObject() const;
 	void update(bool force = false);
 
 Q_SIGNALS:
