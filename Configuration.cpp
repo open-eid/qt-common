@@ -288,6 +288,11 @@ QJsonObject Configuration::object() const
 	return d->dataobject;
 }
 
+QJsonObject Configuration::rawObject() const
+{
+	return toObject(d->data);
+}
+
 void Configuration::update(bool force)
 {
 	d->initCache(force);
