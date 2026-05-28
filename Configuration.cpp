@@ -67,6 +67,7 @@ class Configuration::Private
 {
 public:
 	void initCache(bool clear);
+	QNetworkReply *limitedGet(const QNetworkRequest &req);
 	void setData(const QByteArray &data, const QByteArray &signature);
 	bool validate(const QByteArray &data, const QByteArray &signature) const;
 
@@ -104,6 +105,28 @@ void Configuration::Private::initCache(bool clear)
 	setData(readFile(QStringLiteral(":/config.json")),
 			readFile(QStringLiteral(":/config.ecc")));
 #endif
+}
+
+QNetworkReply *Configuration::Private::limitedGet(const QNetworkRequest &req)
+{
+	constexpr qint64 MAX_REPLY_SIZE = 1024 * 1024;
+	QNetworkRequest limitedReq = req;
+	limitedReq.setDecompressedSafetyCheckThreshold(MAX_REPLY_SIZE);
+	auto *reply = net->get(limitedReq);
+	reply->setReadBufferSize(MAX_REPLY_SIZE + 1);
+	QObject::connect(reply, &QNetworkReply::metaDataChanged, reply, [reply] {
+		if(reply->header(QNetworkRequest::ContentLengthHeader).toLongLong() > MAX_REPLY_SIZE)
+			reply->abort();
+	});
+	QObject::connect(reply, &QNetworkReply::readyRead, reply, [reply] {
+		if(reply->bytesAvailable() > MAX_REPLY_SIZE)
+			reply->abort();
+	});
+	QObject::connect(reply, &QNetworkReply::downloadProgress, reply, [reply](qint64 received, qint64 total) {
+		if(received > MAX_REPLY_SIZE || total > MAX_REPLY_SIZE)
+			reply->abort();
+	});
+	return reply;
 }
 
 void Configuration::Private::setData(const QByteArray &_data, const QByteArray &_signature)
@@ -194,7 +217,7 @@ Configuration::Configuration(QObject *parent)
 			}
 			qDebug() << "Remote signature does not match, downloading new configuration";
 			d->req.setUrl(d->url);
-			d->net->get(d->req)->setProperty("signature", signature);
+			d->limitedGet(d->req)->setProperty("signature", signature);
 		}
 		else if(reply->url() == d->url)
 		{
@@ -292,6 +315,6 @@ void Configuration::update(bool force)
 {
 	d->initCache(force);
 	d->req.setUrl(d->eccurl);
-	d->net->get(d->req);
+	d->limitedGet(d->req);
 	QSettings().setValue(QStringLiteral("LastVersion"), QCoreApplication::applicationVersion());
 }
