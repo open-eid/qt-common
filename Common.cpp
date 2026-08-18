@@ -24,7 +24,7 @@
 #include <Setupapi.h>
 
 using namespace Qt::StringLiterals;
-#elifdef Q_OS_MAC
+#elifdef Q_OS_MACOS
 #include <PCSC/wintypes.h>
 #include <PCSC/winscard.h>
 #include <arpa/inet.h>
@@ -38,7 +38,7 @@ using namespace Qt::StringLiterals;
 
 QString Common::applicationOs()
 {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	const auto version = QOperatingSystemVersion::current();
 	return QLatin1String("%1 %2.%3.%4 (%5/%6)")
 		.arg(version.name())
