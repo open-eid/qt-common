@@ -11,11 +11,13 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: 14.0
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
+      uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       with:
-        version: 6.10.2
+        persist-credentials: false
+    - name: Install Qt
+      uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730 # v4.3.1
+      with:
+        version: 6.11.2
         arch: clang_64
         cache: true
     - name: Build
@@ -28,14 +30,16 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.10']
+        container: ['22.04', '24.04', '26.04']
     env:
       DEBIAN_FRONTEND: noninteractive
     steps:
     - name: Install dependencies
       run: apt update -qq && apt install --no-install-recommends -y git ca-certificates build-essential pkg-config cmake libpcsclite-dev libssl-dev libgl-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      with:
+        persist-credentials: false
     - name: Build packages
       run: |
         cmake -B build -S .
@@ -45,22 +49,17 @@ jobs:
     runs-on: windows-2025
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
+      uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       with:
-        version: 6.10.2
+        persist-credentials: false
+    - name: Install Qt
+      uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730 # v4.3.1
+      with:
+        version: 6.11.2
         arch: win64_msvc2022_64
         cache: true
-    - name: Cache vcpkg
-      uses: actions/cache@v5
-      with:
-        path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-windows
+        aqtsource: git+https://github.com/miurahr/aqtinstall.git@16db45a70b5905ad596941b223469bc86a56901e
     - name: Build
-      env:
-        VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
       run: |
-        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -B build -S .
+        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -B build -S .
         cmake --build build
