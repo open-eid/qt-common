@@ -16,7 +16,7 @@ target_compile_definitions(qdigidoccommon PUBLIC QT_WARN_DEPRECATED_UP_TO=060200
 target_link_libraries(qdigidoccommon PUBLIC Qt6::Network Qt6::Widgets OpenSSL::SSL)
 
 if(WIN32)
-	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN)
+	target_compile_definitions(qdigidoccommon PUBLIC UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 	target_link_libraries(qdigidoccommon PRIVATE Version SetupApi)
 elseif(APPLE)
 	target_link_libraries(qdigidoccommon PRIVATE "-framework PCSC")
