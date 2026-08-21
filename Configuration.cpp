@@ -39,6 +39,10 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 
+namespace {
+	constexpr qint64 MAX_REPLY_SIZE = 1024 * 1024;
+}
+
 template<auto D>
 struct free_deleter
 {
@@ -107,10 +111,7 @@ void Configuration::Private::initCache(bool clear)
 
 QNetworkReply *Configuration::Private::limitedGet(const QNetworkRequest &req)
 {
-	constexpr qint64 MAX_REPLY_SIZE = 1024 * 1024;
-	QNetworkRequest limitedReq = req;
-	limitedReq.setDecompressedSafetyCheckThreshold(MAX_REPLY_SIZE);
-	auto *reply = net->get(limitedReq);
+	auto *reply = net->get(req);
 	reply->setReadBufferSize(MAX_REPLY_SIZE + 1);
 	QObject::connect(reply, &QNetworkReply::metaDataChanged, reply, [reply] {
 		if(reply->header(QNetworkRequest::ContentLengthHeader).toLongLong() > MAX_REPLY_SIZE)
@@ -186,15 +187,12 @@ Configuration::Configuration(QObject *parent)
 	d->eccurl = QStringLiteral("%1%2.ecc").arg(
 		d->url.adjusted(QUrl::RemoveFilename).toString(),
 		QFileInfo(d->url.fileName()).baseName());
+	d->req.setDecompressedSafetyCheckThreshold(MAX_REPLY_SIZE);
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(),
 			Common::applicationOs(), QLocale().uiLanguages().first(), Common::drivers().join('/')).toUtf8());
 	d->req.setTransferTimeout();
 	d->net = new QNetworkAccessManager(this);
-	connect(d->net, &QNetworkAccessManager::sslErrors, this,
-			[](QNetworkReply *reply, const QList<QSslError> &errors){
-		reply->ignoreSslErrors(errors);
-	});
 	connect(d->net, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply){
 		QScopedPointer<QNetworkReply, QScopedPointerDeleteLater> replyScoped(reply);
 		if(reply->error() != QNetworkReply::NoError)
