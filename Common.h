@@ -26,5 +26,16 @@ class Common
 public:
 	static QString applicationOs();
 	static QStringList drivers();
+	/**
+	 * @brief Sets the application language reported by userAgent()
+	 *
+	 * When unset the locale is reported instead.
+	 */
+	static void setLanguage(const QString &lang);
+	/**
+	 * @brief User-Agent header value following the RIA User-Agent Header Specification (schema 1)
+	 * @param devices include the connected card readers in the metadata block
+	 */
+	static QByteArray userAgent(bool devices = false);
 
 };

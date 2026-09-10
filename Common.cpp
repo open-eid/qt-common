@@ -19,7 +19,11 @@
 
 #include "Common.h"
 
+#include <QtCore/QCoreApplication>
+#include <QtCore/QLocale>
+#include <QtCore/QMutex>
 #include <QtCore/QOperatingSystemVersion>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QSettings>
 
 #ifdef Q_OS_WIN
@@ -115,4 +119,61 @@ QStringList Common::drivers()
 	list.removeAll({});
 #endif
 	return list;
+}
+
+namespace
+{
+	// Written when the user switches language, read when composing the header, which may
+	// happen on a worker thread (e.g. certificate fetches during validation).
+	QMutex languageMutex;
+	QString language;
+}
+
+void Common::setLanguage(const QString &lang)
+{
+	QMutexLocker locker(&languageMutex);
+	language = lang;
+}
+
+QByteArray Common::userAgent(bool devices)
+{
+	// RIA User-Agent Header Specification, schema 1:
+	// AppName/AppVersion (schema=1; key=value; key=value)
+	// libdigidocpp prefixes this with "LIB libdigidocpp/<version> (<arch>) APP ".
+	static const QRegularExpression disallowed(QStringLiteral("[;\\x00-\\x1F\\x7F]"));
+	auto value = [](QString value) {
+		value = value.remove(disallowed).simplified();
+		// The metadata block is an RFC 9110 comment. Quote characters that have
+		// structural meaning there so arbitrary system-provided values cannot
+		// terminate the comment or leave it syntactically incomplete.
+		value.replace(u'\\', QStringLiteral("\\\\"));
+		value.replace(u'(', QStringLiteral("\\("));
+		value.replace(u')', QStringLiteral("\\)"));
+		return value;
+	};
+	QStringList metadata {
+		QStringLiteral("schema=1"),
+		QStringLiteral("os=%1").arg(value(applicationOs())),
+		QStringLiteral("lang=%1").arg(value([] {
+			QMutexLocker locker(&languageMutex);
+			return language.isEmpty() ? QLocale().bcp47Name() : language;
+		}())),
+		QStringLiteral("devicetype=desktop"),
+	};
+	if(devices)
+	{
+		QStringList labels;
+		for(QString label: drivers())
+		{
+			// Comma is the devices sub-delimiter and cannot be represented inside
+			// an individual label in schema 1.
+			label.replace(u',', u' ');
+			if(label = value(label); !label.isEmpty())
+				labels.append(label);
+		}
+		if(!labels.isEmpty())
+			metadata.append(QStringLiteral("devices=%1").arg(labels.join(QLatin1String(", "))));
+	}
+	return QStringLiteral("%1/%2 (%3)").arg(QCoreApplication::applicationName(),
+		QCoreApplication::applicationVersion(), metadata.join(QLatin1String("; "))).toUtf8();
 }
