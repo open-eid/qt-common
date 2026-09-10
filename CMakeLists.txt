@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 cmake_minimum_required(VERSION 3.22)
 project(qdigidoccommon VERSION 1.0.0)
 if(NOT COMMAND SET_ENV)
