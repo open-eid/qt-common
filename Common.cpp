@@ -9,7 +9,9 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
+#include <QtCore/QLocale>
 #include <QtCore/QLockFile>
+#include <QtCore/QMutex>
 #include <QtCore/QOperatingSystemVersion>
 #include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
@@ -239,4 +241,79 @@ bool Common::startLocalServer(QObject *parent, std::function<void (const QString
 	}
 #endif
 	return false;
+}
+
+namespace
+{
+	QMutex languageMutex;
+	QString language;
+}
+
+void Common::setLanguage(const QString &lang)
+{
+	QMutexLocker locker(&languageMutex);
+	language = lang;
+}
+
+QByteArray Common::userAgent(bool devices)
+{
+	// RIA User-Agent Header Specification, schema 1:
+	// AppName/AppVersion (schema=1; key=value; key=value)
+	// libdigidocpp prefixes this with "LIB libdigidocpp/<version> (<arch>) APP ".
+	auto value = [](QString value) {
+		// Non-ASCII is recommended to be removed; decomposing first keeps the base letter of accented characters
+		value = value.normalized(QString::NormalizationForm_KD);
+		value.removeIf([](QChar c) { return c < u' ' || c > u'~' || c == u';'; });
+		value = value.simplified();
+		// The metadata block is an RFC 9110 comment: balanced parentheses nest and are kept as the
+		// platform reports them, a backslash or an unbalanced parenthesis would break the block
+		QString result;
+		QList<qsizetype> open;
+		for(QChar c: std::as_const(value))
+		{
+			if(c == u'\\')
+				result += QStringLiteral("\\\\");
+			else if(c == u'(')
+			{
+				open.append(result.size());
+				result += c;
+			}
+			else if(c == u')' && open.isEmpty())
+				result += QStringLiteral("\\)");
+			else
+			{
+				if(c == u')')
+					open.removeLast();
+				result += c;
+			}
+		}
+		for(qsizetype i = open.size() - 1; i >= 0; --i)
+			result.insert(open[i], u'\\');
+		return result;
+	};
+	QStringList metadata {
+		QStringLiteral("schema=1"),
+		QStringLiteral("os=%1").arg(value(applicationOs())),
+		QStringLiteral("lang=%1").arg(value([] {
+			QMutexLocker locker(&languageMutex);
+			return language.isEmpty() ? QLocale().bcp47Name() : language;
+		}())),
+		QStringLiteral("devicetype=desktop"),
+	};
+	if(devices)
+	{
+		QStringList labels;
+		for(QString label: drivers())
+		{
+			// Comma is the devices sub-delimiter and cannot be represented inside
+			// an individual label in schema 1.
+			label.replace(u',', u' ');
+			if(label = value(label); !label.isEmpty())
+				labels.append(label);
+		}
+		if(!labels.isEmpty())
+			metadata.append(QStringLiteral("devices=%1").arg(labels.join(QLatin1String(", "))));
+	}
+	return QStringLiteral("%1/%2 (%3)").arg(QCoreApplication::applicationName(),
+		QCoreApplication::applicationVersion(), metadata.join(QLatin1String("; "))).toUtf8();
 }
