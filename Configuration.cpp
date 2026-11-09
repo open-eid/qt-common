@@ -93,6 +93,7 @@ QNetworkReply *Configuration::Private::limitedGet(const QNetworkRequest &req)
 {
 	constexpr qint64 MAX_REPLY_SIZE = 1024 * 1024;
 	QNetworkRequest limitedReq = req;
+	limitedReq.setRawHeader("User-Agent", Common::userAgent(true));
 	limitedReq.setDecompressedSafetyCheckThreshold(MAX_REPLY_SIZE);
 	auto *reply = net->get(limitedReq);
 	reply->setReadBufferSize(MAX_REPLY_SIZE + 1);
@@ -170,9 +171,6 @@ Configuration::Configuration(QObject *parent)
 	d->eccurl = QStringLiteral("%1%2.ecc").arg(
 		d->url.adjusted(QUrl::RemoveFilename).toString(),
 		QFileInfo(d->url.fileName()).baseName());
-	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
-		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(),
-			Common::applicationOs(), QLocale().uiLanguages().first(), Common::drivers().join('/')).toUtf8());
 	d->req.setTransferTimeout();
 	d->net = new QNetworkAccessManager(this);
 	connect(d->net, &QNetworkAccessManager::sslErrors, this,
