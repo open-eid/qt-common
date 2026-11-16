@@ -5,7 +5,9 @@
 
 #include <QObject>
 
-class QNetworkReply;
+#include <memory>
+
+class QJsonObject;
 
 class Configuration final : public QObject
 {
@@ -21,7 +23,7 @@ Q_SIGNALS:
 	void finished(bool changed, const QString &error);
 
 private:
-	Q_DISABLE_COPY(Configuration)
+	Q_DISABLE_COPY_MOVE(Configuration)
 
 	class Private;
 	std::unique_ptr<Private> d;

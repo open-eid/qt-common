@@ -7,13 +7,13 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTimer>
+#include <QtCore/QTimeZone>
 #include <QtCore/QVersionNumber>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
@@ -30,7 +30,7 @@ struct free_deleter
 	constexpr void operator()(T *t) const noexcept { D(t); }
 };
 
-static QVariant headerValue(const QJsonObject &obj, QLatin1String key) {
+static QJsonValue headerValue(const QJsonObject &obj, QLatin1String key) {
 	return obj.value(QLatin1String("META-INF")).toObject().value(key);
 }
 
@@ -155,7 +155,9 @@ bool Configuration::Private::validate(const QByteArray &data, const QByteArray &
 		return false;
 
 	QString date = headerValue(toObject(data), QLatin1String("DATE")).toString();
-	return QDateTime::currentDateTimeUtc() > QDateTime::fromString(date, QStringLiteral("yyyyMMddHHmmss'Z'"));
+	QDateTime notBefore = QDateTime::fromString(date, QStringLiteral("yyyyMMddHHmmss'Z'"));
+	notBefore.setTimeZone(QTimeZone::utc());
+	return QDateTime::currentDateTimeUtc() > notBefore;
 }
 
 
@@ -167,9 +169,7 @@ Configuration::Configuration(QObject *parent)
 #ifndef NO_CACHE
 	QDir().mkpath(d->cache);
 #endif
-	d->eccurl = QStringLiteral("%1%2.ecc").arg(
-		d->url.adjusted(QUrl::RemoveFilename).toString(),
-		QFileInfo(d->url.fileName()).baseName());
+	d->eccurl = d->url.toString().replace(QLatin1String(".json"), QLatin1String(".ecc"));
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3) Lang: %4 Devices: %5")
 		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(),
 			Common::applicationOs(), QLocale().uiLanguages().first(), Common::drivers().join('/')).toUtf8());
@@ -180,7 +180,7 @@ Configuration::Configuration(QObject *parent)
 		reply->ignoreSslErrors(errors);
 	});
 	connect(d->net, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply){
-		QScopedPointer<QNetworkReply, QScopedPointerDeleteLater> replyScoped(reply);
+		reply->deleteLater();
 		if(reply->error() != QNetworkReply::NoError)
 		{
 			Q_EMIT finished(false, reply->errorString());
@@ -240,13 +240,8 @@ Configuration::Configuration(QObject *parent)
 
 	QByteArray key = readFile(QStringLiteral(":/config.ecpub"));
 	std::unique_ptr<BIO,free_deleter<BIO_free>> bio(BIO_new_mem_buf(key.constData(), int(key.size())));
-	if(!bio)
-	{
-		qWarning() << "Failed to parse public key";
-		return;
-	}
-
-	d->publicKey.reset(PEM_read_bio_PUBKEY(bio.get(), nullptr, nullptr, nullptr));
+	if(bio)
+		d->publicKey.reset(PEM_read_bio_PUBKEY(bio.get(), nullptr, nullptr, nullptr));
 	if(!d->publicKey)
 	{
 		qWarning() << "Failed to parse public key";
@@ -256,19 +251,19 @@ Configuration::Configuration(QObject *parent)
 	d->initCache(false);
 	auto readSerials = [this]() -> std::tuple<int, int> {
 		int serial = headerValue(object(), QLatin1String("SERIAL")).toInt();
-		qDebug() << "Chache configuration serial:" << serial;
+		qDebug() << "Cache configuration serial:" << serial;
 		int bundledSerial = headerValue(toObject(readFile(QStringLiteral(":/config.json"))), QLatin1String("SERIAL")).toInt();
 		qDebug() << "Bundled configuration serial:" << bundledSerial;
 		return {serial, bundledSerial};
 	};
 	if(!d->validate(d->data, d->signature))
 	{
-		qWarning() << "Config siganture is invalid, clearing cache";
+		qWarning() << "Config signature is invalid, clearing cache";
 		update(true);
 	}
 	else if(auto [serial, bundledSerial] = readSerials(); serial < bundledSerial)
 	{
-		qWarning() << "Bundled configuration is recent than cache, resetting cache";
+		qWarning() << "Bundled configuration is more recent than cache, resetting cache";
 		update(true);
 	}
 #ifdef LAST_CHECK_DAYS
@@ -279,7 +274,7 @@ Configuration::Configuration(QObject *parent)
 		update();
 	}
 	// Scheduled update or DigiDoc4 updated
-	else if(lastCheck < QDate::currentDate().addDays(-LAST_CHECK_DAYS) ||
+	else if(lastCheck.daysTo(QDate::currentDate()) >= LAST_CHECK_DAYS ||
 		QVersionNumber::fromString(QSettings().value(QStringLiteral("LastVersion")).toString()) <
 		QVersionNumber::fromString(QCoreApplication::applicationVersion()))
 		update();
