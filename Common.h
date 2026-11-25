@@ -18,4 +18,6 @@ public:
 	static QStringList drivers();
 	static std::unique_ptr<QLockFile> acquireInstanceLock(const QStringList &args);
 	static bool startLocalServer(QObject *parent, std::function<void (const QStringList&)> f);
+	static void setLanguage(const QString &lang);
+	static QByteArray userAgent(bool devices = false);
 };
